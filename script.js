@@ -1,669 +1,483 @@
-/* =========================================
-   KAYRA
-   SLIDE + ROADMAP INTERACTION LOGIC
-========================================= */
+/**
+ * KAYRA - Options & Streams Explorer Script
+ */
 
-const slides = Array.from(document.querySelectorAll(".slide"));
-const navButtons = document.querySelectorAll(".nav-links button");
-const mobileNavButtons = document.querySelectorAll(".mobile-nav-link");
-const previousButton = document.getElementById("previousSlide");
-const nextButton = document.getElementById("nextSlide");
-const slideCounter = document.getElementById("slideCounter");
-const menuButton = document.getElementById("menuButton");
-const mobileMenu = document.getElementById("mobileMenu");
-const slideControls = document.getElementById("slideControls");
-
-const roadmapOverlay = document.getElementById("roadmapOverlay");
-const closeRoadmapButton = document.getElementById("closeRoadmap");
-
-let currentSlide = 0;
-let isRoadmapOpen = false;
-
-/* =========================================
-   ROADMAP & PATHWAY DATA
-========================================= */
-
-const overlayData = {
-    // SKILLS DATA
-    "communication": {
-        num: "02 / SKILLS / 01",
-        title: "COMMUNICATION",
-        subtitle: "Master articulate speech, active listening, structural narrative, and audience resonance.",
-        
-        s1Title: "FOUNDATIONAL EXPRESSION",
-        s1Desc: "Understand core message structuring, tone awareness, and active listening dynamics.",
-        s1Points: [
-            "Deconstruct non-verbal signals, vocal cadence, and posture.",
-            "Learn the Pyramid Principle to structure messages top-down.",
-            "Practice reflective listening to process viewpoints before formulating answers."
-        ],
-        s1Kayra: "Diagnostic articulation assessments and foundational speech structure blueprints.",
-
-        s2Title: "STRUCTURED WRITING & PUBLIC SPEAKING",
-        s2Desc: "Transform raw thoughts into compelling speeches, essays, and presentations.",
-        s2Points: [
-            "Write concise pitch briefs and structured opinion pieces.",
-            "Eliminate speech clutter (filler words, passive voice, rambling).",
-            "Deliver short impromptu speeches under tight constraints."
-        ],
-        s2Kayra: "Safe-space peer feedback circles, video speech analysis, and voice modulation labs.",
-
-        s3Title: "PERSUASION & NEGOTIATION",
-        s3Desc: "Navigate complex discussions, resolve disagreements, and align divergent viewpoints.",
-        s3Points: [
-            "Map stakeholder incentives and adapt language to audience archetypes.",
-            "Master negotiation dynamics: BATNA, empathetic pushback, and compromise.",
-            "De-escalate high-pressure debates using calm, structured logic."
-        ],
-        s3Kayra: "Simulated Model UN / debate arenas and guided conflict resolution workshops.",
-
-        s4Title: "INSPIRATIONAL LEADERSHIP STORYTELLING",
-        s4Desc: "Inspire communities, articulate vision, and command presence in high-stakes environments.",
-        s4Points: [
-            "Craft personal leadership narratives that resonate authentically.",
-            "Host podcasts, lead town halls, or represent projects on external stages.",
-            "Mentor junior peers in developing their own communication style."
-        ],
-        s4Kayra: "Keynote presentation opportunities, public showcase platforms, and 1-on-1 executive coaching."
-    },
-
-    "creativity": {
-        num: "02 / SKILLS / 02",
-        title: "CREATIVITY",
-        subtitle: "Unlock original thinking, break cognitive patterns, and convert concepts into tangible realities.",
-
-        s1Title: "CURIOSITY & DIVERGENT THINKING",
-        s1Desc: "Break routine mental shortcuts and develop acute observational habits.",
-        s1Points: [
-            "Challenge implicit assumptions using First Principles reasoning.",
-            "Maintain daily idea journals capturing observations across industries.",
-            "Practice lateral thinking drills to connect seemingly unrelated fields."
-        ],
-        s1Kayra: "Daily brain-teaser prompts, cross-domain reading lists, and concept mapping tools.",
-
-        s2Title: "IDEATION & RAPID PROTOTYPING",
-        s2Desc: "Iterate swiftly on ideas and build low-fidelity conceptual models.",
-        s2Points: [
-            "Apply Design Thinking frameworks (Empathize, Define, Ideate, Prototype, Test).",
-            "Build quick wireframes, storyboards, or mockups without fear of failure.",
-            "Gather immediate peer feedback to refine early hypotheses."
-        ],
-        s2Kayra: "Collaborative 48-hour design sprints and multi-disciplinary sandbox sessions.",
-
-        s3Title: "INTERDISCIPLINARY FUSION",
-        s3Desc: "Merge artistic expression, scientific rigor, and human psychology.",
-        s3Points: [
-            "Analyze world-class innovations across design, technology, and literature.",
-            "Synthesize ideas from nature (biomimicry) into real-world utility.",
-            "Refine aesthetic intuition alongside functional necessity."
-        ],
-        s3Kayra: "Cross-domain workshops bridging art, technology, and social systems.",
-
-        s4Title: "PORTFOLIO CREATION & REAL-WORLD LAUNCH",
-        s4Desc: "Execute original vision into published works, products, or original ventures.",
-        s4Points: [
-            "Curate a professional portfolio highlighting design/thought processes.",
-            "Launch creative campaigns, open-source projects, or publications.",
-            "Establish a distinctive personal style and creative voice."
-        ],
-        s4Kayra: "KAYRA Creative Incubator, student showcases, and exhibition grants."
-    },
-
-    "problem-solving": {
-        num: "02 / SKILLS / 03",
-        title: "PROBLEM SOLVING",
-        subtitle: "Deconstruct complex challenges into manageable variables and craft resilient, high-impact solutions.",
-
-        s1Title: "ROOT CAUSE ANALYSIS",
-        s1Desc: "Distinguish symptoms from true underlying problems through systematic inquiry.",
-        s1Points: [
-            "Apply the '5 Whys' and MECE (Mutually Exclusive, Collectively Exhaustive) frameworks.",
-            "Gather quantitative and qualitative data without cognitive bias.",
-            "Map problem trees to pinpoint exact structural bottlenecks."
-        ],
-        s1Kayra: "Interactive analytical case studies and structured problem breakdown toolkits.",
-
-        s2Title: "STRATEGIC OPTION GENERATION",
-        s2Desc: "Formulate multiple viable solution pathways before committing resources.",
-        s2Points: [
-            "Conduct impact-versus-effort trade-off evaluations.",
-            "Perform stress testing on proposed solutions against worst-case scenarios.",
-            "Draft clear decision matrix frameworks for complex scenarios."
-        ],
-        s2Kayra: "Guided scenario analysis exercises and real-world strategy simulations.",
-
-        s3Title: "EXECUTION & TACTICAL ADAPTATION",
-        s3Desc: "Translate strategy into phased, measurable implementation plans.",
-        s3Points: [
-            "Define concrete KPIs, target milestones, and risk mitigation strategies.",
-            "Execute pilot tests to gather real-world performance metrics.",
-            "Pivot swiftly when empirical feedback contradicts initial assumptions."
-        ],
-        s3Kayra: "Project incubators that tackle real campus, community, or industry problems.",
-
-        s4Title: "SYSTEMS THINKING & SCALABILITY",
-        s4Desc: "Design long-term operational systems that prevent problems from recurring.",
-        s4Points: [
-            "Identify second- and third-order consequences within complex ecosystems.",
-            "Automate repetitive workflows and build sustainable operating frameworks.",
-            "Document playbooks so solutions scale independently of individual effort."
-        ],
-        s4Kayra: "Mentorship from industry problem solvers and policy/system design labs."
-    },
-
-    "leadership": {
-        num: "02 / SKILLS / 04",
-        title: "LEADERSHIP",
-        subtitle: "Guide teams with empathy, strategic vision, ethical grounding, and decisive clarity.",
-
-        s1Title: "SELF-MASTERY & ETHICAL FOUNDATION",
-        s1Desc: "Establish core personal values, self-awareness, and emotional regulation.",
-        s1Points: [
-            "Identify personal biases, triggers, and core driving principles.",
-            "Demonstrate radical accountability for personal mistakes and choices.",
-            "Align daily behaviors with long-term ethical standards."
-        ],
-        s1Kayra: "Leadership self-assessment diagnostics, goal setting, and reflection logs.",
-
-        s2Title: "TEAM DYNAMICS & EMPATHETIC MANAGEMENT",
-        s2Desc: "Build psychological safety, delegate effectively, and motivate diverse individuals.",
-        s2Points: [
-            "Understand individual strength profiles (CliftonStrengths, MBTI context).",
-            "Practice active delegation while offering necessary support structures.",
-            "Give actionable, empathetic feedback that inspires growth rather than defense."
-        ],
-        s2Kayra: "Simulated group project leadership roles and team dynamics workshops.",
-
-        s3Title: "STRATEGIC ALIGNMENT & CONFLICT RESOLUTION",
-        s3Desc: "Unify teams around a compelling shared vision and navigate interpersonal tension.",
-        s3Points: [
-            "Translate high-level vision into clear team objectives and key results (OKRs).",
-            "Resolve internal team friction swiftly using non-violent communication.",
-            "Maintain composure and clear decision-making during high-stress crises."
-        ],
-        s3Kayra: "Real-time leadership roles in KAYRA's student initiatives and team challenges.",
-
-        s4Title: "CULTURE BUILDING & TRANSFORMATIONAL VISION",
-        s4Desc: "Build enduring organizational cultures and empower the next generation of leaders.",
-        s4Points: [
-            "Establish norms of excellence, inclusivity, and continuous learning.",
-            "Identify and cultivate leadership potential in peers and juniors.",
-            "Drive meaningful institutional or societal impact beyond short-term goals."
-        ],
-        s4Kayra: "Direct placement in KAYRA executive steering positions and alumni networks."
-    },
-
-    "adaptability": {
-        num: "02 / SKILLS / 05",
-        title: "ADAPTABILITY",
-        subtitle: "Navigate ambiguity, bounce back from setbacks, and continuously evolve in volatile environments.",
-
-        s1Title: "GROWTH MINDSET & RESILIENCE",
-        s1Desc: "Reframe failure as informative data and cultivate cognitive flexibility.",
-        s1Points: [
-            "Recognize fixed-mindset triggers and actively reframe negative feedback.",
-            "Build stress management routines to maintain emotional equilibrium.",
-            "Conduct post-mortem analysis on failures without self-judgment."
-        ],
-        s1Kayra: "Mindset coaching exercises, resilience reflection logs, and stress-response guides.",
-
-        s2Title: "RAPID UNLEARNING & RE-LEARNING",
-        s2Desc: "Discard outdated knowledge quickly when new paradigms emerge.",
-        s2Points: [
-            "Develop accelerated learning frameworks (Feynman Technique, deliberate practice).",
-            "Identify shift signals in tech, academic, and economic landscapes.",
-            "Step comfortably into completely unfamiliar domains outside comfort zones."
-        ],
-        s2Kayra: "Cross-disciplinary micro-courses designed for rapid skill acquisition.",
-
-        s3Title: "THRIVING IN AMBIGUITY",
-        s3Desc: "Make high-quality decisions with incomplete or rapidly changing information.",
-        s3Points: [
-            "Formulate probabilistic thinking models under uncertain conditions.",
-            "Maintain progress even when clear instructions or roadmaps are absent.",
-            "Pivot project scope smoothly without losing momentum or morale."
-        ],
-        s3Kayra: "Dynamic, changing-parameter simulations that test tactical flexibility under pressure.",
-
-        s4Title: "AGILE TRANSFORMATION LEADERSHIP",
-        s4Desc: "Help teams and organizations navigate disruptive change effortlessly.",
-        s4Points: [
-            "Guide peers through organizational changes with clear, comforting communication.",
-            "Build resilient systems designed to absorb sudden external shocks.",
-            "Proactively drive innovation before legacy methods become obsolete."
-        ],
-        s4Kayra: "Crisis management simulations and advisory roles in dynamic student ventures."
-    },
-
-    "technical-literacy": {
-        num: "02 / SKILLS / 06",
-        title: "TECHNICAL LITERACY",
-        subtitle: "Harness modern computational tools, data systems, digital workflows, and emerging technologies.",
-
-        s1Title: "DIGITAL FOUNDATIONS & ALGORITHMIC THINKING",
-        s1Desc: "Grasp how digital systems operate, process data, and execute logic.",
-        s1Points: [
-            "Understand computational thinking (Decomposition, Pattern Recognition, Abstraction, Algorithms).",
-            "Master cloud file architecture, digital hygiene, and cybersecurity basics.",
-            "Analyze data structures and fundamental programming constructs."
-        ],
-        s1Kayra: "Curated tech fundamentals, interactive tool guides, and computer science logic maps.",
-
-        s2Title: "HANDS-ON TOOL MASTERY & DEVELOPMENT",
-        s2Desc: "Build functional prototypes using code, low-code engines, and modern workflows.",
-        s2Points: [
-            "Write modular code (Python, JavaScript, HTML/CSS) to solve real tasks.",
-            "Utilize developer tools, version control (Git/GitHub), and API integrations.",
-            "Leverage productivity suites, databases, and digital workspace tools effectively."
-        ],
-        s2Kayra: "Guided coding bootcamps, tech project sandboxes, and developer feedback sessions.",
-
-        s3Title: "AI INTEGRATION & AUTOMATION WORKFLOWS",
-        s3Desc: "Leverage AI models responsibly and automate tedious operational tasks.",
-        s3Points: [
-            "Master prompt engineering, contextual framing, and AI-assisted creation.",
-            "Build automated scripts or workflows connecting multiple digital platforms.",
-            "Evaluate technological solutions critically regarding data ethics, privacy, and bias."
-        ],
-        s3Kayra: "Advanced AI workflow labs, prompt engineering masterclasses, and tech stack builders.",
-
-        s4Title: "FULL-STACK PRODUCT CREATION",
-        s4Desc: "Architect, deploy, and maintain end-to-end digital solutions or platforms.",
-        s4Points: [
-            "Deploy functional web/mobile applications or data analytics dashboards.",
-            "Maintain technical documentation and open-source or commercial repositories.",
-            "Stay ahead of frontier technologies (Web3, spatial computing, AI agents)."
-        ],
-        s4Kayra: "Full-stack project incubators, tech hackathons, and direct product mentorship."
-    },
-
-    // PATHWAYS DATA
-    "after-10th": {
-        num: "03 / PATHWAYS / 01",
-        title: "AFTER 10TH STREAM SELECTOR",
-        subtitle: "Align stream choices (MPC, BiPC, CEC, MEC, Humanities) with core long-term interests.",
-
-        s1Title: "STREAM DISCOVERY & ASSESSMENTS",
-        s1Desc: "Evaluate cognitive strengths, subject inclinations, and potential learning preferences.",
-        s1Points: [
-            "Map core academic interests across Science, Commerce, and Arts.",
-            "Understand subject combinations (MPC, BiPC, CEC, MEC, IB/IGCSE variants).",
-            "Evaluate long-term career implications for each stream branch."
-        ],
-        s1Kayra: "Diagnostic interest mapping and stream alignment sessions.",
-
-        s2Title: "COMPETITIVE & ACADEMIC PREPARATION",
-        s2Desc: "Build academic stamina and early exposure for board and entrance exams.",
-        s2Points: [
-            "Understand national and international entrance exam structures (JEE, NEET, SAT, CLAT).",
-            "Develop rigorous study routines and time-management strategies.",
-            "Explore foundation courses for specialized domain building."
-        ],
-        s2Kayra: "Custom study roadmaps, foundation guides, and mentor interaction.",
-
-        s3Title: "EXTRACURRICULAR & SKILL INTEGRATION",
-        s3Desc: "Balance academic rigor with active portfolio and real-world project development.",
-        s3Points: [
-            "Engage in science fairs, debate forums, hackathons, and creative writing.",
-            "Maintain consistent leadership positions in school clubs or local communities.",
-            "Document projects and skill achievements in a digital portfolio."
-        ],
-        s3Kayra: "Portfolio builders, project idea repositories, and peer collaboration groups.",
-
-        s4Title: "DECISION ARCHITECTURE & TRANSITION",
-        s4Desc: "Finalize high school selection and set clear 2-year goals for senior secondary school.",
-        s4Points: [
-            "Finalize school/junior college and board selection (CBSE, ISC, State, IB).",
-            "Set measurable 2-year milestones for personal and academic growth.",
-            "Prepare mentally and academically for the transition into 11th grade."
-        ],
-        s4Kayra: "Transition toolkits and 1-on-1 counseling checkpoints."
-    },
-
-    "after-12th": {
-        num: "03 / PATHWAYS / 02",
-        title: "AFTER 12TH CAREER ARCHITECTURE",
-        subtitle: "Navigate university admissions, competitive exams, undergraduate degrees, and emerging career domains.",
-
-        s1Title: "DEGREE & DOMAIN EXPLORATION",
-        s1Desc: "Explore fields in Engineering, Medicine, Management, Design, Humanities, and Law.",
-        s1Points: [
-            "Research traditional and emerging undergraduate degree tracks.",
-            "Understand curriculum structures, specialization choices, and industry demand.",
-            "Map degree options against personal strengths and future career trends."
-        ],
-        s1Kayra: "Domain breakdown guides and university course comparison tools.",
-
-        s2Title: "ENTRANCE EXAM & ADMISSION STRATEGY",
-        s2Desc: "Prepare strategically for target university applications and entrance tests.",
-        s2Points: [
-            "Prepare test-taking strategies for entrance exams (JEE, NEET, CUET, IPMAT, NIFT, CLAT).",
-            "Manage application deadlines, entrance criteria, and portfolio requirements.",
-            "Craft compelling Personal Statements, SOPs, and Essays."
-        ],
-        s2Kayra: "SOP reviews, application trackers, and entrance prep guidance.",
-
-        s3Title: "COLLEGE SELECTION & NETWORKING",
-        s3Desc: "Compare institutions, campus culture, placement records, and faculty quality.",
-        s3Points: [
-            "Evaluate target universities based on faculty, alumni network, and infrastructure.",
-            "Connect with current university students and alumni for authentic insights.",
-            "Analyze financial options, tuition structures, and scholarship opportunities."
-        ],
-        s3Kayra: "Alumni network connect, scholarship databases, and college evaluation matrix.",
-
-        s4Title: "CAREER READINESS & BEYOND",
-        s4Desc: "Step into undergraduate life prepared for career building, internships, and growth.",
-        s4Points: [
-            "Build an early professional resume and LinkedIn profile.",
-            "Identify early internship, research, and project opportunities in college.",
-            "Develop lifelong learning habits and career networking skills."
-        ],
-        s4Kayra: "Career readiness bootcamps, resume builders, and internship search frameworks."
-    },
-
-    "global-options": {
-        num: "03 / PATHWAYS / 03",
-        title: "GLOBAL EDUCATION PATHWAYS",
-        subtitle: "Prepare for international universities, global scholarships, standardized tests, and global mobility.",
-
-        s1Title: "INTERNATIONAL HIGHER ED MAP",
-        s1Desc: "Explore global education destinations (US, UK, Canada, Europe, Australia, Asia).",
-        s1Points: [
-            "Understand different global educational models (Liberal Arts vs Specialized degrees).",
-            "Identify target countries based on budget, post-study work options, and safety.",
-            "Learn credit systems, admission rounds (Early Decision, Early Action, Regular)."
-        ],
-        s1Kayra: "Global university finder, country guides, and timeline maps.",
-
-        s2Title: "STANDARDIZED TESTS & PROFILE",
-        s2Desc: "Prepare for international standardized exams and build a competitive global profile.",
-        s2Points: [
-            "Prepare for tests like SAT, ACT, IELTS, TOEFL, or Duolingo English Test.",
-            "Build a holistic profile: community impact, research papers, awards, and passion projects.",
-            "Request impactful Letters of Recommendation (LORs) from educators."
-        ],
-        s2Kayra: "Standardized test practice resources and profile-building strategies.",
-
-        s3Title: "FINANCIAL PLANNING & SCHOLARSHIPS",
-        s3Desc: "Identify institutional scholarships, financial aid, grants, and funding options.",
-        s3Points: [
-            "Navigate Need-Based and Merit-Based financial aid processes (CSS Profile, ISFAA).",
-            "Identify external global scholarship programs and government grants.",
-            "Budget accurately for tuition, living costs, healthcare, and travel."
-        ],
-        s4Kayra: "Financial aid assistance guides and scholarship databases.",
-
-        s4Title: "VISA, IMMIGRATION & DESTINATION READINESS",
-        s4Desc: "Complete visa applications and prepare for cross-cultural academic living.",
-        s4Points: [
-            "Complete student visa procedures (F-1, CAS/Student Visa, Study Permit).",
-            "Prepare for cross-cultural transition, accommodation, and independent living.",
-            "Join overseas student orientation programs and regional alumni chapters."
-        ],
-        s4Kayra: "Pre-departure checklist, visa prep guides, and global student community hubs."
-    }
-};
-
-/* =========================================
-   TEXT ANIMATION PREPARATION
-========================================= */
-
-function prepareTextAnimation() {
-    const animatedElements = document.querySelectorAll(".animated-heading, .animate-text");
-    animatedElements.forEach(element => {
-        if (!element.dataset.originalHTML) {
-            element.dataset.originalHTML = element.innerHTML;
-        }
-    });
-}
-
-function resetAnimatedText(slideElement) {
-    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
-    animatedElements.forEach(element => {
-        if (element.dataset.originalHTML) {
-            element.innerHTML = element.dataset.originalHTML;
-        }
-    });
-}
-
-function animateSlideText(slideElement) {
-    resetAnimatedText(slideElement);
-    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
-    
-    let globalCharIndex = 0;
-
-    animatedElements.forEach(element => {
-        const wrapTextNodes = (node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                const text = node.nodeValue;
-                const fragment = document.createDocumentFragment();
-                const words = text.split(/(\s+)/);
-
-                words.forEach(word => {
-                    if (word.trim() === "") {
-                        fragment.appendChild(document.createTextNode(word));
-                    } else {
-                        const wordSpan = document.createElement("span");
-                        wordSpan.className = "word";
-
-                        for (let i = 0; i < word.length; i++) {
-                            const charSpan = document.createElement("span");
-                            charSpan.className = "char";
-                            charSpan.textContent = word[i];
-                            charSpan.style.animationDelay = `${globalCharIndex * 0.025}s`;
-                            globalCharIndex++;
-                            wordSpan.appendChild(charSpan);
-                        }
-                        fragment.appendChild(wordSpan);
-                    }
-                });
-
-                node.parentNode.replaceChild(fragment, node);
-            } else if (node.nodeType === Node.ELEMENT_NODE) {
-                Array.from(node.childNodes).forEach(wrapTextNodes);
-            }
-        };
-
-        wrapTextNodes(element);
-    });
-}
-
-/* =========================================
-   SKILL CARDS ANIMATION
-========================================= */
-
-function triggerSkillCards(slideElement) {
-    const cards = slideElement.querySelectorAll(".skill-card");
-    cards.forEach((card, index) => {
-        card.classList.remove("skill-card-visible");
-        setTimeout(() => {
-            card.classList.add("skill-card-visible");
-        }, 120 * index + 200);
-    });
-}
-
-/* =========================================
-   ROADMAP / PATHWAY MODAL LOGIC
-========================================= */
-
-function populatePointsList(elementId, points) {
-    const listElement = document.getElementById(elementId);
-    if (!listElement) return;
-    listElement.innerHTML = "";
-    if (points && points.length > 0) {
-        points.forEach(pt => {
-            const li = document.createElement("li");
-            li.textContent = pt;
-            listElement.appendChild(li);
-        });
-    }
-}
-
-function openRoadmap(itemKey) {
-    const data = overlayData[itemKey];
-    if (!data) return;
-
-    document.getElementById("roadmapNumber").textContent = data.num;
-    document.getElementById("roadmapTitle").innerHTML = `${data.title} <span class="highlight">ROADMAP</span>`;
-    document.getElementById("roadmapSubtitle").textContent = data.subtitle;
-
-    // STEP 1
-    document.getElementById("step1Title").textContent = data.s1Title;
-    document.getElementById("step1Desc").textContent = data.s1Desc;
-    populatePointsList("step1Points", data.s1Points);
-    document.getElementById("step1Kayra").textContent = data.s1Kayra;
-
-    // STEP 2
-    document.getElementById("step2Title").textContent = data.s2Title;
-    document.getElementById("step2Desc").textContent = data.s2Desc;
-    populatePointsList("step2Points", data.s2Points);
-    document.getElementById("step2Kayra").textContent = data.s2Kayra;
-
-    // STEP 3
-    document.getElementById("step3Title").textContent = data.s3Title;
-    document.getElementById("step3Desc").textContent = data.s3Desc;
-    populatePointsList("step3Points", data.s3Points);
-    document.getElementById("step3Kayra").textContent = data.s3Kayra;
-
-    // STEP 4
-    document.getElementById("step4Title").textContent = data.s4Title;
-    document.getElementById("step4Desc").textContent = data.s4Desc;
-    populatePointsList("step4Points", data.s4Points);
-    document.getElementById("step4Kayra").textContent = data.s4Kayra;
-
-    roadmapOverlay.classList.add("active");
-    slideControls.classList.add("hidden");
-    isRoadmapOpen = true;
-
-    // Scroll to top of overlay content
-    roadmapOverlay.scrollTop = 0;
-}
-
-function closeRoadmap() {
-    roadmapOverlay.classList.remove("active");
-    slideControls.classList.remove("hidden");
-    isRoadmapOpen = false;
-}
-
-/* =========================================
-   SLIDE SWITCHING LOGIC
-========================================= */
-
-function goToSlide(index) {
-    if (index < 0 || index >= slides.length) return;
-
-    if (isRoadmapOpen) closeRoadmap();
-
-    slides[currentSlide].classList.remove("active");
-    currentSlide = index;
-    slides[currentSlide].classList.add("active");
-
-    // Update active navbar button
-    navButtons.forEach((btn, i) => {
-        btn.classList.toggle("active", i === currentSlide);
-    });
-
-    // Update slide counter text
-    if (slideCounter) {
-        const slideNum = String(currentSlide + 1).padStart(2, "0");
-        const totalSlides = String(slides.length).padStart(2, "0");
-        slideCounter.textContent = `${slideNum} / ${totalSlides}`;
-    }
-
-    // Trigger animations for the new active slide
-    animateSlideText(slides[currentSlide]);
-    triggerSkillCards(slides[currentSlide]);
-
-    // Close mobile menu if open
-    if (mobileMenu) mobileMenu.classList.remove("open");
-}
-
-/* =========================================
-   EVENT LISTENERS
-========================================= */
-
-// Skill Card Clicks
-document.querySelectorAll(".skill-card").forEach(card => {
-    card.addEventListener("click", () => {
-        const skillKey = card.getAttribute("data-skill");
-        openRoadmap(skillKey);
-    });
-});
-
-// Pathway Row Clicks
-document.querySelectorAll(".pathway-row").forEach(row => {
-    row.addEventListener("click", () => {
-        const pathwayKey = row.getAttribute("data-pathway");
-        if (pathwayKey) {
-            openRoadmap(pathwayKey);
-        }
-    });
-});
-
-if (closeRoadmapButton) {
-    closeRoadmapButton.addEventListener("click", closeRoadmap);
-}
-
-if (nextButton) {
-    nextButton.addEventListener("click", () => {
-        if (currentSlide < slides.length - 1) {
-            goToSlide(currentSlide + 1);
-        } else {
-            goToSlide(0);
-        }
-    });
-}
-
-if (previousButton) {
-    previousButton.addEventListener("click", () => {
-        if (currentSlide > 0) {
-            goToSlide(currentSlide - 1);
-        } else {
-            goToSlide(slides.length - 1);
-        }
-    });
-}
-
-navButtons.forEach((button, index) => {
-    button.addEventListener("click", () => goToSlide(index));
-});
-
-mobileNavButtons.forEach((button, index) => {
-    button.addEventListener("click", () => goToSlide(index));
-});
-
-document.querySelectorAll("[data-slide-target]").forEach(button => {
-    button.addEventListener("click", (e) => {
-        const target = parseInt(e.target.getAttribute("data-slide-target"), 10);
-        if (!isNaN(target)) goToSlide(target);
-    });
-});
-
-if (menuButton && mobileMenu) {
-    menuButton.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-    });
-}
-
-// Keyboard arrow navigation
-window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && isRoadmapOpen) {
-        closeRoadmap();
-        return;
-    }
-
-    if (!isRoadmapOpen) {
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-            if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-            if (currentSlide > 0) goToSlide(currentSlide - 1);
-        }
-    }
-});
-
-/* Initialize */
 document.addEventListener("DOMContentLoaded", () => {
-    prepareTextAnimation();
-    goToSlide(0);
+    /* ==========================================================================
+       DATA SOURCE: OPTIONS, STREAMS, AND TOP INSTITUTIONS
+       ========================================================================== */
+    const optionsData = {
+        "after-10th": {
+            label: "01 / AFTER 10TH",
+            title: "OPTIONS AFTER 10TH GRADE",
+            description: "Choose your primary stream foundation or specialized diploma routes.",
+            streams: [
+                {
+                    id: "science-10",
+                    name: "Science (PCM / PCB)",
+                    summary: "Focuses on fundamental physics, chemistry, mathematics, and biology.",
+                    careers: ["Engineering Prep", "Medical Entrance Prep", "Research & Analytics", "Technology"],
+                    skills: ["Analytical Reasoning", "Problem Solving", "Mathematical Aptitude"],
+                    institutions: [
+                        {
+                            rank: "TOP SCHOOL",
+                            name: "Delhi Public School (DPS), R.K. Puram",
+                            location: "New Delhi, India",
+                            desc: "Premier CBSE institution with outstanding science laboratory infrastructure.",
+                            image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "TOP JUNIOR COLLEGE",
+                            name: "St. Xavier's College (Junior)",
+                            location: "Mumbai, India",
+                            desc: "Highly distinguished state-board science program with rich academic tradition.",
+                            image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "INTERNATIONAL BOARD",
+                            name: "The Doon School",
+                            location: "Dehradun, India",
+                            desc: "World-class IB & ISC curriculum focusing on research, leadership, and sciences.",
+                            image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                },
+                {
+                    id: "commerce-10",
+                    name: "Commerce",
+                    summary: "Focuses on accountancy, business studies, economics, and commercial mathematics.",
+                    careers: ["Chartered Accountancy", "Finance & Banking", "Business Management", "Economics"],
+                    skills: ["Financial Literacy", "Data Interpretation", "Commercial Acumen"],
+                    institutions: [
+                        {
+                            rank: "TOP COMMERCE SCHOOL",
+                            name: "The Cathedral & John Connon School",
+                            location: "Mumbai, India",
+                            desc: "Top-tier ISC institution famous for excellence in business and economic studies.",
+                            image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "PREMIER ACADEMY",
+                            name: "Modern School, Barakhamba Road",
+                            location: "New Delhi, India",
+                            desc: "Leading CBSE center known for holistic business and trade foundations.",
+                            image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "INTERNATIONAL SCHOOL",
+                            name: "UWC Mahindra College",
+                            location: "Pune, India",
+                            desc: "International Baccalaureate (IB) program with strong global economics emphasis.",
+                            image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                },
+                {
+                    id: "arts-10",
+                    name: "Arts & Humanities",
+                    summary: "Explores history, political science, psychology, sociology, and literature.",
+                    careers: ["Civil Services", "Psychology & Media", "Law Foundation", "Design & Arts"],
+                    skills: ["Critical Thinking", "Written Communication", "Social Analysis"],
+                    institutions: [
+                        {
+                            rank: "TOP HUMANITIES",
+                            name: "Sanskriti School",
+                            location: "New Delhi, India",
+                            desc: "Renowned for creative, social science, and humanities education.",
+                            image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "PREMIER JUNIOR COLLEGE",
+                            name: "Fergusson College (Junior Division)",
+                            location: "Pune, India",
+                            desc: "Historic institution with rich academic heritage in liberal arts.",
+                            image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "GLOBAL CURRICULUM",
+                            name: "Dhirubhai Ambani International School",
+                            location: "Mumbai, India",
+                            desc: "Global IB humanities curriculum fostering creative and critical research.",
+                            image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                }
+            ]
+        },
+        "after-12th": {
+            label: "02 / AFTER 12TH",
+            title: "OPTIONS AFTER 12TH GRADE",
+            description: "Explore undergraduate degree pathways and professional institutes.",
+            streams: [
+                {
+                    id: "engineering-12",
+                    name: "Engineering & Tech (B.Tech / B.E)",
+                    summary: "Focuses on computer science, AI, mechanical, electrical, and civil engineering.",
+                    careers: ["Software Development", "AI/ML Engineering", "Data Science", "Robotics"],
+                    skills: ["Coding & Algorithms", "System Architecture", "Quantitative Logic"],
+                    institutions: [
+                        {
+                            rank: "NIRF #1 INDIA",
+                            name: "Indian Institute of Technology (IIT) Madras",
+                            location: "Chennai, India",
+                            desc: "India's premier engineering institute with elite research laboratories.",
+                            image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "TOP TECH INSTITUTE",
+                            name: "IIT Bombay",
+                            location: "Mumbai, India",
+                            desc: "Global hub for computer science, innovation, and startup entrepreneurship.",
+                            image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "PREMIER PRIVATE",
+                            name: "BITS Pilani",
+                            location: "Pilani, Rajasthan",
+                            desc: "Top merit-based private tech institute known for zero-attendance policy and innovation.",
+                            image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                },
+                {
+                    id: "medicine-12",
+                    name: "Medicine & Life Sciences (MBBS / BDS / Biotech)",
+                    summary: "Healthcare, surgical practice, clinical research, biological technologies.",
+                    careers: ["Physician / Surgeon", "Medical Researcher", "Biotech Scientist", "Pharmacologist"],
+                    skills: ["Clinical Diagnosis", "Biological Research", "High Precision Under Pressure"],
+                    institutions: [
+                        {
+                            rank: "RANK 1 MEDICAL",
+                            name: "All India Institute of Medical Sciences (AIIMS)",
+                            location: "New Delhi, India",
+                            desc: "The pinnacle of medical education, healthcare practice, and research in South Asia.",
+                            image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "TOP MEDICAL COLLEGE",
+                            name: "Christian Medical College (CMC)",
+                            location: "Vellore, Tamil Nadu",
+                            desc: "World-renowned institution recognized for clinical training and patient care.",
+                            image: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "TOP RESEARCH CENTRE",
+                            name: "JIPMER",
+                            location: "Puducherry, India",
+                            desc: "National institute delivering elite medical education and research.",
+                            image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                },
+                {
+                    id: "management-12",
+                    name: "Commerce & Management (B.Com / IPM / BBA)",
+                    summary: "Business administration, corporate finance, marketing, and strategy.",
+                    careers: ["Investment Banker", "Management Consultant", "Marketing Strategist", "Entrepreneur"],
+                    skills: ["Financial Analysis", "Strategic Planning", "Leadership"],
+                    institutions: [
+                        {
+                            rank: "TOP COMMERCE COLLEGE",
+                            name: "Shri Ram College of Commerce (SRCC)",
+                            location: "New Delhi, India",
+                            desc: "The premier institution for business, economics, and commerce studies in India.",
+                            image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "INTEGRATED MBA",
+                            name: "Indian Institute of Management (IIM) Indore",
+                            location: "Indore, Madhya Pradesh",
+                            desc: "Pioneer of the 5-year Integrated Program in Management (IPM) right after 12th.",
+                            image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "PREMIER MANAGEMENT",
+                            name: "St. Xavier's College (Autonomous)",
+                            location: "Mumbai, India",
+                            desc: "Top-ranked for Management Studies (BMS) and financial economics.",
+                            image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                }
+            ]
+        },
+        "global-options": {
+            label: "03 / GLOBAL OPTIONS",
+            title: "GLOBAL UNDERGRADUATE PATHWAYS",
+            description: "Study at premier global universities across the US, UK, and Europe.",
+            streams: [
+                {
+                    id: "us-undergrad",
+                    name: "United States (Liberal Arts & STEM)",
+                    summary: "Flexible degree structure combining major specializations with liberal arts exploration.",
+                    careers: ["Tech & Product Management", "Quantitative Finance", "Global Research", "Startups"],
+                    skills: ["Interdisciplinary Thinking", "Research Innovation", "Global Leadership"],
+                    institutions: [
+                        {
+                            rank: "WORLD RANK #1",
+                            name: "Massachusetts Institute of Technology (MIT)",
+                            location: "Cambridge, MA, USA",
+                            desc: "Global leader in technology, engineering, physical sciences, and AI innovation.",
+                            image: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "IVY LEAGUE PREMIER",
+                            name: "Harvard University",
+                            location: "Cambridge, MA, USA",
+                            desc: "World-renowned liberal arts, economics, sciences, and political leadership development.",
+                            image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "SILICON VALLEY HUB",
+                            name: "Stanford University",
+                            location: "Stanford, CA, USA",
+                            desc: "Heart of tech entrepreneurship, computer science, and cutting-edge engineering.",
+                            image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                },
+                {
+                    id: "uk-undergrad",
+                    name: "United Kingdom (UCAS Direct Degrees)",
+                    summary: "3-year focused, specialized degrees in specific fields from day one.",
+                    careers: ["Investment Management", "Law & Jurisprudence", "Academic Research", "International Politics"],
+                    skills: ["In-depth Subject Expertise", "Academic Writing", "Critical Debating"],
+                    institutions: [
+                        {
+                            rank: "WORLD RANKING TOP 3",
+                            name: "University of Oxford",
+                            location: "Oxford, United Kingdom",
+                            desc: "Historic tutorial system offering world-class focus in humanities, PPE, and sciences.",
+                            image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "WORLD RANKING TOP 3",
+                            name: "University of Cambridge",
+                            location: "Cambridge, United Kingdom",
+                            desc: "World-famous collegiate university distinguished in mathematics, tech, and natural sciences.",
+                            image: "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80"
+                        },
+                        {
+                            rank: "GLOBAL ECONOMICS HUB",
+                            name: "London School of Economics (LSE)",
+                            location: "London, United Kingdom",
+                            desc: "Global authority in economics, social science, international relations, and finance.",
+                            image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                }
+            ]
+        }
+    };
+
+    /* ==========================================================================
+       SLIDE SYSTEM CONTROLLER
+       ========================================================================== */
+    const slides = document.querySelectorAll(".slide");
+    const navButtons = document.querySelectorAll(".nav-links button");
+    const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+    const slideCounter = document.getElementById("slideCounter");
+    const prevBtn = document.getElementById("previousSlide");
+    const nextBtn = document.getElementById("nextSlide");
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function updateSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+
+        currentSlide = index;
+
+        slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === currentSlide);
+        });
+
+        navButtons.forEach((btn, i) => {
+            btn.classList.toggle("active", i === currentSlide);
+        });
+
+        slideCounter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+    }
+
+    /* NAV CLICK HANDLERS */
+    navButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const slideIdx = parseInt(button.getAttribute("data-slide"));
+            updateSlide(slideIdx);
+        });
+    });
+
+    mobileNavLinks.forEach(button => {
+        button.addEventListener("click", () => {
+            const slideIdx = parseInt(button.getAttribute("data-slide"));
+            updateSlide(slideIdx);
+            closeMobileMenu();
+        });
+    });
+
+    /* HERO BUTTONS */
+    document.querySelectorAll("[data-slide-target]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = parseInt(btn.getAttribute("data-slide-target"));
+            updateSlide(target);
+        });
+    });
+
+    prevBtn.addEventListener("click", () => updateSlide(currentSlide - 1));
+    nextBtn.addEventListener("click", () => updateSlide(currentSlide + 1));
+
+    /* KEYBOARD NAVIGATION */
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") updateSlide(currentSlide + 1);
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") updateSlide(currentSlide - 1);
+    });
+
+    /* ==========================================================================
+       MOBILE MENU HANDLER
+       ========================================================================== */
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    function toggleMobileMenu() {
+        const isOpen = mobileMenu.classList.contains("open");
+        if (isOpen) {
+            closeMobileMenu();
+        } else {
+            mobileMenu.classList.add("open");
+            menuButton.textContent = "CLOSE";
+        }
+    }
+
+    function closeMobileMenu() {
+        mobileMenu.classList.remove("open");
+        menuButton.textContent = "MENU";
+    }
+
+    menuButton.addEventListener("click", toggleMobileMenu);
+
+    /* ==========================================================================
+       OPTIONS & EXPLORER MODAL CONTROLLER
+       ========================================================================== */
+    const optionsOverlay = document.getElementById("optionsOverlay");
+    const closeOptionsBtn = document.getElementById("closeOptions");
+    const categoryLabel = document.getElementById("optionCategoryLabel");
+    const categoryTitle = document.getElementById("optionCategoryTitle");
+    const categoryDesc = document.getElementById("optionCategoryDesc");
+    const container = document.getElementById("optionsStreamsContainer");
+
+    /* OPEN MODAL FOR OPTION ROW */
+    document.querySelectorAll(".pathway-row").forEach(row => {
+        row.addEventListener("click", () => {
+            const optionKey = row.getAttribute("data-option");
+            openOptionExplorer(optionKey);
+        });
+    });
+
+    function openOptionExplorer(key) {
+        const data = optionsData[key];
+        if (!data) return;
+
+        categoryLabel.textContent = data.label;
+        categoryTitle.textContent = data.title;
+        categoryDesc.textContent = data.description;
+
+        // BUILD STREAMS TABS & PANES
+        renderExplorerTabs(data.streams);
+
+        optionsOverlay.classList.add("open");
+    }
+
+    function renderExplorerTabs(streams) {
+        container.innerHTML = "";
+
+        // Tab Navigation Bar
+        const tabsNav = document.createElement("div");
+        tabsNav.className = "stream-tabs";
+
+        // Tab Panes Container
+        const panesWrapper = document.createElement("div");
+
+        streams.forEach((stream, idx) => {
+            // Create Tab Button
+            const tabBtn = document.createElement("button");
+            tabBtn.className = `tab-button ${idx === 0 ? 'active' : ''}`;
+            tabBtn.textContent = stream.name;
+            tabBtn.addEventListener("click", () => switchTab(idx));
+            tabsNav.appendChild(tabBtn);
+
+            // Create Tab Content Pane
+            const pane = document.createElement("div");
+            pane.className = `stream-pane ${idx === 0 ? 'active' : ''}`;
+            pane.setAttribute("data-pane-index", idx);
+
+            pane.innerHTML = `
+                <div class="stream-header-box">
+                    <h3>${stream.name}</h3>
+                    <p>${stream.summary}</p>
+                </div>
+
+                <div class="stream-details-grid">
+                    <div class="detail-card">
+                        <h4>CAREER DESTINATIONS</h4>
+                        <ul>
+                            ${stream.careers.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="detail-card">
+                        <h4>KEY SKILLS BUILT</h4>
+                        <ul>
+                            ${stream.skills.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="institutions-section-title">TOP INSTITUTIONS</div>
+                
+                <div class="institutions-grid">
+                    ${stream.institutions.map(inst => `
+                        <div class="institution-card">
+                            <div class="institution-image-wrapper">
+                                <img class="institution-image" src="${inst.image}" alt="${inst.name}" loading="lazy" />
+                            </div>
+                            <div class="institution-info">
+                                <div class="institution-rank">${inst.rank}</div>
+                                <div class="institution-name">${inst.name}</div>
+                                <div class="institution-location">${inst.location}</div>
+                                <div class="institution-desc">${inst.desc}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            panesWrapper.appendChild(pane);
+        });
+
+        container.appendChild(tabsNav);
+        container.appendChild(panesWrapper);
+    }
+
+    function switchTab(activeIndex) {
+        const buttons = container.querySelectorAll(".tab-button");
+        const panes = container.querySelectorAll(".stream-pane");
+
+        buttons.forEach((btn, i) => btn.classList.toggle("active", i === activeIndex));
+        panes.forEach((pane, i) => pane.classList.toggle("active", i === activeIndex));
+    }
+
+    /* CLOSE MODAL */
+    closeOptionsBtn.addEventListener("click", () => {
+        optionsOverlay.classList.remove("open");
+    });
+
+    /* CLOSE ON ESCAPE KEY */
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && optionsOverlay.classList.contains("open")) {
+            optionsOverlay.classList.remove("open");
+        }
+    });
+
+    // Initialize first slide state
+    updateSlide(0);
 });

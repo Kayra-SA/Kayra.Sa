@@ -322,7 +322,7 @@
 
                     Education is more than marks.
                     The skills you build shape what you can
-                    create, communicate, and solve.
+                    create, communicate, and solve. Click any skill to explore its roadmap.
 
                 </p>
 
@@ -330,7 +330,7 @@
                 <div class="skills-grid">
 
 
-                    <article class="skill-card">
+                    <article class="skill-card" data-skill="communication">
 
                         <div class="skill-number">
                             01
@@ -345,10 +345,12 @@
                             and connect with people.
                         </p>
 
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
+
                     </article>
 
 
-                    <article class="skill-card">
+                    <article class="skill-card" data-skill="creativity">
 
                         <div class="skill-number">
                             02
@@ -363,10 +365,12 @@
                             problems from different perspectives.
                         </p>
 
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
+
                     </article>
 
 
-                    <article class="skill-card">
+                    <article class="skill-card" data-skill="problem-solving">
 
                         <div class="skill-number">
                             03
@@ -380,6 +384,66 @@
                             Understand complex problems, break them down,
                             and find meaningful solutions.
                         </p>
+
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
+
+                    </article>
+
+
+                    <article class="skill-card" data-skill="leadership">
+
+                        <div class="skill-number">
+                            04
+                        </div>
+
+                        <h3>
+                            LEADERSHIP
+                        </h3>
+
+                        <p>
+                            Guide teams, make thoughtful decisions,
+                            and inspire shared vision.
+                        </p>
+
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
+
+                    </article>
+
+
+                    <article class="skill-card" data-skill="adaptability">
+
+                        <div class="skill-number">
+                            05
+                        </div>
+
+                        <h3>
+                            ADAPTABILITY
+                        </h3>
+
+                        <p>
+                            Thrive through change, learn rapidly, and embrace unpredictable environments.
+                        </p>
+
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
+
+                    </article>
+
+
+                    <article class="skill-card" data-skill="technical-literacy">
+
+                        <div class="skill-number">
+                            06
+                        </div>
+
+                        <h3>
+                            TECHNICAL LITERACY
+                        </h3>
+
+                        <p>
+                            Master modern digital tools, workflows, and technical fundamentals.
+                        </p>
+
+                        <div class="card-prompt">EXPLORE ROADMAP →</div>
 
                     </article>
 
@@ -732,10 +796,82 @@
 
 
     <!-- =========================================
+         ROADMAP VIEW (DYNAMICALLY INJECTED OVERLAY)
+    ========================================== -->
+
+    <div class="roadmap-overlay" id="roadmapOverlay">
+
+        <button class="close-roadmap-button" id="closeRoadmap">
+            ← BACK TO SKILLS
+        </button>
+
+        <div class="roadmap-container">
+
+            <div class="roadmap-header">
+                <div class="section-label" id="roadmapNumber">
+                    ROADMAP
+                </div>
+                <h2 class="animated-heading" id="roadmapTitle">
+                    SKILL ROADMAP
+                </h2>
+                <p class="section-intro" id="roadmapSubtitle">
+                    Discover how to build this skill and how KAYRA empowers your journey.
+                </p>
+            </div>
+
+            <div class="roadmap-grid">
+
+                <!-- STEP 1 -->
+                <div class="roadmap-step">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h4>FOUNDATION</h4>
+                        <p class="step-desc" id="step1Desc">Active Listening & Structural Clarity.</p>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step1Kayra">Interactive workshops and direct baseline feedback loops.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="roadmap-step">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h4>PRACTICE</h4>
+                        <p class="step-desc" id="step2Desc">Public Speaking & Structured Writing.</p>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step2Kayra">Safe-space speaking labs & peer critique sessions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="roadmap-step">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h4>MASTERY</h4>
+                        <p class="step-desc" id="step3Desc">Persuasion, Negotiation & Real-world Impact.</p>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step3Kayra">Live project presentations & mentorship from industry guides.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
          SLIDE CONTROLS
     ========================================== -->
 
-    <div class="slide-controls">
+    <div class="slide-controls" id="slideControls">
 
         <button id="previousSlide">
             ← PREVIOUS

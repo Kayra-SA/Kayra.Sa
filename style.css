@@ -276,20 +276,20 @@ body {
 }
 
 /* =========================================
-   TEXT ANIMATION MECHANICS
+   TEXT ANIMATION
+   MACHINE ZERO STYLE
 ========================================= */
 
 .word {
     display: inline-block;
+
     white-space: nowrap;
 }
 
 .char {
     display: inline-block;
-    opacity: 0;
 
-    /* Maintain normal inline kerning */
-    letter-spacing: normal;
+    opacity: 0;
 
     transform:
         translateY(28px)
@@ -345,7 +345,7 @@ body {
 
     font-weight: 900;
 
-    letter-spacing: -3px;
+    letter-spacing: -5px;
 
     text-transform: uppercase;
 
@@ -1526,7 +1526,7 @@ body {
 }
 
 /* =========================================
-   SLIDE CONTROLS
+   SLIDE CONTROLS (WITH FADE OUT CLASS)
 ========================================= */
 
 .slide-controls {

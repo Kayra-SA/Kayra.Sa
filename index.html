@@ -14,6 +14,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>KAYRA — A Vision</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -480,7 +482,7 @@
                 <div class="pathways-list">
 
 
-                    <div class="pathway-row" data-pathway="after10">
+                    <div class="pathway-row">
 
                         <span class="pathway-number">
                             01
@@ -506,7 +508,7 @@
                     </div>
 
 
-                    <div class="pathway-row" data-pathway="after12">
+                    <div class="pathway-row">
 
                         <span class="pathway-number">
                             02
@@ -532,7 +534,7 @@
                     </div>
 
 
-                    <div class="pathway-row" data-pathway="global">
+                    <div class="pathway-row">
 
                         <span class="pathway-number">
                             03
@@ -817,14 +819,19 @@
                 </p>
             </div>
 
-            <div class="roadmap-grid">
+            <div class="roadmap-vertical-timeline">
 
                 <!-- STEP 1 -->
                 <div class="roadmap-step">
-                    <div class="step-num">01</div>
+                    <div class="step-marker">
+                        <div class="step-num">01</div>
+                        <div class="timeline-line"></div>
+                    </div>
                     <div class="step-content">
-                        <h4>FOUNDATION</h4>
+                        <div class="step-header-tag">PHASE 01</div>
+                        <h4 id="step1Title">FOUNDATION</h4>
                         <p class="step-desc" id="step1Desc">Active Listening & Structural Clarity.</p>
+                        <ul class="step-points" id="step1Points"></ul>
                         <div class="kayra-impact">
                             <span class="kayra-badge">KAYRA'S ROLE</span>
                             <p id="step1Kayra">Interactive workshops and direct baseline feedback loops.</p>
@@ -834,10 +841,15 @@
 
                 <!-- STEP 2 -->
                 <div class="roadmap-step">
-                    <div class="step-num">02</div>
+                    <div class="step-marker">
+                        <div class="step-num">02</div>
+                        <div class="timeline-line"></div>
+                    </div>
                     <div class="step-content">
-                        <h4>PRACTICE</h4>
+                        <div class="step-header-tag">PHASE 02</div>
+                        <h4 id="step2Title">PRACTICE</h4>
                         <p class="step-desc" id="step2Desc">Public Speaking & Structured Writing.</p>
+                        <ul class="step-points" id="step2Points"></ul>
                         <div class="kayra-impact">
                             <span class="kayra-badge">KAYRA'S ROLE</span>
                             <p id="step2Kayra">Safe-space speaking labs & peer critique sessions.</p>
@@ -847,133 +859,39 @@
 
                 <!-- STEP 3 -->
                 <div class="roadmap-step">
-                    <div class="step-num">03</div>
+                    <div class="step-marker">
+                        <div class="step-num">03</div>
+                        <div class="timeline-line"></div>
+                    </div>
                     <div class="step-content">
-                        <h4>MASTERY</h4>
-                        <p class="step-desc" id="step3Desc">Persuasion, Negotiation & Real-world Impact.</p>
+                        <div class="step-header-tag">PHASE 03</div>
+                        <h4 id="step3Title">ADVANCED APPLICATION</h4>
+                        <p class="step-desc" id="step3Desc">Persuasion, Negotiation & Audience Dynamics.</p>
+                        <ul class="step-points" id="step3Points"></ul>
                         <div class="kayra-impact">
                             <span class="kayra-badge">KAYRA'S ROLE</span>
-                            <p id="step3Kayra">Live project presentations & mentorship from industry guides.</p>
+                            <p id="step3Kayra">Live debate simulations and structured argument frameworks.</p>
                         </div>
                     </div>
                 </div>
 
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================================
-         PATHWAY DETAIL OVERLAY
-    ========================================== -->
-
-    <div class="pathway-overlay" id="pathwayOverlay">
-
-        <button class="close-roadmap-button" id="closePathway">
-            ← BACK TO PATHWAYS
-        </button>
-
-        <div class="pathway-detail-container">
-
-            <div class="pathway-header">
-                <div class="section-label" id="pathwayDetailNumber">
-                    03 / PATHWAYS / OPTION
+                <!-- STEP 4 -->
+                <div class="roadmap-step">
+                    <div class="step-marker">
+                        <div class="step-num">04</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header-tag">PHASE 04</div>
+                        <h4 id="step4Title">MASTERY</h4>
+                        <p class="step-desc" id="step4Desc">Real-world Impact & Authentic Storytelling.</p>
+                        <ul class="step-points" id="step4Points"></ul>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step4Kayra">Live project presentations & mentorship from industry guides.</p>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="animated-heading" id="pathwayDetailTitle">
-                    EXPLORE <span class="highlight">OPTIONS</span>
-                </h2>
-                <p class="section-intro" id="pathwayDetailSubtitle">
-                    Select a discipline below to unlock prerequisites, difficulty metrics, top recommended institutions, and custom roadmaps.
-                </p>
-            </div>
 
-            <!-- Options Selector Pills -->
-            <div class="options-pills" id="optionsPillsContainer">
-                <!-- Dynamically generated pills -->
-            </div>
-
-            <!-- Option Detail Display Card -->
-            <div class="option-card-display" id="optionDisplayCard">
-                <!-- Dynamically injected option content -->
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================================
-         ROADMAP GENERATION LOADING SCREEN
-    ========================================== -->
-
-    <div class="loading-overlay" id="roadmapLoader">
-
-        <div class="hero-symbol loader-symbol">
-            <div class="orbit-outer">
-                <div class="planet earth">
-                    <div class="earth-land land-one"></div>
-                    <div class="earth-land land-two"></div>
-                    <div class="earth-land land-three"></div>
-                </div>
-            </div>
-            <div class="orbit-middle">
-                <div class="planet venus">
-                    <div class="venus-line"></div>
-                    <div class="venus-line line-two"></div>
-                    <div class="venus-line line-three"></div>
-                </div>
-            </div>
-            <div class="orbit-inner">
-                <div class="planet mars">
-                    <div class="mars-land mars-land-one"></div>
-                    <div class="mars-land mars-land-two"></div>
-                </div>
-            </div>
-            <div class="symbol-core">K</div>
-        </div>
-
-        <div class="loader-content">
-            <div class="custom-spinner"></div>
-            <div class="loading-status-text" id="loadingText">
-                SYNTHESIZING ADVANCED ROADMAP...
-            </div>
-            <div class="custom-progress-container">
-                <div class="custom-progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <!-- =========================================
-         ADVANCED VERTICAL ROADMAP OVERLAY
-    ========================================== -->
-
-    <div class="advanced-roadmap-overlay" id="advancedRoadmapOverlay">
-
-        <button class="close-roadmap-button" id="closeAdvancedRoadmap">
-            ← BACK TO OPTIONS
-        </button>
-
-        <div class="advanced-roadmap-container">
-
-            <div class="advanced-roadmap-header">
-                <div class="section-label">
-                    ADVANCED PATHWAY / VERTICAL ROADMAP
-                </div>
-                <h2 class="animated-heading" id="advRoadmapTitle">
-                    COMPREHENSIVE <span class="highlight">ROADMAP</span>
-                </h2>
-                <p class="section-intro" id="advRoadmapSubtitle">
-                    A thorough step-by-step master strategy to master this direction.
-                </p>
-            </div>
-
-            <!-- Vertical Roadmap Steps Container -->
-            <div class="vertical-roadmap-tree" id="advRoadmapSteps">
-                <!-- Injected via JavaScript -->
             </div>
 
         </div>

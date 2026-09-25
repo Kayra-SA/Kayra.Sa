@@ -1,153 +1,157 @@
-/* =====================================================
+/* =========================================
    KAYRA
-   INTERACTIVE EXPLORATION ENGINE
-===================================================== */
+   MAIN SYSTEM
+========================================= */
 
 
-/* =====================================================
-   MAIN ELEMENTS
-===================================================== */
+/* =========================================
+   ELEMENTS
+========================================= */
 
-const slides =
-    Array.from(
-        document.querySelectorAll(".slide")
-    );
+const slides = Array.from(
+    document.querySelectorAll(".slide")
+);
 
-const navButtons =
-    document.querySelectorAll(
-        ".nav-links button"
-    );
+const navButtons = document.querySelectorAll(
+    ".nav-links button"
+);
 
-const mobileNavButtons =
-    document.querySelectorAll(
-        ".mobile-nav-link"
-    );
+const mobileNavButtons = document.querySelectorAll(
+    ".mobile-nav-link"
+);
 
 const previousButton =
-    document.getElementById(
-        "previousSlide"
-    );
+    document.getElementById("previousSlide");
 
 const nextButton =
-    document.getElementById(
-        "nextSlide"
-    );
+    document.getElementById("nextSlide");
 
 const slideCounter =
-    document.getElementById(
-        "slideCounter"
-    );
+    document.getElementById("slideCounter");
 
 const menuButton =
-    document.getElementById(
-        "menuButton"
-    );
+    document.getElementById("menuButton");
 
 const mobileMenu =
-    document.getElementById(
-        "mobileMenu"
-    );
+    document.getElementById("mobileMenu");
+
+const slideControls =
+    document.querySelector(".slide-controls");
 
 
-/* =====================================================
+/* =========================================
    EXPLORATION ELEMENTS
-===================================================== */
+========================================= */
 
-const explorationSystem =
-    document.getElementById(
-        "explorationSystem"
-    );
-
-const explorationContent =
-    document.getElementById(
-        "explorationContent"
-    );
+const explorationScreen =
+    document.getElementById("explorationScreen");
 
 const explorationBack =
-    document.getElementById(
-        "explorationBack"
-    );
+    document.getElementById("explorationBack");
 
-const explorationBreadcrumb =
-    document.getElementById(
-        "explorationBreadcrumb"
-    );
+const explorationKicker =
+    document.getElementById("explorationKicker");
+
+const explorationTitle =
+    document.getElementById("explorationTitle");
+
+const explorationIntro =
+    document.getElementById("explorationIntro");
+
+const explorationContent =
+    document.getElementById("explorationContent");
 
 
-/* =====================================================
+/* =========================================
+   GENERATOR ELEMENTS
+========================================= */
+
+const roadmapGenerator =
+    document.getElementById("roadmapGenerator");
+
+const generatorProgressBar =
+    document.getElementById("generatorProgressBar");
+
+const generatorProgress =
+    document.getElementById("generatorProgress");
+
+const generatorMessage =
+    document.getElementById("generatorMessage");
+
+
+/* =========================================
    STATE
-===================================================== */
+========================================= */
 
 let currentSlide = 0;
 
-let explorationMode = false;
+let explorationOpen = false;
 
-let explorationHistory = [];
+let currentRoute = "";
+
+let generatorTimer = null;
+
+let generatorTarget = null;
 
 
-/* =====================================================
+/* =========================================
    SKILL DATA
-===================================================== */
+========================================= */
 
 const skillData = {
 
-
     communication: {
-
-        number: "01",
 
         title: "COMMUNICATION",
 
-        description:
-            "The ability to express ideas clearly, understand others, and communicate with confidence.",
+        intro:
+            "The ability to express ideas clearly, understand others, and communicate with purpose.",
+
+        why:
+            "Communication affects almost every academic, professional, and collaborative environment.",
+
+        start:
+            "Begin by focusing on clarity rather than complexity. Speak, write, listen, and review how effectively your message was understood.",
 
         roadmap: [
 
-            {
-                title: "UNDERSTAND",
-                text:
-                    "Learn how communication works: clarity, listening, tone, body language, and structure."
-            },
+            "Understand how clear communication works",
 
-            {
-                title: "PRACTICE",
-                text:
-                    "Start speaking, writing, presenting, discussing, and listening in everyday situations."
-            },
+            "Improve vocabulary and sentence structure",
 
-            {
-                title: "BUILD",
-                text:
-                    "Take on presentations, debates, group projects, interviews, and collaborative work."
-            },
+            "Practise speaking with confidence",
 
-            {
-                title: "APPLY",
-                text:
-                    "Use communication in academic work, leadership, teamwork, and future professional environments."
-            }
+            "Develop active listening",
+
+            "Learn structured writing",
+
+            "Practise presentations and discussions",
+
+            "Apply communication in real situations"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "ASSESS YOUR LEVEL",
-                text:
-                    "Understand where your current communication strengths and weaknesses are."
-            },
+            "Establish a measurable communication baseline",
 
-            {
-                title: "BUILD YOUR PLAN",
-                text:
-                    "Turn your weaknesses into specific practice goals."
-            },
+            "Develop structured verbal communication",
 
-            {
-                title: "TRACK PROGRESS",
-                text:
-                    "Build evidence of improvement through projects, presentations, and activities."
-            }
+            "Build professional writing ability",
+
+            "Practise active listening and response analysis",
+
+            "Develop presentation and public-speaking technique",
+
+            "Learn negotiation and persuasive communication",
+
+            "Practise communication under pressure",
+
+            "Build a personal portfolio of presentations, writing and projects",
+
+            "Seek feedback and revise repeatedly",
+
+            "Apply communication skills to academic and professional environments"
 
         ]
 
@@ -156,60 +160,56 @@ const skillData = {
 
     creativity: {
 
-        number: "02",
-
         title: "CREATIVITY",
 
-        description:
-            "The ability to generate ideas, experiment with possibilities, and approach challenges from different perspectives.",
+        intro:
+            "The ability to generate ideas, explore possibilities, and approach problems from different perspectives.",
+
+        why:
+            "Creativity helps turn knowledge into original ideas, solutions, designs, projects, and opportunities.",
+
+        start:
+            "Start creating before worrying about whether the result is perfect. Generate many ideas, test them, and improve the strongest ones.",
 
         roadmap: [
 
-            {
-                title: "OBSERVE",
-                text:
-                    "Expose yourself to different ideas, subjects, designs, stories, technologies, and experiences."
-            },
+            "Learn to generate multiple ideas",
 
-            {
-                title: "GENERATE",
-                text:
-                    "Practice producing multiple possible answers instead of immediately choosing the first one."
-            },
+            "Explore different perspectives",
 
-            {
-                title: "EXPERIMENT",
-                text:
-                    "Turn ideas into sketches, prototypes, projects, stories, designs, or experiments."
-            },
+            "Practise brainstorming",
 
-            {
-                title: "CREATE",
-                text:
-                    "Build a portfolio of work that demonstrates how you think and what you can create."
-            }
+            "Create small projects",
+
+            "Learn to experiment",
+
+            "Study how existing ideas can be improved",
+
+            "Turn ideas into finished work"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "DISCOVER",
-                text:
-                    "Identify the environments and activities where your creativity naturally appears."
-            },
+            "Develop a repeatable idea-generation process",
 
-            {
-                title: "PRACTICE",
-                text:
-                    "Create structured challenges that encourage experimentation."
-            },
+            "Maintain an organised idea archive",
 
-            {
-                title: "BUILD",
-                text:
-                    "Turn creative work into projects that can demonstrate your abilities."
-            }
+            "Study creative problem-framing",
+
+            "Practise divergent and convergent thinking",
+
+            "Build projects across different formats",
+
+            "Analyse existing solutions and identify weaknesses",
+
+            "Prototype ideas quickly",
+
+            "Collect feedback from different audiences",
+
+            "Iterate through multiple versions",
+
+            "Build a visible creative portfolio"
 
         ]
 
@@ -218,60 +218,56 @@ const skillData = {
 
     "problem-solving": {
 
-        number: "03",
-
         title: "PROBLEM SOLVING",
 
-        description:
-            "The ability to understand complex problems, break them down, and develop practical solutions.",
+        intro:
+            "The ability to understand a problem, break it into manageable parts, and construct a useful solution.",
+
+        why:
+            "Problem solving is central to science, technology, business, design, engineering, and everyday decision-making.",
+
+        start:
+            "Do not immediately search for the answer. First define the problem, identify what you know, and separate the problem into smaller parts.",
 
         roadmap: [
 
-            {
-                title: "DEFINE",
-                text:
-                    "Learn to identify the actual problem before trying to solve it."
-            },
+            "Learn to define problems",
 
-            {
-                title: "BREAK DOWN",
-                text:
-                    "Separate large problems into smaller, understandable parts."
-            },
+            "Break complex problems into smaller parts",
 
-            {
-                title: "EXPLORE",
-                text:
-                    "Generate multiple solutions and compare their strengths and limitations."
-            },
+            "Identify causes and constraints",
 
-            {
-                title: "SOLVE",
-                text:
-                    "Test your solution, learn from failure, and improve your approach."
-            }
+            "Generate possible solutions",
+
+            "Compare different approaches",
+
+            "Test solutions",
+
+            "Review and improve the result"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "CHALLENGES",
-                text:
-                    "Practice through structured problems and real-world scenarios."
-            },
+            "Develop formal problem-definition techniques",
 
-            {
-                title: "REFLECTION",
-                text:
-                    "Understand not only what solution worked, but why it worked."
-            },
+            "Learn constraint and requirement analysis",
 
-            {
-                title: "PROGRESS",
-                text:
-                    "Track increasingly complex challenges over time."
-            }
+            "Practise root-cause investigation",
+
+            "Create multiple solution paths before choosing one",
+
+            "Learn to compare trade-offs",
+
+            "Prototype and test solutions",
+
+            "Document failures and lessons",
+
+            "Use data to evaluate outcomes",
+
+            "Solve increasingly complex real-world problems",
+
+            "Build a portfolio demonstrating the complete process"
 
         ]
 
@@ -280,60 +276,56 @@ const skillData = {
 
     "critical-thinking": {
 
-        number: "04",
-
         title: "CRITICAL THINKING",
 
-        description:
-            "The ability to question information, evaluate evidence, recognize assumptions, and make reasoned decisions.",
+        intro:
+            "The ability to examine information carefully, question assumptions, evaluate evidence, and reach reasoned conclusions.",
+
+        why:
+            "Critical thinking helps you distinguish strong reasoning from unsupported claims.",
+
+        start:
+            "When you encounter a claim, ask what evidence supports it, what assumptions it uses, and what information might be missing.",
 
         roadmap: [
 
-            {
-                title: "QUESTION",
-                text:
-                    "Learn to ask what is being claimed, why it is being claimed, and what evidence supports it."
-            },
+            "Learn to identify claims",
 
-            {
-                title: "ANALYSE",
-                text:
-                    "Separate facts, opinions, assumptions, interpretations, and conclusions."
-            },
+            "Separate facts from opinions",
 
-            {
-                title: "COMPARE",
-                text:
-                    "Evaluate competing explanations and identify strengths and weaknesses."
-            },
+            "Recognise assumptions",
 
-            {
-                title: "DECIDE",
-                text:
-                    "Use evidence and reasoning to reach conclusions while remaining open to new information."
-            }
+            "Evaluate evidence",
+
+            "Compare competing explanations",
+
+            "Identify weak reasoning",
+
+            "Form evidence-based conclusions"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "ASSESS",
-                text:
-                    "Identify how you currently approach information and decisions."
-            },
+            "Develop systematic source evaluation",
 
-            {
-                title: "CHALLENGE",
-                text:
-                    "Practice evaluating claims and evidence."
-            },
+            "Learn argument mapping",
 
-            {
-                title: "REFLECT",
-                text:
-                    "Review your decisions and understand how your reasoning developed."
-            }
+            "Identify assumptions and hidden premises",
+
+            "Analyse evidence quality",
+
+            "Study common reasoning errors",
+
+            "Compare conflicting explanations",
+
+            "Practise uncertainty-aware conclusions",
+
+            "Write structured analytical arguments",
+
+            "Challenge your own initial assumptions",
+
+            "Build a collection of analytical projects and written work"
 
         ]
 
@@ -342,60 +334,56 @@ const skillData = {
 
     leadership: {
 
-        number: "05",
-
         title: "LEADERSHIP",
 
-        description:
-            "The ability to take initiative, work with people, make decisions, and turn ideas into action.",
+        intro:
+            "The ability to take responsibility, coordinate people, make decisions, and turn ideas into action.",
+
+        why:
+            "Leadership is not limited to formal titles. It appears whenever people organise work, solve problems, and take responsibility.",
+
+        start:
+            "Start small. Take responsibility for a project, communicate expectations, and make sure the work actually reaches completion.",
 
         roadmap: [
 
-            {
-                title: "INITIATE",
-                text:
-                    "Start taking responsibility for small tasks, ideas, and group activities."
-            },
+            "Understand responsibility",
 
-            {
-                title: "COLLABORATE",
-                text:
-                    "Learn how to listen, delegate, support teammates, and resolve disagreements."
-            },
+            "Improve communication",
 
-            {
-                title: "LEAD",
-                text:
-                    "Take responsibility for projects and help groups move toward a shared goal."
-            },
+            "Learn teamwork",
 
-            {
-                title: "IMPACT",
-                text:
-                    "Build evidence of leadership through meaningful projects and contributions."
-            }
+            "Practise decision-making",
+
+            "Take ownership of projects",
+
+            "Learn to resolve disagreements",
+
+            "Lead larger projects"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "IDENTIFY",
-                text:
-                    "Understand the leadership behaviours you already demonstrate."
-            },
+            "Develop personal responsibility systems",
 
-            {
-                title: "PRACTICE",
-                text:
-                    "Develop leadership through projects, teams, and responsibility."
-            },
+            "Practise delegation and task ownership",
 
-            {
-                title: "DOCUMENT",
-                text:
-                    "Build a record of projects and experiences that demonstrate initiative."
-            }
+            "Learn project planning",
+
+            "Develop decision frameworks",
+
+            "Practise conflict resolution",
+
+            "Lead collaborative projects",
+
+            "Track team objectives and progress",
+
+            "Learn how to give and receive feedback",
+
+            "Analyse leadership decisions after completion",
+
+            "Build evidence of leadership through completed projects"
 
         ]
 
@@ -404,60 +392,56 @@ const skillData = {
 
     "digital-literacy": {
 
-        number: "06",
-
         title: "DIGITAL LITERACY",
 
-        description:
-            "The ability to understand modern technology and use digital tools safely, effectively, and creatively.",
+        intro:
+            "The ability to understand, use, evaluate, and create with modern digital tools responsibly.",
+
+        why:
+            "Digital systems are now part of education, communication, research, creative work, and many professional environments.",
+
+        start:
+            "Begin by understanding the tools you already use. Learn what they do, how they work, and how to use them efficiently and responsibly.",
 
         roadmap: [
 
-            {
-                title: "FOUNDATIONS",
-                text:
-                    "Understand digital systems, online information, privacy, security, and responsible technology use."
-            },
+            "Understand digital environments",
 
-            {
-                title: "TOOLS",
-                text:
-                    "Learn productivity, research, communication, creative, and technical tools."
-            },
+            "Improve research skills",
 
-            {
-                title: "CREATE",
-                text:
-                    "Move beyond consuming technology and start building, designing, analysing, or automating."
-            },
+            "Learn file and information organisation",
 
-            {
-                title: "APPLY",
-                text:
-                    "Use digital skills to improve academic work, projects, collaboration, and career preparation."
-            }
+            "Understand online safety",
+
+            "Use productivity tools effectively",
+
+            "Explore technology and automation",
+
+            "Create digital projects"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "MAP",
-                text:
-                    "Understand which digital abilities are relevant to your goals."
-            },
+            "Build an organised digital workspace",
 
-            {
-                title: "LEARN",
-                text:
-                    "Create a structured path through tools and concepts."
-            },
+            "Develop advanced information-search techniques",
 
-            {
-                title: "BUILD",
-                text:
-                    "Turn digital learning into practical projects."
-            }
+            "Learn source verification",
+
+            "Understand digital security fundamentals",
+
+            "Develop productivity workflows",
+
+            "Explore automation and computational thinking",
+
+            "Create websites, digital projects, or technical work",
+
+            "Learn responsible use of AI and digital systems",
+
+            "Document technical projects",
+
+            "Build a digital portfolio"
 
         ]
 
@@ -466,60 +450,56 @@ const skillData = {
 
     adaptability: {
 
-        number: "07",
-
         title: "ADAPTABILITY",
 
-        description:
-            "The ability to learn continuously, respond to change, and remain effective in unfamiliar situations.",
+        intro:
+            "The ability to learn, adjust, and remain effective when situations, technologies, expectations, or environments change.",
+
+        why:
+            "Education and careers rarely follow a perfectly predictable path. Adaptability helps you respond when circumstances change.",
+
+        start:
+            "Become comfortable learning something unfamiliar. Focus on how you learn, not only on what you already know.",
 
         roadmap: [
 
-            {
-                title: "NOTICE",
-                text:
-                    "Understand how you react when plans change or situations become unfamiliar."
-            },
+            "Become comfortable with change",
 
-            {
-                title: "ADJUST",
-                text:
-                    "Practice changing your approach when your first strategy does not work."
-            },
+            "Develop independent learning",
 
-            {
-                title: "LEARN",
-                text:
-                    "Build the habit of learning from mistakes, feedback, and unfamiliar experiences."
-            },
+            "Learn from mistakes",
 
-            {
-                title: "GROW",
-                text:
-                    "Become more comfortable entering new environments and learning new systems."
-            }
+            "Explore unfamiliar subjects",
+
+            "Practise changing approaches",
+
+            "Build resilience through projects",
+
+            "Develop continuous learning habits"
 
         ],
 
-        help: [
+        advanced: [
 
-            {
-                title: "REFLECT",
-                text:
-                    "Understand how you currently respond to change."
-            },
+            "Build an independent learning system",
 
-            {
-                title: "CHALLENGE",
-                text:
-                    "Create opportunities to work outside familiar routines."
-            },
+            "Track what learning methods work for you",
 
-            {
-                title: "TRACK",
-                text:
-                    "Document how your response to unfamiliar situations changes over time."
-            }
+            "Practise entering unfamiliar environments",
+
+            "Develop multiple approaches to difficult problems",
+
+            "Review failures without treating them as endpoints",
+
+            "Build cross-disciplinary knowledge",
+
+            "Learn to update decisions when new evidence appears",
+
+            "Develop transferable skills",
+
+            "Create personal learning cycles",
+
+            "Maintain a long-term development portfolio"
 
         ]
 
@@ -528,52 +508,45 @@ const skillData = {
 };
 
 
-/* =====================================================
+/* =========================================
    PATHWAY DATA
-===================================================== */
+========================================= */
 
 const pathwayData = {
-
 
     after10th: {
 
         title: "AFTER 10TH",
 
-        description:
-            "Your next stage can take several directions. Explore the major routes available after Class 10 in India.",
+        intro:
+            "The stage where subject choices begin shaping the academic directions available to you next.",
+
+        type: "root",
 
         choices: [
 
             {
-                id: "science",
-                number: "01",
+                key: "science",
                 title: "SCIENCE",
-                description:
-                    "Explore Physics, Chemistry, Mathematics, Biology, and science-focused pathways."
+                text: "Explore science-based subject combinations and the directions they can lead toward."
             },
 
             {
-                id: "commerce",
-                number: "02",
+                key: "commerce",
                 title: "COMMERCE",
-                description:
-                    "Explore business, finance, economics, accounting, and related pathways."
+                text: "Explore business, finance, economics, accounting, and related directions."
             },
 
             {
-                id: "humanities",
-                number: "03",
+                key: "humanities",
                 title: "HUMANITIES",
-                description:
-                    "Explore history, political science, psychology, sociology, languages, and more."
+                text: "Explore society, people, languages, history, psychology, law, and related fields."
             },
 
             {
-                id: "vocational",
-                number: "04",
+                key: "vocational",
                 title: "VOCATIONAL",
-                description:
-                    "Explore skill-focused and vocational education routes."
+                text: "Explore practical, technical, and skill-oriented educational directions."
             }
 
         ]
@@ -585,57 +558,47 @@ const pathwayData = {
 
         title: "AFTER 12TH",
 
-        description:
-            "Explore major degree and career directions after completing Class 12.",
+        intro:
+            "Explore the major directions students can investigate after completing school.",
+
+        type: "root",
 
         choices: [
 
             {
-                id: "engineering",
-                number: "01",
-                title: "ENGINEERING",
-                description:
-                    "Technology, engineering, computing, infrastructure, and applied sciences."
+                key: "engineering",
+                title: "ENGINEERING & TECHNOLOGY",
+                text: "Explore technical degrees, specialisations, projects, and technology careers."
             },
 
             {
-                id: "medicine",
-                number: "02",
+                key: "medicine",
                 title: "MEDICINE & HEALTH",
-                description:
-                    "Medicine, healthcare, allied health, and biological sciences."
+                text: "Explore medical and health-related educational directions."
             },
 
             {
-                id: "law",
-                number: "03",
+                key: "law",
                 title: "LAW",
-                description:
-                    "Legal education, advocacy, corporate law, public law, and related careers."
+                text: "Explore legal education, professional development, and related careers."
             },
 
             {
-                id: "commerce-careers",
-                number: "04",
+                key: "commerce-finance",
                 title: "COMMERCE & FINANCE",
-                description:
-                    "Accounting, finance, economics, management, banking, and business."
+                text: "Explore accounting, finance, economics, business, and related directions."
             },
 
             {
-                id: "design",
-                number: "05",
+                key: "design",
                 title: "DESIGN",
-                description:
-                    "Product, communication, fashion, architecture, UI/UX, and creative fields."
+                text: "Explore design, visual communication, product thinking, and creative careers."
             },
 
             {
-                id: "computer-science",
-                number: "06",
-                title: "COMPUTER SCIENCE",
-                description:
-                    "Software, systems, AI, data, cybersecurity, and technology careers."
+                key: "pure-science",
+                title: "PURE SCIENCES",
+                text: "Explore mathematics, physics, chemistry, biology, and scientific research."
             }
 
         ]
@@ -647,156 +610,63 @@ const pathwayData = {
 
         title: "GLOBAL OPTIONS",
 
-        description:
-            "Explore international education pathways while keeping your planning connected to your academic goals.",
+        intro:
+            "Explore international education pathways, different academic systems, and opportunities beyond your immediate environment.",
+
+        type: "global",
 
         choices: [
 
             {
-                id: "international-university",
-                number: "01",
-                title: "INTERNATIONAL UNIVERSITY",
-                description:
-                    "Explore undergraduate study outside India."
+                key: "international-study",
+                title: "INTERNATIONAL STUDY",
+                text: "Understand how international education pathways can differ from Indian pathways."
             },
 
             {
-                id: "international-law",
-                number: "02",
-                title: "GLOBAL LAW",
-                description:
-                    "Explore selected international legal education pathways."
+                key: "global-careers",
+                title: "GLOBAL CAREERS",
+                text: "Explore skills and preparation that can support internationally oriented careers."
             },
 
             {
-                id: "international-stem",
-                number: "03",
-                title: "GLOBAL STEM",
-                description:
-                    "Explore international science and technology education."
+                key: "international-universities",
+                title: "UNIVERSITIES",
+                text: "Learn how to investigate universities, programmes, requirements, and opportunities."
             }
 
         ]
 
-    }
-
-};
-
-
-/* =====================================================
-   DETAILED PATHWAY DATA
-===================================================== */
-
-const detailedPathways = {
+    },
 
 
     science: {
 
         title: "SCIENCE",
 
-        description:
-            "A broad academic route that can lead toward engineering, medicine, pure sciences, computing, architecture, and more.",
+        intro:
+            "Science opens several academic directions. The subjects you select can affect the routes available later.",
+
+        type: "science",
 
         choices: [
 
             {
-                id: "pcm",
-                number: "01",
+                key: "pcm",
                 title: "PCM",
-                description:
-                    "Physics • Chemistry • Mathematics"
+                text: "Physics, Chemistry and Mathematics."
             },
 
             {
-                id: "pcb",
-                number: "02",
+                key: "pcb",
                 title: "PCB",
-                description:
-                    "Physics • Chemistry • Biology"
+                text: "Physics, Chemistry and Biology."
             },
 
             {
-                id: "pcmb",
-                number: "03",
+                key: "pcmb",
                 title: "PCMB",
-                description:
-                    "Physics • Chemistry • Mathematics • Biology"
-            }
-
-        ]
-
-    },
-
-
-    commerce: {
-
-        title: "COMMERCE",
-
-        description:
-            "Explore business, finance, accounting, economics, management, entrepreneurship, and related pathways.",
-
-        choices: [
-
-            {
-                id: "accounting-finance",
-                number: "01",
-                title: "ACCOUNTING & FINANCE",
-                description:
-                    "Explore accounting, financial analysis, taxation, and related careers."
-            },
-
-            {
-                id: "business-management",
-                number: "02",
-                title: "BUSINESS & MANAGEMENT",
-                description:
-                    "Explore management, entrepreneurship, marketing, operations, and business."
-            },
-
-            {
-                id: "economics",
-                number: "03",
-                title: "ECONOMICS",
-                description:
-                    "Explore economic theory, analysis, policy, and quantitative applications."
-            }
-
-        ]
-
-    },
-
-
-    humanities: {
-
-        title: "HUMANITIES",
-
-        description:
-            "A broad route covering people, society, culture, history, politics, languages, psychology, and ideas.",
-
-        choices: [
-
-            {
-                id: "social-sciences",
-                number: "01",
-                title: "SOCIAL SCIENCES",
-                description:
-                    "Explore psychology, sociology, political science, economics, and related fields."
-            },
-
-            {
-                id: "law-path",
-                number: "02",
-                title: "LAW",
-                description:
-                    "Build toward legal education and careers."
-            },
-
-            {
-                id: "media",
-                number: "03",
-                title: "MEDIA & COMMUNICATION",
-                description:
-                    "Explore journalism, communication, media, content, and related careers."
+                text: "Physics, Chemistry, Mathematics and Biology."
             }
 
         ]
@@ -808,79 +678,56 @@ const detailedPathways = {
 
         title: "PCM",
 
-        description:
-            "Physics, Chemistry and Mathematics can lead toward engineering, computing, architecture, pure sciences and several quantitative fields.",
+        intro:
+            "A mathematics-focused science combination that can support several technical, mathematical, scientific, and interdisciplinary directions.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Class 11–12 with PCM",
-            "Develop mathematics and analytical foundations",
-            "Explore entrance and admission routes",
-            "Choose a relevant undergraduate pathway",
-            "Build projects, experience, and specialisation",
-            "Move toward higher study or employment"
+            "Complete secondary education with PCM subjects",
+
+            "Strengthen Mathematics, Physics and Chemistry foundations",
+
+            "Explore potential degree directions",
+
+            "Research relevant entrance and admission routes",
+
+            "Compare institutions and programmes",
+
+            "Complete an undergraduate programme",
+
+            "Build projects, internships, and practical experience",
+
+            "Choose a specialisation or professional direction",
+
+            "Develop a career portfolio"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 80,
-            competition: 85,
-            commitment: 80,
-            specialisation: 70
+            "Map the academic requirements for your intended direction",
 
-        },
+            "Build a subject-by-subject preparation system",
 
-        requirements: [
+            "Identify relevant entrance examination routes",
 
-            {
-                title: "ACADEMIC FOUNDATION",
-                text:
-                    "Strong foundations in mathematics and the physical sciences are useful for many PCM pathways."
-            },
+            "Compare programme structures across institutions",
 
-            {
-                title: "ENTRANCE ROUTES",
-                text:
-                    "Requirements vary by institution and course. Entrance examinations may apply."
-            },
+            "Create a shortlist using transparent criteria",
 
-            {
-                title: "SKILLS",
-                text:
-                    "Analytical thinking, mathematics, problem solving, and technical skills can be valuable."
-            },
+            "Plan preparation milestones",
 
-            {
-                title: "PLANNING",
-                text:
-                    "Compare institutions, eligibility rules, entrance requirements, costs, and course structure before applying."
-            }
+            "Build practical projects alongside academics",
 
-        ],
+            "Seek internships, competitions, research exposure, or relevant experience",
 
-        colleges: [
+            "Develop a specialisation strategy during higher education",
 
-            {
-                title: "IITs",
-                text:
-                    "Indian Institutes of Technology offering a range of engineering and technology programmes.",
-                tag: "INDIA"
-            },
+            "Build a professional portfolio before graduation",
 
-            {
-                title: "NITs",
-                text:
-                    "National Institutes of Technology offering engineering and technology programmes.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "IIITs",
-                text:
-                    "Institutes focused strongly on information technology and computing-related education.",
-                tag: "INDIA"
-            }
+            "Review alternative pathways in case your first route changes"
 
         ]
 
@@ -891,79 +738,54 @@ const detailedPathways = {
 
         title: "PCB",
 
-        description:
-            "Physics, Chemistry and Biology can lead toward medicine, healthcare, biological sciences, biotechnology and related areas.",
+        intro:
+            "A biology-focused science combination that can support medical, life-science, health, and related directions.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Class 11–12 with PCB",
-            "Build strong biology and science foundations",
-            "Research course-specific admission requirements",
-            "Enter an appropriate undergraduate programme",
-            "Build clinical, laboratory, research, or professional experience",
-            "Continue toward employment or advanced study"
+            "Complete secondary education with PCB subjects",
+
+            "Build strong Biology, Physics and Chemistry foundations",
+
+            "Identify health and life-science directions",
+
+            "Research relevant admission routes",
+
+            "Compare programmes and institutions",
+
+            "Complete the selected degree",
+
+            "Develop practical and academic experience",
+
+            "Explore specialisation options",
+
+            "Build professional experience"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 85,
-            competition: 90,
-            commitment: 90,
-            specialisation: 80
+            "Map possible health and life-science directions",
 
-        },
+            "Identify subject requirements for each target",
 
-        requirements: [
+            "Research current admission routes",
 
-            {
-                title: "SCIENCE FOUNDATION",
-                text:
-                    "Biology, chemistry and physics form the core foundation for many PCB routes."
-            },
+            "Create a structured preparation timeline",
 
-            {
-                title: "ELIGIBILITY",
-                text:
-                    "Eligibility varies significantly by course and institution."
-            },
+            "Compare institutions and programme structures",
 
-            {
-                title: "ENTRANCE",
-                text:
-                    "Some professional healthcare programmes use national or institution-specific entrance processes."
-            },
+            "Develop laboratory and practical exposure where relevant",
 
-            {
-                title: "COMMITMENT",
-                text:
-                    "Healthcare and biological science pathways can involve substantial academic and practical commitments."
-            }
+            "Build academic depth through projects or research exposure",
 
-        ],
+            "Develop communication and professional skills",
 
-        colleges: [
+            "Investigate specialisation pathways",
 
-            {
-                title: "AIIMS",
-                text:
-                    "A major Indian medical education and healthcare institution network.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "CMC VELLORE",
-                text:
-                    "A prominent medical and healthcare education institution in India.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "JIPMER",
-                text:
-                    "A major medical education institution in India.",
-                tag: "INDIA"
-            }
+            "Build a long-term professional development plan"
 
         ]
 
@@ -974,79 +796,54 @@ const detailedPathways = {
 
         title: "PCMB",
 
-        description:
-            "Physics, Chemistry, Mathematics and Biology keeps both mathematics-oriented and biology-oriented options open, while also creating a heavier academic workload.",
+        intro:
+            "A broader science combination combining mathematics and biology, keeping multiple academic directions open.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Class 11–12 with PCMB",
-            "Build foundations across mathematics and biology",
-            "Identify the direction you want to prioritise",
-            "Research the relevant admission routes",
-            "Choose a focused undergraduate pathway",
-            "Develop specialised skills and experience"
+            "Complete secondary education with PCMB subjects",
+
+            "Build foundations across all four subjects",
+
+            "Identify which academic direction fits your interests",
+
+            "Research relevant admission routes",
+
+            "Compare degree options",
+
+            "Choose a focused academic direction",
+
+            "Develop practical experience",
+
+            "Build specialised knowledge",
+
+            "Prepare for professional opportunities"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 95,
-            competition: 85,
-            commitment: 95,
-            specialisation: 80
+            "Evaluate your strengths across Mathematics and Biology",
 
-        },
+            "Map possible technical and life-science directions",
 
-        requirements: [
+            "Research the subject requirements of each target",
 
-            {
-                title: "BROAD FOUNDATION",
-                text:
-                    "PCMB requires sustained work across both mathematics and biology."
-            },
+            "Create separate preparation tracks where necessary",
 
-            {
-                title: "TIME MANAGEMENT",
-                text:
-                    "Managing four major science subjects requires consistent planning and study habits."
-            },
+            "Monitor workload and academic performance",
 
-            {
-                title: "DIRECTION",
-                text:
-                    "Keeping options open is useful, but eventually choosing a priority pathway helps focus preparation."
-            },
+            "Shortlist realistic academic routes",
 
-            {
-                title: "ADMISSION",
-                text:
-                    "Requirements depend on the specific course and institution selected."
-            }
+            "Build relevant projects or practical experience",
 
-        ],
+            "Select a primary direction while retaining alternatives",
 
-        colleges: [
+            "Develop specialised knowledge during higher education",
 
-            {
-                title: "IITs",
-                text:
-                    "Engineering and technology pathways for students pursuing mathematics-oriented routes.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "AIIMS",
-                text:
-                    "Medical education pathways for students pursuing healthcare.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "IISERs",
-                text:
-                    "Institutions focused on scientific education and research.",
-                tag: "INDIA"
-            }
+            "Create a professional roadmap beyond the degree"
 
         ]
 
@@ -1055,166 +852,116 @@ const detailedPathways = {
 
     engineering: {
 
-        title: "ENGINEERING",
+        title: "ENGINEERING & TECHNOLOGY",
 
-        description:
-            "Engineering combines mathematics, science, design, systems thinking and technology to solve practical problems.",
+        intro:
+            "Explore engineering and technology as a broad field containing multiple disciplines and career directions.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Class 11–12 with the required subjects",
-            "Build mathematics, physics and problem-solving foundations",
-            "Research institution and entrance requirements",
-            "Enter an engineering undergraduate programme",
-            "Choose a branch or specialisation",
-            "Build projects, internships and practical experience",
-            "Move toward employment, entrepreneurship or higher study"
+            "Build strong mathematics and science foundations",
+
+            "Explore engineering disciplines",
+
+            "Research admission pathways",
+
+            "Compare institutions and programmes",
+
+            "Choose an undergraduate direction",
+
+            "Build technical projects",
+
+            "Gain practical experience",
+
+            "Develop a specialisation",
+
+            "Prepare for professional opportunities"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 82,
-            competition: 88,
-            commitment: 82,
-            specialisation: 84
+            "Identify the engineering domains that interest you",
 
-        },
+            "Research current admission requirements",
 
-        requirements: [
+            "Compare curriculum structures",
 
-            {
-                title: "SUBJECT FOUNDATION",
-                text:
-                    "Mathematics and physical science foundations are important for many engineering routes."
-            },
+            "Analyse institution and programme differences",
 
-            {
-                title: "ENTRANCE EXAMS",
-                text:
-                    "Admission requirements differ between institutions and programmes."
-            },
+            "Plan entrance preparation where applicable",
 
-            {
-                title: "PROJECT EXPERIENCE",
-                text:
-                    "Projects, internships, competitions and practical work can help develop applied skills."
-            },
+            "Build foundational programming or technical skills",
 
-            {
-                title: "SPECIALISATION",
-                text:
-                    "Engineering branches can lead to very different career directions."
-            }
+            "Create increasingly complex projects",
 
-        ],
+            "Seek internships and practical exposure",
 
-        colleges: [
+            "Develop a specialisation strategy",
 
-            {
-                title: "IITs",
-                text:
-                    "Indian Institutes of Technology.",
-                tag: "INDIA"
-            },
+            "Build a technical portfolio",
 
-            {
-                title: "NITs",
-                text:
-                    "National Institutes of Technology.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "BITS PILANI",
-                text:
-                    "A major Indian private technical university.",
-                tag: "INDIA"
-            }
+            "Prepare for internships and employment systematically"
 
         ]
 
     },
 
 
-    "computer-science": {
+    medicine: {
 
-        title: "COMPUTER SCIENCE",
+        title: "MEDICINE & HEALTH",
 
-        description:
-            "Explore software, algorithms, artificial intelligence, data, cybersecurity, systems and digital technology.",
+        intro:
+            "Explore healthcare and health-science directions while understanding the academic preparation and professional commitment involved.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Build mathematics and logical reasoning foundations",
-            "Learn programming fundamentals",
-            "Build practical software projects",
-            "Explore computer science concepts",
-            "Choose a specialisation",
-            "Build internships, projects and portfolio evidence",
-            "Move into technology employment, research or entrepreneurship"
+            "Build strong Biology, Chemistry and Physics foundations",
+
+            "Understand available health-related directions",
+
+            "Research admission requirements",
+
+            "Prepare for relevant entrance pathways",
+
+            "Compare programmes and institutions",
+
+            "Complete the required degree",
+
+            "Develop practical experience",
+
+            "Explore specialisation",
+
+            "Continue professional development"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 78,
-            competition: 84,
-            commitment: 82,
-            specialisation: 88
+            "Map the healthcare fields that interest you",
 
-        },
+            "Research current eligibility and admission requirements",
 
-        requirements: [
+            "Build a structured academic preparation system",
 
-            {
-                title: "PROGRAMMING",
-                text:
-                    "Programming provides a practical foundation for exploring computer science."
-            },
+            "Track preparation milestones",
 
-            {
-                title: "MATHEMATICS",
-                text:
-                    "Mathematics and logical reasoning are useful across many computer science areas."
-            },
+            "Compare programme structures",
 
-            {
-                title: "PROJECTS",
-                text:
-                    "Building real software is one way to demonstrate practical understanding."
-            },
+            "Develop strong scientific fundamentals",
 
-            {
-                title: "SPECIALISATION",
-                text:
-                    "Potential areas include software engineering, AI, data, cybersecurity, systems and more."
-            }
+            "Seek appropriate academic and practical exposure",
 
-        ],
+            "Understand the length and structure of the chosen professional pathway",
 
-        colleges: [
+            "Research specialisation options",
 
-            {
-                title: "IITs",
-                text:
-                    "Strong engineering and computing programmes across multiple institutes.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "IIIT HYDERABAD",
-                text:
-                    "An institution strongly focused on computer science and information technology.",
-                tag: "INDIA"
-            },
-
-            {
-                title: "IISc",
-                text:
-                    "A major Indian institution for science, engineering and research.",
-                tag: "INDIA"
-            }
+            "Create a long-term professional development plan"
 
         ]
 
@@ -1225,80 +972,234 @@ const detailedPathways = {
 
         title: "LAW",
 
-        description:
-            "Law can lead toward legal practice, corporate work, public policy, academia, compliance, advocacy and related fields.",
+        intro:
+            "Explore legal education, legal reasoning, professional skills, and the different directions available within the legal field.",
+
+        type: "roadmap",
 
         roadmap: [
 
-            "Complete Class 12",
-            "Research undergraduate law programmes",
-            "Prepare for relevant admission processes",
-            "Complete legal education",
-            "Develop internships and practical legal experience",
-            "Choose an area of legal practice or further study",
+            "Complete school education",
+
+            "Develop reading and writing ability",
+
+            "Explore legal education pathways",
+
+            "Research relevant admission routes",
+
+            "Complete a law programme",
+
+            "Develop legal research skills",
+
+            "Gain practical exposure",
+
+            "Explore areas of legal practice",
+
             "Build professional experience"
 
         ],
 
-        difficulty: {
+        advanced: [
 
-            academic: 75,
-            competition: 86,
-            commitment: 82,
-            specialisation: 88
+            "Develop strong reading comprehension",
 
-        },
+            "Build structured writing ability",
 
-        requirements: [
+            "Practise analytical reasoning",
 
-            {
-                title: "READING",
-                text:
-                    "Strong reading comprehension and the ability to analyse written material are useful."
-            },
+            "Research current legal admission pathways",
 
-            {
-                title: "REASONING",
-                text:
-                    "Logical reasoning and structured argument are important skills."
-            },
+            "Compare law programmes and institutions",
 
-            {
-                title: "ADMISSION",
-                text:
-                    "Law programmes may have institution-specific or national admission requirements."
-            },
+            "Develop legal research techniques",
 
-            {
-                title: "PRACTICAL EXPERIENCE",
-                text:
-                    "Internships and exposure to legal work can help students understand different areas of practice."
-            }
+            "Participate in debates, moots, writing, or relevant academic activities",
+
+            "Seek internships and practical exposure",
+
+            "Explore different legal specialisations",
+
+            "Build a professional network and portfolio",
+
+            "Track changing professional requirements"
+
+        ]
+
+    },
+
+
+    "commerce-finance": {
+
+        title: "COMMERCE & FINANCE",
+
+        intro:
+            "Explore accounting, economics, finance, business, management, and related professional directions.",
+
+        type: "roadmap",
+
+        roadmap: [
+
+            "Build mathematics and commerce foundations",
+
+            "Explore business and finance fields",
+
+            "Research degree and professional routes",
+
+            "Compare programmes",
+
+            "Develop quantitative and analytical skills",
+
+            "Gain practical experience",
+
+            "Build professional projects",
+
+            "Choose a specialisation",
+
+            "Develop career readiness"
 
         ],
 
-        colleges: [
+        advanced: [
 
-            {
-                title: "NLSIU",
-                text:
-                    "National Law School of India University.",
-                tag: "INDIA"
-            },
+            "Identify your preferred area within commerce",
 
-            {
-                title: "NALSAR",
-                text:
-                    "National Academy of Legal Studies and Research.",
-                tag: "INDIA"
-            },
+            "Build accounting, economics, mathematics, or finance foundations",
 
-            {
-                title: "INTERNATIONAL ROUTES",
-                text:
-                    "Selected legal education pathways can also involve international study, depending on the jurisdiction and career goal.",
-                tag: "GLOBAL"
-            }
+            "Research current professional qualification routes",
+
+            "Compare degree and professional pathways",
+
+            "Develop spreadsheet and analytical skills",
+
+            "Learn financial and business concepts deeply",
+
+            "Build case studies and projects",
+
+            "Seek internships or practical exposure",
+
+            "Develop a specialisation",
+
+            "Create a professional portfolio",
+
+            "Build interview and workplace communication skills"
+
+        ]
+
+    },
+
+
+    design: {
+
+        title: "DESIGN",
+
+        intro:
+            "Explore design as a field combining creativity, research, problem solving, visual thinking, and practical execution.",
+
+        type: "roadmap",
+
+        roadmap: [
+
+            "Develop observation and creative thinking",
+
+            "Explore different design disciplines",
+
+            "Build foundational design skills",
+
+            "Create personal projects",
+
+            "Develop a portfolio",
+
+            "Research programmes and institutions",
+
+            "Gain practical experience",
+
+            "Choose a design specialisation",
+
+            "Build professional opportunities"
+
+        ],
+
+        advanced: [
+
+            "Explore multiple design disciplines",
+
+            "Build observation and visual-thinking skills",
+
+            "Learn design fundamentals systematically",
+
+            "Develop research and user-understanding skills",
+
+            "Create projects with documented processes",
+
+            "Build a structured portfolio",
+
+            "Study programme requirements carefully",
+
+            "Seek feedback from experienced people",
+
+            "Iterate portfolio projects",
+
+            "Develop a specialised design direction",
+
+            "Build professional presentation and communication skills"
+
+        ]
+
+    },
+
+
+    "pure-science": {
+
+        title: "PURE SCIENCES",
+
+        intro:
+            "Explore mathematics and the natural sciences through deeper academic study, research, and scientific problem solving.",
+
+        type: "roadmap",
+
+        roadmap: [
+
+            "Build strong scientific foundations",
+
+            "Explore scientific disciplines",
+
+            "Research undergraduate programmes",
+
+            "Develop mathematical and analytical skills",
+
+            "Participate in projects or academic activities",
+
+            "Complete higher education",
+
+            "Explore research opportunities",
+
+            "Develop specialisation",
+
+            "Consider advanced study or scientific careers"
+
+        ],
+
+        advanced: [
+
+            "Identify the scientific disciplines that interest you",
+
+            "Strengthen mathematics and scientific reasoning",
+
+            "Research academic programme structures",
+
+            "Explore research-oriented opportunities",
+
+            "Develop technical and analytical skills",
+
+            "Participate in academic projects",
+
+            "Seek mentorship where available",
+
+            "Develop research literacy",
+
+            "Explore specialisation and postgraduate directions",
+
+            "Build a record of projects, research, and academic work"
 
         ]
 
@@ -1307,9 +1208,9 @@ const detailedPathways = {
 };
 
 
-/* =====================================================
-   TEXT ANIMATION
-===================================================== */
+/* =========================================
+   TEXT ANIMATION PREPARATION
+========================================= */
 
 function prepareTextAnimation() {
 
@@ -1332,6 +1233,10 @@ function prepareTextAnimation() {
 }
 
 
+/* =========================================
+   RESET TEXT
+========================================= */
+
 function resetAnimatedText(slideElement) {
 
     const animatedElements =
@@ -1353,6 +1258,10 @@ function resetAnimatedText(slideElement) {
 }
 
 
+/* =========================================
+   ANIMATE TEXT
+========================================= */
+
 function animateSlideText(slideElement) {
 
     resetAnimatedText(slideElement);
@@ -1367,14 +1276,11 @@ function animateSlideText(slideElement) {
 
     animatedElements.forEach(element => {
 
-
         const wrapTextNodes = (node) => {
-
 
             if (node.nodeType === Node.TEXT_NODE) {
 
-                const text =
-                    node.nodeValue;
+                const text = node.nodeValue;
 
                 const fragment =
                     document.createDocumentFragment();
@@ -1385,16 +1291,13 @@ function animateSlideText(slideElement) {
 
                 words.forEach(word => {
 
-
                     if (word.trim() === "") {
 
                         fragment.appendChild(
                             document.createTextNode(word)
                         );
 
-                    }
-
-                    else {
+                    } else {
 
                         const wordSpan =
                             document.createElement("span");
@@ -1443,10 +1346,8 @@ function animateSlideText(slideElement) {
                     node
                 );
 
-            }
 
-
-            else if (
+            } else if (
                 node.nodeType === Node.ELEMENT_NODE
             ) {
 
@@ -1468,9 +1369,9 @@ function animateSlideText(slideElement) {
 }
 
 
-/* =====================================================
+/* =========================================
    SKILL CARD ANIMATION
-===================================================== */
+========================================= */
 
 function triggerSkillCards(slideElement) {
 
@@ -1479,73 +1380,61 @@ function triggerSkillCards(slideElement) {
             ".skill-card"
         );
 
-    cards.forEach(
-        (card, index) => {
+    cards.forEach((card, index) => {
 
-            card.classList.remove(
+        card.classList.remove(
+            "skill-card-visible"
+        );
+
+        setTimeout(() => {
+
+            card.classList.add(
                 "skill-card-visible"
             );
 
-            setTimeout(
-                () => {
+        }, 150 * index + 300);
 
-                    card.classList.add(
-                        "skill-card-visible"
-                    );
-
-                },
-                120 * index + 250
-            );
-
-        }
-    );
+    });
 
 }
 
 
-/* =====================================================
+/* =========================================
    SLIDE SWITCHING
-===================================================== */
+========================================= */
 
 function goToSlide(index) {
 
     if (
         index < 0 ||
         index >= slides.length
-    ) return;
-
-
-    if (explorationMode) {
-
-        closeExploration();
-
+    ) {
+        return;
     }
 
 
-    slides[currentSlide]
-        .classList
-        .remove("active");
-
-
-    currentSlide =
-        index;
+    hideExploration(false);
 
 
     slides[currentSlide]
-        .classList
-        .add("active");
+        .classList.remove("active");
 
 
-    navButtons.forEach(
-        (btn, i) => {
+    currentSlide = index;
 
-            btn.classList.toggle(
-                "active",
-                i === currentSlide
-            );
 
-        }
-    );
+    slides[currentSlide]
+        .classList.add("active");
+
+
+    navButtons.forEach((btn, i) => {
+
+        btn.classList.toggle(
+            "active",
+            i === currentSlide
+        );
+
+    });
 
 
     if (slideCounter) {
@@ -1570,7 +1459,6 @@ function goToSlide(index) {
         slides[currentSlide]
     );
 
-
     triggerSkillCards(
         slides[currentSlide]
     );
@@ -1584,901 +1472,1255 @@ function goToSlide(index) {
 
     }
 
+
+    if (
+        window.location.hash
+    ) {
+
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname +
+            window.location.search
+        );
+
+    }
+
 }
 
 
-/* =====================================================
-   EXPLORATION MODE
-===================================================== */
+/* =========================================
+   OPEN EXPLORATION
+========================================= */
 
 function openExploration() {
 
-    explorationMode =
-        true;
+    explorationOpen = true;
 
-    explorationHistory = [];
+    explorationScreen.classList.add(
+        "open"
+    );
 
+    explorationScreen.setAttribute(
+        "aria-hidden",
+        "false"
+    );
 
-    explorationSystem
-        .classList
-        .add("active");
+    slideControls.classList.add(
+        "exploration-active"
+    );
 
+    document.body.classList.add(
+        "exploration-open"
+    );
 
-    document
-        .querySelector(".slide-controls")
-        .classList
-        .add("exploration-active");
+    if (mobileMenu) {
 
-}
+        mobileMenu.classList.remove(
+            "open"
+        );
 
-
-function closeExploration() {
-
-    explorationMode =
-        false;
-
-    explorationHistory = [];
-
-
-    explorationSystem
-        .classList
-        .remove("active");
-
-
-    document
-        .querySelector(".slide-controls")
-        .classList
-        .remove("exploration-active");
-
-
-    explorationContent.innerHTML =
-        "";
+    }
 
 }
 
 
-function pushExplorationHistory(
-    renderFunction,
-    breadcrumb
+/* =========================================
+   CLOSE EXPLORATION
+========================================= */
+
+function hideExploration(
+    clearHash = true
 ) {
 
-    explorationHistory.push({
-        render: renderFunction,
-        breadcrumb: breadcrumb
-    });
+    explorationOpen = false;
+
+    explorationScreen.classList.remove(
+        "open"
+    );
+
+    explorationScreen.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    slideControls.classList.remove(
+        "exploration-active"
+    );
+
+    document.body.classList.remove(
+        "exploration-open"
+    );
+
+
+    if (clearHash && window.location.hash) {
+
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname +
+            window.location.search
+        );
+
+    }
 
 }
 
 
-/* =====================================================
-   SKILL EXPLORATION
-===================================================== */
+/* =========================================
+   SET EXPLORATION HEADER
+========================================= */
 
-function showSkill(skillID) {
+function setExplorationHeader(
+    kicker,
+    title,
+    intro
+) {
 
-    const skill =
-        skillData[skillID];
+    explorationKicker.textContent =
+        kicker;
 
-    if (!skill) return;
+    explorationTitle.textContent =
+        title;
 
+    explorationIntro.textContent =
+        intro;
 
-    openExploration();
-
-
-    pushExplorationHistory(
-        () => showSkill(skillID),
-        `KAYRA / SKILLS / ${skill.title}`
-    );
-
-
-    explorationBreadcrumb.textContent =
-        `KAYRA / SKILLS / ${skill.title}`;
+}
 
 
-    let roadmapHTML =
-        "";
+/* =========================================
+   ROADMAP BUTTON
+========================================= */
 
+function advancedRoadmapButton() {
 
-    skill.roadmap.forEach(
-        (step, index) => {
+    return `
 
-            roadmapHTML += `
+        <div class="advanced-roadmap-zone">
 
-                <div class="roadmap-step">
+            <div class="advanced-roadmap-copy">
 
-                    <div class="roadmap-node">
-                        ${String(index + 1).padStart(2, "0")}
-                    </div>
-
-                    <h3>
-                        ${step.title}
-                    </h3>
-
-                    <p>
-                        ${step.text}
-                    </p>
-
+                <div class="advanced-roadmap-label">
+                    FOR THOSE WHO WANT TO GO FURTHER
                 </div>
 
-            `;
+                <p>
+                    The standard roadmap gives you the direction.
+                    The advanced roadmap gives you a deeper plan
+                    for actually working toward it.
+                </p>
 
-        }
-    );
+            </div>
+
+            <button
+                class="advanced-roadmap-button"
+                id="generateAdvancedRoadmap"
+            >
+
+                <span>
+                    GENERATE ADVANCED ROADMAP
+                </span>
+
+                <strong>
+                    →
+                </strong>
+
+            </button>
+
+        </div>
+
+    `;
+
+}
 
 
-    let helpHTML =
-        "";
+/* =========================================
+   RENDER SKILL
+========================================= */
+
+function renderSkill(
+    key
+) {
+
+    const data =
+        skillData[key];
+
+    if (!data) return;
 
 
-    skill.help.forEach(
-        (item, index) => {
+    currentRoute =
+        `skill/${key}`;
 
-            helpHTML += `
 
-                <div class="help-card">
-
-                    <div class="help-card-number">
-                        ${String(index + 1).padStart(2, "0")}
-                    </div>
-
-                    <h3>
-                        ${item.title}
-                    </h3>
-
-                    <p>
-                        ${item.text}
-                    </p>
-
-                </div>
-
-            `;
-
-        }
+    setExplorationHeader(
+        "SKILL / DEVELOPMENT",
+        data.title,
+        data.intro
     );
 
 
     explorationContent.innerHTML = `
 
-        <div class="explore-label explore-animate">
-            SKILL DEVELOPMENT / ${skill.number}
+        <div class="exploration-grid">
+
+
+            <div class="info-panel">
+
+                <div class="panel-number">
+                    01
+                </div>
+
+                <h3>
+                    WHY IT MATTERS
+                </h3>
+
+                <p>
+                    ${data.why}
+                </p>
+
+            </div>
+
+
+            <div class="info-panel">
+
+                <div class="panel-number">
+                    02
+                </div>
+
+                <h3>
+                    STARTING POINT
+                </h3>
+
+                <p>
+                    ${data.start}
+                </p>
+
+            </div>
+
+
         </div>
 
 
-        <h1 class="explore-title explore-animate delay-1">
+        <div class="roadmap-section">
 
-            ${skill.title}
+            <div class="roadmap-heading">
 
-        </h1>
+                <span>
+                    DEVELOPMENT PATH
+                </span>
 
-
-        <p class="explore-description explore-animate delay-2">
-
-            ${skill.description}
-
-        </p>
-
-
-        <section class="explore-block explore-animate delay-3">
-
-            <div class="explore-block-title">
-                YOUR DEVELOPMENT PATH
-            </div>
-
-            <div class="skill-roadmap">
-
-                ${roadmapHTML}
+                <small>
+                    ${String(data.roadmap.length).padStart(2, "0")}
+                    STAGES
+                </small>
 
             </div>
 
-        </section>
+
+            <div class="roadmap">
+
+                ${data.roadmap.map(
+                    (step, index) => `
+
+                        <div class="roadmap-step">
+
+                            <div class="roadmap-node">
+                                ${String(index + 1).padStart(2, "0")}
+                            </div>
+
+                            <div class="roadmap-line"></div>
+
+                            <div class="roadmap-step-content">
+
+                                <span>
+                                    STAGE ${String(index + 1).padStart(2, "0")}
+                                </span>
+
+                                <h4>
+                                    ${step}
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    `
+                ).join("")}
+
+            </div>
+
+        </div>
 
 
-        <section class="explore-block explore-animate delay-4">
+        <div class="kayra-help">
 
-            <div class="explore-block-title">
+            <div class="kayra-help-label">
                 HOW KAYRA HELPS
             </div>
 
-            <div class="help-grid">
-
-                ${helpHTML}
-
-            </div>
-
-        </section>
-
-
-        <div class="explore-end">
+            <h3>
+                TURN KNOWLEDGE
+                INTO PROGRESS.
+            </h3>
 
             <p>
-                KAYRA / BUILD YOUR FUTURE
+                Kayra is designed to help you move from
+                understanding a skill to actually developing it
+                through structured exploration and action.
             </p>
 
         </div>
 
+
+        ${advancedRoadmapButton()}
+
     `;
-
-}
-
-
-/* =====================================================
-   PATHWAY OVERVIEW
-===================================================== */
-
-function showPathway(pathwayID) {
-
-    const pathway =
-        pathwayData[pathwayID];
-
-    if (!pathway) return;
 
 
     openExploration();
 
-
-    pushExplorationHistory(
-        () => showPathway(pathwayID),
-        `KAYRA / PATHWAYS / ${pathway.title}`
-    );
+}
 
 
-    explorationBreadcrumb.textContent =
-        `KAYRA / PATHWAYS / ${pathway.title}`;
+/* =========================================
+   RENDER ROOT PATHWAY
+========================================= */
+
+function renderPathway(
+    key
+) {
+
+    const data =
+        pathwayData[key];
+
+    if (!data) return;
 
 
-    let choicesHTML =
-        "";
+    currentRoute =
+        `pathway/${key}`;
 
 
-    pathway.choices.forEach(
-        choice => {
-
-            choicesHTML += `
-
-                <button
-                    class="explore-choice"
-                    data-choice-id="${choice.id}"
-                >
-
-                    <div class="explore-choice-number">
-                        ${choice.number}
-                    </div>
-
-                    <h3>
-                        ${choice.title}
-                    </h3>
-
-                    <p>
-                        ${choice.description}
-                    </p>
-
-                    <span class="explore-choice-arrow">
-                        →
-                    </span>
-
-                </button>
-
-            `;
-
-        }
+    setExplorationHeader(
+        "PATHWAY / EXPLORATION",
+        data.title,
+        data.intro
     );
 
 
     explorationContent.innerHTML = `
 
-        <div class="explore-label explore-animate">
-            PATHWAY / ${pathway.title}
-        </div>
+        <div class="choice-grid">
 
+            ${data.choices.map(
+                (choice, index) => `
 
-        <h1 class="explore-title explore-animate delay-1">
+                    <button
+                        class="exploration-choice"
+                        data-pathway-choice="${key}/${choice.key}"
+                    >
 
-            ${pathway.title}
-
-        </h1>
-
-
-        <p class="explore-description explore-animate delay-2">
-
-            ${pathway.description}
-
-        </p>
-
-
-        <section class="explore-block explore-animate delay-3">
-
-            <div class="explore-block-title">
-                CHOOSE A DIRECTION
-            </div>
-
-            <div class="explore-choice-grid">
-
-                ${choicesHTML}
-
-            </div>
-
-        </section>
-
-    `;
-
-
-    explorationContent
-        .querySelectorAll(
-            ".explore-choice"
-        )
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const id =
-                        button.dataset.choiceId;
-
-                    if (
-                        detailedPathways[id]
-                    ) {
-
-                        showDetailedPathway(
-                            id
-                        );
-
-                    }
-
-                    else {
-
-                        showGenericPathway(
-                            id,
-                            pathway.title
-                        );
-
-                    }
-
-                }
-            );
-
-        });
-
-}
-
-
-/* =====================================================
-   DETAILED PATHWAY
-===================================================== */
-
-function showDetailedPathway(pathwayID) {
-
-    const pathway =
-        detailedPathways[pathwayID];
-
-    if (!pathway) return;
-
-
-    pushExplorationHistory(
-        () =>
-            showDetailedPathway(
-                pathwayID
-            ),
-        `KAYRA / PATHWAYS / ${pathway.title}`
-    );
-
-
-    explorationBreadcrumb.textContent =
-        `KAYRA / PATHWAYS / ${pathway.title}`;
-
-
-    let roadmapHTML =
-        "";
-
-
-    if (pathway.roadmap) {
-
-        pathway.roadmap.forEach(
-            (step, index) => {
-
-                roadmapHTML += `
-
-                    <div class="main-roadmap-step">
-
-                        <div class="main-roadmap-node">
+                        <div class="choice-number">
                             ${String(index + 1).padStart(2, "0")}
                         </div>
 
-                        <div class="main-roadmap-card">
+                        <div class="choice-body">
 
                             <h3>
-                                ${step}
+                                ${choice.title}
                             </h3>
 
                             <p>
-                                Stage ${index + 1}
-                                of your pathway.
+                                ${choice.text}
                             </p>
 
                         </div>
 
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-
-    let difficultyHTML =
-        "";
-
-
-    if (pathway.difficulty) {
-
-        const difficultyItems = [
-
-            [
-                "ACADEMIC LOAD",
-                pathway.difficulty.academic
-            ],
-
-            [
-                "COMPETITION",
-                pathway.difficulty.competition
-            ],
-
-            [
-                "TIME COMMITMENT",
-                pathway.difficulty.commitment
-            ],
-
-            [
-                "SPECIALISATION",
-                pathway.difficulty.specialisation
-            ]
-
-        ];
-
-
-        difficultyItems.forEach(
-            item => {
-
-                let level =
-                    item[1] >= 90
-                        ? "VERY HIGH"
-                        : item[1] >= 80
-                            ? "HIGH"
-                            : item[1] >= 65
-                                ? "MODERATE"
-                                : "LOW";
-
-
-                difficultyHTML += `
-
-                    <div class="difficulty-card">
-
-                        <div class="difficulty-name">
-                            ${item[0]}
-                        </div>
-
-                        <div class="difficulty-level">
-                            ${level}
-                        </div>
-
-                        <div class="difficulty-bar">
-
-                            <div
-                                class="difficulty-fill"
-                                style="width:${item[1]}%"
-                            ></div>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-
-    let requirementsHTML =
-        "";
-
-
-    if (pathway.requirements) {
-
-        pathway.requirements.forEach(
-            requirement => {
-
-                requirementsHTML += `
-
-                    <div class="requirement-card">
-
-                        <h3>
-                            ${requirement.title}
-                        </h3>
-
-                        <p>
-                            ${requirement.text}
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-    }
-
-
-    let collegeHTML =
-        "";
-
-
-    if (pathway.colleges) {
-
-        pathway.colleges.forEach(
-            college => {
-
-                collegeHTML += `
-
-                    <div class="college-card">
-
-                        <h3>
-                            ${college.title}
-                        </h3>
-
-                        <p>
-                            ${college.text}
-                        </p>
-
-                        <span class="college-tag">
-                            ${college.tag}
+                        <span class="choice-arrow">
+                            →
                         </span>
 
-                    </div>
+                    </button>
 
-                `;
-
-            }
-        );
-
-    }
-
-
-    explorationContent.innerHTML = `
-
-        <div class="explore-label explore-animate">
-            PATHWAY / DEEP EXPLORATION
-        </div>
-
-
-        <h1 class="explore-title explore-animate delay-1">
-
-            ${pathway.title}
-
-        </h1>
-
-
-        <p class="explore-description explore-animate delay-2">
-
-            ${pathway.description}
-
-        </p>
-
-
-        ${
-            pathway.roadmap
-            ? `
-
-            <section class="explore-block explore-animate delay-3">
-
-                <div class="explore-block-title">
-                    YOUR ROADMAP
-                </div>
-
-                <div class="main-roadmap">
-
-                    ${roadmapHTML}
-
-                </div>
-
-            </section>
-
-            `
-            : ""
-        }
-
-
-        ${
-            pathway.difficulty
-            ? `
-
-            <section class="explore-block">
-
-                <div class="explore-block-title">
-                    DIFFICULTY PROFILE
-                </div>
-
-                <p class="explore-block-subtitle">
-                    These indicators are planning aids, not absolute measures.
-                    Requirements and competition can vary by institution,
-                    course, year, and student.
-                </p>
-
-                <div class="difficulty-grid">
-
-                    ${difficultyHTML}
-
-                </div>
-
-            </section>
-
-            `
-            : ""
-        }
-
-
-        ${
-            pathway.requirements
-            ? `
-
-            <section class="explore-block">
-
-                <div class="explore-block-title">
-                    WHAT YOU'LL NEED
-                </div>
-
-                <div class="requirements-grid">
-
-                    ${requirementsHTML}
-
-                </div>
-
-            </section>
-
-            `
-            : ""
-        }
-
-
-        ${
-            pathway.colleges
-            ? `
-
-            <section class="explore-block">
-
-                <div class="explore-block-title">
-                    COLLEGES & INSTITUTES
-                </div>
-
-                <p class="explore-block-subtitle">
-                    Institutions shown here are examples for exploration.
-                    Always verify current eligibility, admissions and programmes
-                    with the institution.
-                </p>
-
-                <div class="college-grid">
-
-                    ${collegeHTML}
-
-                </div>
-
-            </section>
-
-            `
-            : ""
-        }
-
-
-        <div class="explore-end">
-
-            <p>
-                KAYRA / EXPLORE WITH PURPOSE
-            </p>
+                `
+            ).join("")}
 
         </div>
 
     `;
 
+
+    openExploration();
+
 }
 
 
-/* =====================================================
-   GENERIC PATHWAY
-===================================================== */
+/* =========================================
+   RENDER ROADMAP PATHWAY
+========================================= */
 
-function showGenericPathway(
-    pathwayID,
-    parentPathway
+function renderRoadmap(
+    key
 ) {
 
-    pushExplorationHistory(
-        () =>
-            showGenericPathway(
-                pathwayID,
-                parentPathway
-            ),
-        `KAYRA / PATHWAYS / ${pathwayID}`
+    const data =
+        pathwayData[key];
+
+    if (!data) return;
+
+
+    currentRoute =
+        `pathway/${key}`;
+
+
+    setExplorationHeader(
+        "PATHWAY / ROADMAP",
+        data.title,
+        data.intro
     );
 
 
-    explorationBreadcrumb.textContent =
-        `KAYRA / PATHWAYS / ${pathwayID}`;
-
-
     explorationContent.innerHTML = `
 
-        <div class="explore-label explore-animate">
-            PATHWAY / EXPLORATION
+        <div class="roadmap-section pathway-roadmap">
+
+            <div class="roadmap-heading">
+
+                <span>
+                    CORE ROADMAP
+                </span>
+
+                <small>
+                    ${String(data.roadmap.length).padStart(2, "0")}
+                    STAGES
+                </small>
+
+            </div>
+
+
+            <div class="roadmap">
+
+                ${data.roadmap.map(
+                    (step, index) => `
+
+                        <div class="roadmap-step">
+
+                            <div class="roadmap-node">
+                                ${String(index + 1).padStart(2, "0")}
+                            </div>
+
+                            <div class="roadmap-line"></div>
+
+                            <div class="roadmap-step-content">
+
+                                <span>
+                                    STAGE ${String(index + 1).padStart(2, "0")}
+                                </span>
+
+                                <h4>
+                                    ${step}
+                                </h4>
+
+                            </div>
+
+                        </div>
+
+                    `
+                ).join("")}
+
+            </div>
+
         </div>
 
 
-        <h1 class="explore-title explore-animate delay-1">
+        <div class="roadmap-warning">
 
-            ${pathwayID
-                .replaceAll("-", " ")
-                .toUpperCase()
-            }
-
-        </h1>
-
-
-        <p class="explore-description explore-animate delay-2">
-
-            This pathway is part of the
-            ${parentPathway} exploration system.
-
-        </p>
-
-
-        <section class="explore-block explore-animate delay-3">
-
-            <div class="explore-block-title">
-                KAYRA ROADMAP
-            </div>
-
-
-            <div class="main-roadmap">
-
-
-                <div class="main-roadmap-step">
-
-                    <div class="main-roadmap-node">
-                        01
-                    </div>
-
-                    <div class="main-roadmap-card">
-
-                        <h3>
-                            EXPLORE
-                        </h3>
-
-                        <p>
-                            Understand the field,
-                            its subjects and possible directions.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="main-roadmap-step">
-
-                    <div class="main-roadmap-node">
-                        02
-                    </div>
-
-                    <div class="main-roadmap-card">
-
-                        <h3>
-                            PREPARE
-                        </h3>
-
-                        <p>
-                            Identify the academic,
-                            skill and admission requirements.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="main-roadmap-step">
-
-                    <div class="main-roadmap-node">
-                        03
-                    </div>
-
-                    <div class="main-roadmap-card">
-
-                        <h3>
-                            BUILD
-                        </h3>
-
-                        <p>
-                            Develop relevant skills,
-                            projects and experience.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="main-roadmap-step">
-
-                    <div class="main-roadmap-node">
-                        04
-                    </div>
-
-                    <div class="main-roadmap-card">
-
-                        <h3>
-                            APPLY
-                        </h3>
-
-                        <p>
-                            Compare programmes and
-                            make informed applications.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-        <div class="explore-end">
+            <span>
+                KAYRA NOTE
+            </span>
 
             <p>
-                KAYRA / MORE INFORMATION WILL BE ADDED
+                Educational pathways can vary by programme,
+                institution, eligibility requirements, and year.
+                Use this roadmap as a structure for exploration,
+                then verify current requirements before making
+                important decisions.
             </p>
 
         </div>
 
+
+        ${advancedRoadmapButton()}
+
     `;
+
+
+    openExploration();
 
 }
 
 
-/* =====================================================
-   BACK BUTTON
-===================================================== */
+/* =========================================
+   ADVANCED ROADMAP GENERATOR
+========================================= */
 
-explorationBack.addEventListener(
-    "click",
-    () => {
+function startAdvancedRoadmap() {
+
+    if (!currentRoute) {
+        return;
+    }
+
+
+    generatorTarget =
+        currentRoute;
+
+
+    roadmapGenerator.classList.add(
+        "open"
+    );
+
+    roadmapGenerator.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    generatorProgressBar.style.width =
+        "0%";
+
+    generatorProgress.textContent =
+        "00";
+
+
+    generatorMessage.textContent =
+        "ANALYSING YOUR DIRECTION...";
+
+
+    let progress = 0;
+
+
+    const messages = [
+
+        "ANALYSING YOUR DIRECTION...",
+
+        "MAPPING DEVELOPMENT STAGES...",
+
+        "EXPANDING YOUR OPTIONS...",
+
+        "BUILDING ACTION POINTS...",
+
+        "STRUCTURING YOUR NEXT STEPS...",
+
+        "REFINING THE ROADMAP...",
+
+        "FINALISING YOUR PLAN..."
+
+    ];
+
+
+    let messageIndex = 0;
+
+
+    if (generatorTimer) {
+
+        clearInterval(
+            generatorTimer
+        );
+
+    }
+
+
+    generatorTimer =
+        setInterval(() => {
+
+            progress +=
+                Math.floor(
+                    Math.random() * 4
+                ) + 2;
+
+
+            if (progress >= 100) {
+
+                progress = 100;
+
+            }
+
+
+            generatorProgressBar.style.width =
+                `${progress}%`;
+
+
+            generatorProgress.textContent =
+                String(progress)
+                    .padStart(2, "0");
+
+
+            if (
+                progress > 15 &&
+                messageIndex === 0
+            ) {
+
+                messageIndex = 1;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (
+                progress > 30 &&
+                messageIndex === 1
+            ) {
+
+                messageIndex = 2;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (
+                progress > 45 &&
+                messageIndex === 2
+            ) {
+
+                messageIndex = 3;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (
+                progress > 60 &&
+                messageIndex === 3
+            ) {
+
+                messageIndex = 4;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (
+                progress > 78 &&
+                messageIndex === 4
+            ) {
+
+                messageIndex = 5;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (
+                progress > 92 &&
+                messageIndex === 5
+            ) {
+
+                messageIndex = 6;
+
+                generatorMessage.textContent =
+                    messages[messageIndex];
+
+            }
+
+
+            if (progress >= 100) {
+
+                clearInterval(
+                    generatorTimer
+                );
+
+                generatorTimer =
+                    null;
+
+
+                generatorMessage.textContent =
+                    "ROADMAP READY.";
+
+
+                setTimeout(() => {
+
+                    roadmapGenerator.classList.remove(
+                        "open"
+                    );
+
+                    roadmapGenerator.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+
+                    renderAdvancedRoadmap(
+                        generatorTarget
+                    );
+
+                }, 700);
+
+            }
+
+        }, 90);
+
+}
+
+
+/* =========================================
+   RENDER ADVANCED ROADMAP
+========================================= */
+
+function renderAdvancedRoadmap(
+    route
+) {
+
+    let data = null;
+
+    let title = "";
+
+
+    if (
+        route.startsWith("skill/")
+    ) {
+
+        const key =
+            route.replace(
+                "skill/",
+                ""
+            );
+
+        data =
+            skillData[key];
+
+        if (!data) return;
+
+        title =
+            data.title;
+
+    }
+
+
+    if (
+        route.startsWith("pathway/")
+    ) {
+
+        const key =
+            route.replace(
+                "pathway/",
+                ""
+            );
+
+        data =
+            pathwayData[key];
+
+        if (!data) return;
+
+        title =
+            data.title;
+
+    }
+
+
+    if (
+        !data ||
+        !data.advanced
+    ) {
+
+        return;
+
+    }
+
+
+    currentRoute =
+        `${route}/advanced`;
+
+
+    setExplorationHeader(
+        "KAYRA / ADVANCED",
+        `${title} — ADVANCED`,
+        "A deeper development structure designed for people who want to move beyond the starting roadmap."
+    );
+
+
+    explorationContent.innerHTML = `
+
+        <div class="advanced-introduction">
+
+            <div class="advanced-introduction-label">
+                DEEPER DIRECTION
+            </div>
+
+            <h3>
+                SERIOUS PROGRESS
+                REQUIRES MORE THAN
+                A STARTING POINT.
+            </h3>
+
+            <p>
+                The advanced roadmap expands the basic direction
+                into smaller actions, preparation points,
+                practical development, and long-term progression.
+            </p>
+
+        </div>
+
+
+        <div class="advanced-roadmap-section">
+
+            <div class="roadmap-heading">
+
+                <span>
+                    ADVANCED DEVELOPMENT SYSTEM
+                </span>
+
+                <small>
+                    ${String(data.advanced.length).padStart(2, "0")}
+                    STAGES
+                </small>
+
+            </div>
+
+
+            <div class="advanced-roadmap-list">
+
+                ${data.advanced.map(
+                    (step, index) => `
+
+                        <div class="advanced-roadmap-step">
+
+                            <div class="advanced-stage-number">
+                                ${String(index + 1).padStart(2, "0")}
+                            </div>
+
+                            <div class="advanced-stage-content">
+
+                                <span>
+                                    DEVELOPMENT STAGE
+                                    ${String(index + 1).padStart(2, "0")}
+                                </span>
+
+                                <h4>
+                                    ${step}
+                                </h4>
+
+                            </div>
+
+                            <div class="advanced-stage-marker">
+                                +
+                            </div>
+
+                        </div>
+
+                    `
+                ).join("")}
+
+            </div>
+
+        </div>
+
+
+        <div class="advanced-final-panel">
+
+            <div class="advanced-final-number">
+                K
+            </div>
+
+            <div>
+
+                <span>
+                    KAYRA PRINCIPLE
+                </span>
+
+                <h3>
+                    INFORMATION BECOMES
+                    USEFUL WHEN YOU ACT ON IT.
+                </h3>
+
+                <p>
+                    Use this roadmap as a working document.
+                    Mark what you understand, identify what
+                    you still need to learn, and keep moving.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="advanced-back-button"
+            id="advancedBackButton"
+        >
+            ← RETURN TO CORE ROADMAP
+        </button>
+
+    `;
+
+
+    openExploration();
+
+}
+
+
+/* =========================================
+   GET PARENT ROUTE
+========================================= */
+
+function getParentRoute(
+    route
+) {
+
+    if (
+        route.endsWith("/advanced")
+    ) {
+
+        return route.replace(
+            "/advanced",
+            ""
+        );
+
+    }
+
+
+    const parts =
+        route.split("/");
+
+
+    if (parts.length <= 1) {
+
+        return "";
+
+    }
+
+
+    parts.pop();
+
+    return parts.join("/");
+
+}
+
+
+/* =========================================
+   HANDLE EXPLORATION BACK
+========================================= */
+
+function handleExplorationBack() {
+
+    if (!currentRoute) {
+
+        goToSlide(2);
+
+        return;
+
+    }
+
+
+    const parent =
+        getParentRoute(
+            currentRoute
+        );
+
+
+    if (
+        currentRoute.endsWith(
+            "/advanced"
+        )
+    ) {
+
+        renderRoute(
+            parent
+        );
+
+        return;
+
+    }
+
+
+    if (
+        parent === ""
+    ) {
 
         if (
-            explorationHistory.length > 1
+            currentRoute.startsWith(
+                "skill/"
+            )
         ) {
 
-            explorationHistory.pop();
+            goToSlide(2);
 
-            const previous =
-                explorationHistory[
-                    explorationHistory.length - 1
-                ];
+        } else {
 
-            previous.render();
-
-            explorationBreadcrumb.textContent =
-                previous.breadcrumb;
+            goToSlide(3);
 
         }
 
-        else {
+        return;
 
-            closeExploration();
+    }
+
+
+    renderRoute(parent);
+
+}
+
+
+/* =========================================
+   ROUTE RENDERER
+========================================= */
+
+function renderRoute(
+    route
+) {
+
+    if (!route) {
+
+        hideExploration();
+
+        return;
+
+    }
+
+
+    const parts =
+        route.split("/");
+
+
+    if (
+        parts[0] === "skill" &&
+        parts[1]
+    ) {
+
+        renderSkill(
+            parts[1]
+        );
+
+        return;
+
+    }
+
+
+    if (
+        parts[0] === "pathway" &&
+        parts[1]
+    ) {
+
+        if (
+            parts[2]
+        ) {
+
+            if (
+                pathwayData[parts[2]]
+            ) {
+
+                renderPathway(
+                    parts[2]
+                );
+
+            }
+
+        } else {
+
+            const key =
+                parts[1];
+
+            const data =
+                pathwayData[key];
+
+            if (!data) return;
+
+
+            if (
+                data.type === "roadmap"
+            ) {
+
+                renderRoadmap(
+                    key
+                );
+
+            } else {
+
+                renderPathway(
+                    key
+                );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   PATHWAY ROUTE RESOLUTION
+========================================= */
+
+function handlePathwayChoice(
+    route
+) {
+
+    const parts =
+        route.split("/");
+
+
+    /*
+       after10th/science
+    */
+
+    if (
+        parts.length === 2
+    ) {
+
+        const key =
+            parts[1];
+
+        if (
+            pathwayData[key]
+        ) {
+
+            if (
+                pathwayData[key].type ===
+                "roadmap"
+            ) {
+
+                renderRoadmap(
+                    key
+                );
+
+            } else {
+
+                renderPathway(
+                    key
+                );
+
+            }
+
+        }
+
+        return;
+
+    }
+
+}
+
+
+/* =========================================
+   EVENT DELEGATION
+========================================= */
+
+document.addEventListener(
+    "click",
+    (event) => {
+
+
+        /* SKILL */
+
+        const skillCard =
+            event.target.closest(
+                "[data-explore]"
+            );
+
+
+        if (skillCard) {
+
+            const key =
+                skillCard.dataset.explore;
+
+            renderSkill(key);
+
+            return;
+
+        }
+
+
+        /* PATHWAY */
+
+        const pathwayRow =
+            event.target.closest(
+                "[data-pathway]"
+            );
+
+
+        if (pathwayRow) {
+
+            const key =
+                pathwayRow.dataset.pathway;
+
+            if (
+                pathwayData[key]
+            ) {
+
+                renderPathway(key);
+
+            }
+
+            return;
+
+        }
+
+
+        /* PATHWAY CHOICE */
+
+        const pathwayChoice =
+            event.target.closest(
+                "[data-pathway-choice]"
+            );
+
+
+        if (pathwayChoice) {
+
+            handlePathwayChoice(
+                pathwayChoice.dataset.pathwayChoice
+            );
+
+            return;
+
+        }
+
+
+        /* ADVANCED ROADMAP */
+
+        const advancedButton =
+            event.target.closest(
+                "#generateAdvancedRoadmap"
+            );
+
+
+        if (advancedButton) {
+
+            startAdvancedRoadmap();
+
+            return;
+
+        }
+
+
+        /* ADVANCED BACK */
+
+        const advancedBack =
+            event.target.closest(
+                "#advancedBackButton"
+            );
+
+
+        if (advancedBack) {
+
+            const parent =
+                currentRoute.replace(
+                    "/advanced",
+                    ""
+                );
+
+            renderRoute(parent);
+
+            return;
 
         }
 
@@ -2486,125 +2728,33 @@ explorationBack.addEventListener(
 );
 
 
-/* =====================================================
-   SKILL BUTTONS
-===================================================== */
+/* =========================================
+   EXPLORATION BACK BUTTON
+========================================= */
 
-document
-    .querySelectorAll(
-        ".skill-card"
-    )
-    .forEach(card => {
+if (explorationBack) {
 
-        card.addEventListener(
-            "click",
-            () => {
-
-                const skillID =
-                    card.dataset.explore;
-
-                showSkill(
-                    skillID
-                );
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   PATHWAY BUTTONS
-===================================================== */
-
-document
-    .querySelectorAll(
-        ".pathway-row"
-    )
-    .forEach(row => {
-
-        row.addEventListener(
-            "click",
-            () => {
-
-                const pathwayID =
-                    row.dataset.pathway;
-
-                showPathway(
-                    pathwayID
-                );
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   START EXPLORING
-===================================================== */
-
-function startExploring() {
-
-    /*
-        TEMPORARY DESTINATION
-
-        We deliberately do NOT send the user
-        to slide 3.
-
-        For now, START EXPLORING opens the
-        main pathway exploration screen.
-
-        We can change this destination later.
-    */
-
-    showPathway(
-        "after10th"
-    );
-
-}
-
-
-const startHero =
-    document.getElementById(
-        "startExploringHero"
-    );
-
-const startButton =
-    document.getElementById(
-        "startExploringButton"
-    );
-
-
-if (startHero) {
-
-    startHero.addEventListener(
+    explorationBack.addEventListener(
         "click",
-        startExploring
+        handleExplorationBack
     );
 
 }
 
 
-if (startButton) {
-
-    startButton.addEventListener(
-        "click",
-        startExploring
-    );
-
-}
-
-
-/* =====================================================
-   SLIDE BUTTONS
-===================================================== */
+/* =========================================
+   NEXT SLIDE
+========================================= */
 
 if (nextButton) {
 
     nextButton.addEventListener(
         "click",
         () => {
+
+            if (explorationOpen) {
+                return;
+            }
 
             if (
                 currentSlide <
@@ -2615,9 +2765,7 @@ if (nextButton) {
                     currentSlide + 1
                 );
 
-            }
-
-            else {
+            } else {
 
                 goToSlide(0);
 
@@ -2629,11 +2777,19 @@ if (nextButton) {
 }
 
 
+/* =========================================
+   PREVIOUS SLIDE
+========================================= */
+
 if (previousButton) {
 
     previousButton.addEventListener(
         "click",
         () => {
+
+            if (explorationOpen) {
+                return;
+            }
 
             if (
                 currentSlide > 0
@@ -2643,9 +2799,7 @@ if (previousButton) {
                     currentSlide - 1
                 );
 
-            }
-
-            else {
+            } else {
 
                 goToSlide(
                     slides.length - 1
@@ -2659,9 +2813,9 @@ if (previousButton) {
 }
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* =========================================
+   DESKTOP NAVIGATION
+========================================= */
 
 navButtons.forEach(
     (button, index) => {
@@ -2679,6 +2833,10 @@ navButtons.forEach(
 );
 
 
+/* =========================================
+   MOBILE NAVIGATION
+========================================= */
+
 mobileNavButtons.forEach(
     (button, index) => {
 
@@ -2695,9 +2853,9 @@ mobileNavButtons.forEach(
 );
 
 
-/* =====================================================
-   DATA-SLIDE BUTTONS
-===================================================== */
+/* =========================================
+   SLIDE TARGET BUTTONS
+========================================= */
 
 document
     .querySelectorAll(
@@ -2707,23 +2865,23 @@ document
 
         button.addEventListener(
             "click",
-            () => {
+            (event) => {
 
                 const target =
                     parseInt(
-                        button.getAttribute(
-                            "data-slide-target"
-                        ),
+                        event.currentTarget
+                            .getAttribute(
+                                "data-slide-target"
+                            ),
                         10
                     );
+
 
                 if (
                     !isNaN(target)
                 ) {
 
-                    goToSlide(
-                        target
-                    );
+                    goToSlide(target);
 
                 }
 
@@ -2733,9 +2891,9 @@ document
     });
 
 
-/* =====================================================
+/* =========================================
    MOBILE MENU
-===================================================== */
+========================================= */
 
 if (
     menuButton &&
@@ -2756,23 +2914,21 @@ if (
 }
 
 
-/* =====================================================
+/* =========================================
    KEYBOARD NAVIGATION
-===================================================== */
+========================================= */
 
 window.addEventListener(
     "keydown",
     (event) => {
 
-        if (
-            explorationMode
-        ) {
+        if (explorationOpen) {
 
             if (
                 event.key === "Escape"
             ) {
 
-                explorationBack.click();
+                handleExplorationBack();
 
             }
 
@@ -2821,9 +2977,33 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* =========================================
+   START BUTTON
+========================================= */
+
+const startExploringButton =
+    document.getElementById(
+        "startExploringButton"
+    );
+
+
+if (startExploringButton) {
+
+    startExploringButton.addEventListener(
+        "click",
+        () => {
+
+            goToSlide(2);
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   INITIALISE
+========================================= */
 
 document.addEventListener(
     "DOMContentLoaded",

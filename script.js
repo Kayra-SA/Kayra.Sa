@@ -1,59 +1,38 @@
 /* =========================================================
    KAYRA
-   MAIN JAVASCRIPT
-   FIXED / STABLE VERSION
-========================================================= */
+   MAIN SLIDES + EXPLORATION SYSTEM
+   ========================================================= */
 
-
-/* =========================================================
-   DOM ELEMENTS
-========================================================= */
-
-const slides = Array.from(
-    document.querySelectorAll(".slide")
-);
-
-const navButtons = Array.from(
-    document.querySelectorAll(".nav-links [data-slide]")
-);
-
-const mobileNavButtons = Array.from(
-    document.querySelectorAll(".mobile-nav-link[data-slide]")
-);
-
-const previousButton =
-    document.getElementById("previousSlide");
-
-const nextButton =
-    document.getElementById("nextSlide");
-
-const slideCounter =
-    document.getElementById("slideCounter");
-
-const menuButton =
-    document.getElementById("menuButton");
-
-const mobileMenu =
-    document.getElementById("mobileMenu");
-
+"use strict";
 
 /* =========================================================
-   EXPLORATION
-========================================================= */
+   DOM
+   ========================================================= */
+
+const slides = [...document.querySelectorAll(".slide")];
+
+const desktopNavButtons = [
+    ...document.querySelectorAll(".desktop-nav [data-slide]")
+];
+
+const mobileNavButtons = [
+    ...document.querySelectorAll(".mobile-nav [data-slide]")
+];
+
+const previousSlideButton = document.getElementById("previousSlide");
+const nextSlideButton = document.getElementById("nextSlide");
+const slideCounter = document.getElementById("slideCounter");
+
+const slideContainer = document.getElementById("slideContainer");
 
 const explorationScreen =
     document.getElementById("explorationScreen");
 
-const explorationView =
+const explorationContent =
     document.getElementById("explorationContent");
 
 const explorationBack =
     document.getElementById("explorationBack");
-
-
-/* =========================================================
-   ROADMAP GENERATION
-========================================================= */
 
 const generationOverlay =
     document.getElementById("generationOverlay");
@@ -67,20 +46,28 @@ const generationPercent =
 const generationStatus =
     document.getElementById("generationStatus");
 
+const generationRing =
+    document.getElementById("generationRing");
+
+const startExploringButton =
+    document.getElementById("startExploringButton");
+
 
 /* =========================================================
    STATE
-========================================================= */
+   ========================================================= */
 
 let currentSlide = 0;
 
 let currentExplorationRoute = "";
-
 let currentExplorationData = null;
+
+let explorationMode = "base";
 
 let generationTimer = null;
 
 let textAnimationTimers = [];
+let cardAnimationTimers = [];
 
 let wheelLocked = false;
 
@@ -89,265 +76,231 @@ let touchStartY = 0;
 
 /* =========================================================
    SKILL DATA
-========================================================= */
+   ========================================================= */
 
 const skillData = {
 
     communication: {
-        type: "SKILL",
-        label: "SKILL 01",
-        title: "COMMUNICATION",
-
+        type: "skill",
+        label: "COMMUNICATION",
+        title: "Make your ideas impossible to misunderstand.",
         intro:
-            "The ability to express ideas clearly, understand others, and turn thoughts into meaningful conversations.",
-
+            "Communication is more than speaking. It is the ability to make an idea travel clearly from your mind to someone else's.",
         what:
-            "Communication includes speaking, writing, listening, presenting, explaining, questioning, and understanding different perspectives.",
-
+            "Build clearer speaking, writing, listening, presentation and interpersonal communication.",
         why:
-            "Strong communication helps you collaborate, lead projects, build relationships, handle interviews, and make your ideas understood.",
-
+            "Strong communication improves almost every academic, professional and personal environment.",
         start:
-            "Start by explaining one idea every day in a simple and structured way. Practice listening before responding.",
-
+            "Start by explaining one idea every day in the simplest way possible.",
         roadmap: [
-            "Understand the fundamentals of clear communication",
-            "Improve active listening and questioning",
-            "Practice structured speaking and writing",
-            "Learn presentation and public-speaking techniques",
-            "Apply communication in real-world situations"
+            "Learn active listening",
+            "Improve vocabulary and clarity",
+            "Practice structured speaking",
+            "Write short explanations",
+            "Practice presentations",
+            "Ask for feedback",
+            "Communicate under pressure"
         ],
-
         advanced: [
-            "Build professional communication habits",
-            "Develop persuasive speaking techniques",
-            "Practice advanced presentation structures",
-            "Learn negotiation and conflict communication",
-            "Build professional writing skills",
-            "Develop interview and networking communication",
-            "Apply communication in leadership environments"
+            "Persuasive communication",
+            "Public speaking",
+            "Negotiation",
+            "Storytelling",
+            "Leadership communication",
+            "Professional writing",
+            "Conflict communication"
         ]
     },
-
 
     creativity: {
-        type: "SKILL",
-        label: "SKILL 02",
-        title: "CREATIVITY",
-
+        type: "skill",
+        label: "CREATIVITY",
+        title: "Build ideas that did not exist before.",
         intro:
-            "The ability to generate original ideas, explore possibilities, and approach problems from new perspectives.",
-
+            "Creativity is the ability to connect ideas, experiment with possibilities and create something new.",
         what:
-            "Creativity is not limited to art. It appears in design, technology, writing, entrepreneurship, problem-solving, science, and everyday decision-making.",
-
+            "Develop imagination, experimentation, visual thinking and original problem solving.",
         why:
-            "Creative thinking helps you discover alternatives when the obvious answer is not enough.",
-
+            "Creative thinking allows you to approach familiar problems from unfamiliar directions.",
         start:
-            "Take one ordinary problem and write down five different ways to solve it.",
-
+            "Take an ordinary problem and write down ten different solutions.",
         roadmap: [
-            "Understand divergent and convergent thinking",
-            "Practice generating multiple solutions",
-            "Explore creative observation",
-            "Experiment with different mediums",
-            "Build a portfolio of creative work"
+            "Observe your surroundings",
+            "Collect interesting ideas",
+            "Practice brainstorming",
+            "Experiment without judging",
+            "Combine unrelated ideas",
+            "Create small projects",
+            "Review and improve"
         ],
-
         advanced: [
-            "Develop structured ideation systems",
-            "Study design-thinking principles",
-            "Practice creative problem decomposition",
-            "Build experimental projects",
-            "Learn rapid prototyping",
-            "Develop creative research habits",
-            "Create a long-term creative portfolio"
+            "Design thinking",
+            "Creative strategy",
+            "Innovation systems",
+            "Concept development",
+            "Creative leadership",
+            "Visual storytelling",
+            "Product ideation"
         ]
     },
-
 
     "problem-solving": {
-        type: "SKILL",
-        label: "SKILL 03",
-        title: "PROBLEM SOLVING",
-
+        type: "skill",
+        label: "PROBLEM SOLVING",
+        title: "Stop seeing problems. Start seeing systems.",
         intro:
-            "The ability to understand a problem, break it down, and create a practical path toward a solution.",
-
+            "Problem solving is the ability to break complicated situations into understandable pieces and work toward a solution.",
         what:
-            "Problem solving involves identifying causes, separating useful information from noise, testing possibilities, and evaluating results.",
-
+            "Learn analysis, decomposition, experimentation and decision making.",
         why:
-            "Almost every academic, technical, professional, and real-world environment requires some form of problem solving.",
-
+            "Almost every field rewards people who can understand problems and systematically improve situations.",
         start:
-            "When facing a difficult problem, stop and divide it into smaller problems before trying to solve it.",
-
+            "Take a real problem and divide it into smaller problems.",
         roadmap: [
-            "Learn how to identify the actual problem",
-            "Break complex problems into smaller parts",
-            "Generate and compare possible solutions",
-            "Test solutions systematically",
-            "Review failures and improve the process"
+            "Define the problem",
+            "Find the cause",
+            "Break it into parts",
+            "Generate possible solutions",
+            "Test one solution",
+            "Study the result",
+            "Iterate"
         ],
-
         advanced: [
-            "Master structured problem decomposition",
-            "Learn root-cause analysis",
-            "Practice decision frameworks",
-            "Develop hypothesis-driven thinking",
-            "Work through complex case studies",
-            "Build real-world solution projects",
-            "Develop repeatable problem-solving systems"
+            "Systems thinking",
+            "Root cause analysis",
+            "Decision frameworks",
+            "Optimization",
+            "Strategic problem solving",
+            "Complex systems",
+            "Scenario planning"
         ]
     },
-
 
     "critical-thinking": {
-        type: "SKILL",
-        label: "SKILL 04",
-        title: "CRITICAL THINKING",
-
+        type: "skill",
+        label: "CRITICAL THINKING",
+        title: "Question what you think you know.",
         intro:
-            "The ability to examine information carefully, question assumptions, and form conclusions using evidence.",
-
+            "Critical thinking means examining information carefully instead of accepting every claim immediately.",
         what:
-            "Critical thinking means evaluating evidence, identifying assumptions, recognizing weak reasoning, and separating facts from interpretations.",
-
+            "Develop reasoning, evidence evaluation, logical thinking and intellectual independence.",
         why:
-            "It helps you make better decisions instead of accepting information simply because it sounds convincing.",
-
+            "It helps you make better decisions when information is incomplete, emotional or contradictory.",
         start:
-            "Whenever you encounter a claim, ask: What is the evidence? What assumptions are being made?",
-
+            "Whenever you see a claim, ask: what evidence supports it?",
         roadmap: [
-            "Learn to separate facts from opinions",
-            "Identify assumptions and biases",
-            "Evaluate evidence and sources",
-            "Recognize common reasoning errors",
-            "Practice evidence-based conclusions"
+            "Separate facts from opinions",
+            "Identify assumptions",
+            "Check evidence",
+            "Compare viewpoints",
+            "Detect logical errors",
+            "Challenge your conclusion",
+            "Make evidence-based decisions"
         ],
-
         advanced: [
-            "Study advanced reasoning frameworks",
-            "Analyze complex arguments",
-            "Evaluate conflicting evidence",
-            "Practice source verification",
-            "Develop uncertainty awareness",
-            "Work through analytical case studies",
-            "Apply critical thinking to real decisions"
+            "Formal reasoning",
+            "Argument analysis",
+            "Research evaluation",
+            "Decision theory",
+            "Bias detection",
+            "Scientific reasoning",
+            "Strategic analysis"
         ]
     },
-
 
     leadership: {
-        type: "SKILL",
-        label: "SKILL 05",
-        title: "LEADERSHIP",
-
+        type: "skill",
+        label: "LEADERSHIP",
+        title: "Learn to move people toward an idea.",
         intro:
-            "The ability to guide people, take responsibility, create direction, and help a team move toward a shared goal.",
-
+            "Leadership is not simply being in charge. It is the ability to create direction, responsibility and trust.",
         what:
-            "Leadership includes communication, decision-making, accountability, teamwork, conflict management, and creating a clear direction.",
-
+            "Develop responsibility, teamwork, decision making and influence.",
         why:
-            "Leadership becomes valuable whenever you need to coordinate people or take responsibility for an outcome.",
-
+            "Leadership becomes useful whenever people need to coordinate around a shared objective.",
         start:
-            "Take responsibility for one small project and focus on helping everyone involved succeed.",
-
+            "Take responsibility for one small project and finish it properly.",
         roadmap: [
-            "Understand the fundamentals of leadership",
-            "Improve teamwork and delegation",
-            "Develop decision-making skills",
-            "Learn conflict-management techniques",
-            "Lead a real project from beginning to end"
+            "Build self-discipline",
+            "Learn responsibility",
+            "Practice teamwork",
+            "Communicate expectations",
+            "Make decisions",
+            "Handle disagreement",
+            "Lead a project"
         ],
-
         advanced: [
-            "Develop leadership communication",
-            "Learn strategic delegation",
-            "Practice team decision-making",
-            "Study conflict-resolution frameworks",
-            "Build project leadership experience",
-            "Develop accountability systems",
-            "Lead increasingly complex projects"
+            "Team leadership",
+            "Strategic leadership",
+            "Organizational behavior",
+            "Delegation",
+            "Leadership psychology",
+            "Vision building",
+            "Executive communication"
         ]
     },
-
 
     "digital-literacy": {
-        type: "SKILL",
-        label: "SKILL 06",
-        title: "DIGITAL LITERACY",
-
+        type: "skill",
+        label: "DIGITAL LITERACY",
+        title: "Understand the tools shaping your world.",
         intro:
-            "The ability to confidently understand, use, evaluate, and create with modern digital tools.",
-
+            "Digital literacy means knowing how to understand, use and evaluate modern digital tools.",
         what:
-            "Digital literacy includes online research, productivity tools, digital communication, cybersecurity awareness, data handling, and technology fundamentals.",
-
+            "Build confidence with technology, information, online tools and digital workflows.",
         why:
-            "Technology is now part of almost every academic and professional direction.",
-
+            "Technology touches almost every modern academic and professional environment.",
         start:
-            "Choose one unfamiliar digital tool and learn how to use its basic features.",
-
+            "Learn one digital tool deeply instead of learning ten superficially.",
         roadmap: [
-            "Understand digital fundamentals",
-            "Improve online research skills",
-            "Learn productivity and collaboration tools",
-            "Understand basic cybersecurity",
-            "Build useful digital projects"
+            "Understand digital basics",
+            "Improve online research",
+            "Learn productivity tools",
+            "Understand data",
+            "Explore programming",
+            "Learn digital security",
+            "Build something"
         ],
-
         advanced: [
-            "Develop advanced digital workflows",
-            "Learn data organization and analysis",
-            "Study cybersecurity fundamentals",
-            "Build technology-based projects",
-            "Learn automation concepts",
-            "Develop digital collaboration systems",
-            "Create a professional digital portfolio"
+            "Programming",
+            "Data analysis",
+            "Artificial intelligence",
+            "Cybersecurity",
+            "Automation",
+            "Digital product development",
+            "Technical research"
         ]
     },
 
-
     adaptability: {
-        type: "SKILL",
-        label: "SKILL 07",
-        title: "ADAPTABILITY",
-
+        type: "skill",
+        label: "ADAPTABILITY",
+        title: "Become comfortable with change.",
         intro:
-            "The ability to respond effectively when situations, expectations, environments, or goals change.",
-
+            "Adaptability is the ability to continue learning and functioning when circumstances change.",
         what:
-            "Adaptability involves learning quickly, adjusting plans, handling uncertainty, and remaining productive when circumstances change.",
-
+            "Build flexibility, resilience, learning speed and openness to new situations.",
         why:
-            "Education and careers rarely follow a perfectly predictable path.",
-
+            "The skills and environments around you will continue changing throughout your life.",
         start:
-            "When a plan changes, identify what remains under your control and create a new approach.",
-
+            "Learn something completely outside your normal routine.",
         roadmap: [
-            "Understand how change affects decision-making",
-            "Practice flexible planning",
-            "Improve learning speed",
-            "Develop uncertainty-management habits",
-            "Apply adaptability to real situations"
+            "Try unfamiliar activities",
+            "Accept useful feedback",
+            "Learn from mistakes",
+            "Practice changing plans",
+            "Build learning habits",
+            "Work outside your comfort zone",
+            "Reflect and adapt"
         ],
-
         advanced: [
-            "Build flexible planning systems",
-            "Develop rapid-learning techniques",
-            "Practice scenario planning",
-            "Learn uncertainty-management frameworks",
-            "Work through changing project requirements",
-            "Build resilient workflows",
-            "Create long-term adaptive strategies"
+            "Rapid learning",
+            "Change management",
+            "Resilience",
+            "Cross-disciplinary thinking",
+            "Uncertainty management",
+            "Strategic flexibility",
+            "Continuous improvement"
         ]
     }
 
@@ -356,334 +309,191 @@ const skillData = {
 
 /* =========================================================
    PATHWAY DATA
-========================================================= */
+   ========================================================= */
 
 const pathwayData = {
 
     after10th: {
-        type: "PATHWAY",
-        label: "PATHWAY",
-        title: "AFTER 10TH",
-
+        type: "pathway",
+        label: "AFTER 10TH",
+        title: "Choose the direction that fits your future.",
         intro:
-            "Explore the major directions available after Class 10 and understand how each can connect to future education and careers.",
-
+            "Your choices after 10th can open very different academic and professional routes.",
         choices: [
             {
-                title: "SCIENCE",
-                description:
-                    "Explore Physics, Chemistry, Mathematics, Biology and related academic directions.",
+                label: "SCIENCE",
                 route: "pathway/after10th/science"
             },
             {
-                title: "COMMERCE",
-                description:
-                    "Explore business, economics, finance, accounting and entrepreneurship.",
+                label: "COMMERCE",
                 route: "pathway/after10th/commerce"
             },
             {
-                title: "HUMANITIES",
-                description:
-                    "Explore society, psychology, history, languages, design and related fields.",
+                label: "HUMANITIES",
                 route: "pathway/after10th/humanities"
             },
             {
-                title: "VOCATIONAL",
-                description:
-                    "Explore practical and skill-focused educational directions.",
+                label: "VOCATIONAL",
                 route: "pathway/after10th/vocational"
             }
-        ],
-
-        roadmap: [
-            "Understand your interests and strengths",
-            "Explore the major subject groups",
-            "Compare subjects with future directions",
-            "Research eligibility and admission requirements",
-            "Choose a direction based on your goals"
-        ],
-
-        advanced: [
-            "Map your interests to possible fields",
-            "Compare subject combinations",
-            "Research higher-education requirements",
-            "Identify relevant entrance examinations",
-            "Build foundational skills",
-            "Explore career examples",
-            "Create a personalized academic direction"
         ]
     },
 
-
     science: {
-        type: "PATHWAY",
-        label: "AFTER 10TH / SCIENCE",
-        title: "SCIENCE",
-
+        type: "pathway",
+        label: "SCIENCE",
+        title: "Build a foundation around scientific thinking.",
         intro:
-            "Science opens several academic directions. Your subject combination can influence the fields you can explore later.",
-
+            "Science pathways can lead toward engineering, medicine, research, technology and many other fields.",
         choices: [
             {
-                title: "PCM",
-                description:
-                    "Physics, Chemistry and Mathematics.",
+                label: "PCM",
                 route: "pathway/after10th/science/pcm"
             },
             {
-                title: "PCB",
-                description:
-                    "Physics, Chemistry and Biology.",
+                label: "PCB",
                 route: "pathway/after10th/science/pcb"
             },
             {
-                title: "PCMB",
-                description:
-                    "Physics, Chemistry, Mathematics and Biology.",
+                label: "PCMB",
                 route: "pathway/after10th/science/pcmb"
             }
-        ],
-
-        roadmap: [
-            "Understand the Science stream",
-            "Compare PCM, PCB and PCMB",
-            "Identify subjects you enjoy",
-            "Research higher-education routes",
-            "Connect subjects with career fields"
-        ],
-
-        advanced: [
-            "Compare subject combinations",
-            "Map subjects to university pathways",
-            "Research entrance examinations",
-            "Build foundational subject skills",
-            "Explore possible degree options",
-            "Compare academic workload",
-            "Create a long-term academic plan"
         ]
     },
-
 
     pcm: {
-        type: "PATHWAY",
-        label: "SCIENCE / PCM",
-        title: "PCM",
-
+        type: "pathway",
+        label: "PCM",
+        title: "Physics. Chemistry. Mathematics.",
         intro:
-            "Physics, Chemistry and Mathematics can lead toward engineering, technology, mathematics, architecture, economics and many other fields.",
-
+            "PCM is commonly associated with engineering, technology, mathematics, physics and related fields.",
         roadmap: [
-            "Build strong Mathematics fundamentals",
-            "Develop Physics problem-solving skills",
-            "Strengthen Chemistry concepts",
-            "Explore technology and engineering fields",
-            "Research degree and entrance pathways"
-        ],
-
-        advanced: [
-            "Strengthen advanced mathematics",
-            "Develop analytical problem-solving",
-            "Explore engineering disciplines",
-            "Research entrance examinations",
-            "Build technical projects",
-            "Explore mathematics-heavy fields",
-            "Create a higher-education shortlist"
+            "Build mathematics fundamentals",
+            "Strengthen physics concepts",
+            "Understand chemistry",
+            "Explore engineering fields",
+            "Explore technology",
+            "Research entrance requirements",
+            "Build projects"
         ]
     },
-
 
     pcb: {
-        type: "PATHWAY",
-        label: "SCIENCE / PCB",
-        title: "PCB",
-
+        type: "pathway",
+        label: "PCB",
+        title: "Physics. Chemistry. Biology.",
         intro:
-            "Physics, Chemistry and Biology can lead toward medicine, life sciences, biotechnology, pharmacy and many related fields.",
-
+            "PCB creates a foundation for biology-focused academic and professional routes.",
         roadmap: [
-            "Build strong Biology fundamentals",
-            "Strengthen Chemistry concepts",
-            "Develop Physics fundamentals",
-            "Explore health and life-science fields",
-            "Research degree and entrance pathways"
-        ],
-
-        advanced: [
-            "Build advanced Biology foundations",
-            "Strengthen Chemistry and Physics",
-            "Research health-science pathways",
-            "Explore life-science degrees",
-            "Research relevant entrance examinations",
-            "Compare professional and academic routes",
-            "Build a long-term study plan"
+            "Build biology fundamentals",
+            "Strengthen chemistry",
+            "Understand physics",
+            "Explore healthcare",
+            "Explore biological sciences",
+            "Research course requirements",
+            "Build academic experience"
         ]
     },
-
 
     pcmb: {
-        type: "PATHWAY",
-        label: "SCIENCE / PCMB",
-        title: "PCMB",
-
+        type: "pathway",
+        label: "PCMB",
+        title: "Keep both directions open.",
         intro:
-            "PCMB keeps both Mathematics and Biology open, giving students a broader subject base to explore later.",
-
+            "PCMB combines physics, chemistry, mathematics and biology, allowing exploration across multiple science routes.",
         roadmap: [
-            "Understand the workload of four core subjects",
-            "Build balanced study habits",
-            "Strengthen Mathematics and Biology",
-            "Develop Physics and Chemistry fundamentals",
-            "Compare future options before specializing"
-        ],
-
-        advanced: [
-            "Create a balanced subject strategy",
-            "Build advanced foundations",
-            "Compare Mathematics and Biology pathways",
-            "Research professional degree options",
-            "Track entrance requirements",
-            "Explore interdisciplinary fields",
-            "Create specialization checkpoints"
+            "Build mathematics",
+            "Strengthen biology",
+            "Understand physics",
+            "Understand chemistry",
+            "Explore engineering",
+            "Explore healthcare",
+            "Compare future routes"
         ]
     },
-
 
     commerce: {
-        type: "PATHWAY",
-        label: "AFTER 10TH / COMMERCE",
-        title: "COMMERCE",
-
+        type: "pathway",
+        label: "COMMERCE",
+        title: "Understand how money, markets and organizations work.",
         intro:
-            "Commerce can lead toward finance, accounting, economics, business, management, entrepreneurship and related fields.",
-
+            "Commerce can lead toward finance, business, economics, accounting, management and entrepreneurship.",
         roadmap: [
-            "Understand accounting fundamentals",
-            "Explore economics and business",
-            "Develop numerical confidence",
-            "Explore finance and management",
-            "Research degree and professional pathways"
-        ],
-
-        advanced: [
-            "Build accounting foundations",
-            "Study economics concepts",
-            "Explore finance careers",
-            "Research professional qualifications",
-            "Develop business awareness",
-            "Build analytical and communication skills",
-            "Explore entrepreneurship"
+            "Learn accounting fundamentals",
+            "Understand economics",
+            "Explore finance",
+            "Learn business concepts",
+            "Explore entrepreneurship",
+            "Develop communication",
+            "Research career routes"
         ]
     },
-
 
     humanities: {
-        type: "PATHWAY",
-        label: "AFTER 10TH / HUMANITIES",
-        title: "HUMANITIES",
-
+        type: "pathway",
+        label: "HUMANITIES",
+        title: "Understand people, society and ideas.",
         intro:
-            "Humanities explores people, society, culture, history, language, psychology, politics, design and many other fields.",
-
+            "Humanities can lead toward fields involving society, communication, law, psychology, culture and public life.",
         roadmap: [
-            "Explore social sciences and humanities",
-            "Identify subjects of interest",
-            "Develop reading and writing skills",
-            "Explore creative and analytical fields",
-            "Research higher-education directions"
-        ],
-
-        advanced: [
-            "Develop strong research habits",
-            "Build analytical writing skills",
-            "Explore psychology and social sciences",
-            "Explore design and communication fields",
-            "Develop portfolio projects",
-            "Research university pathways",
-            "Create a specialization plan"
+            "Explore history",
+            "Understand society",
+            "Develop writing",
+            "Explore psychology",
+            "Study politics and civics",
+            "Build research skills",
+            "Explore interdisciplinary fields"
         ]
     },
-
 
     vocational: {
-        type: "PATHWAY",
-        label: "AFTER 10TH / VOCATIONAL",
-        title: "VOCATIONAL",
-
+        type: "pathway",
+        label: "VOCATIONAL",
+        title: "Build practical skills for practical careers.",
         intro:
-            "Vocational education focuses on practical skills and can provide direct exposure to specific industries and occupations.",
-
+            "Vocational education can provide hands-on skills and career-focused learning.",
         roadmap: [
             "Identify practical interests",
-            "Explore available vocational fields",
-            "Compare training programs",
-            "Develop job-ready skills",
-            "Explore further education opportunities"
-        ],
-
-        advanced: [
-            "Identify a target skill area",
-            "Research recognized programs",
-            "Compare training institutions",
-            "Build practical experience",
-            "Develop industry-relevant skills",
-            "Create a portfolio of work",
-            "Plan further education or employment"
+            "Explore skill programs",
+            "Build technical skills",
+            "Practice through projects",
+            "Gain practical experience",
+            "Build a portfolio",
+            "Research career opportunities"
         ]
     },
-
 
     after12th: {
-        type: "PATHWAY",
-        label: "PATHWAY",
-        title: "AFTER 12TH",
-
+        type: "pathway",
+        label: "AFTER 12TH",
+        title: "Turn your interests into a direction.",
         intro:
-            "After Class 12, students can choose from university degrees, professional programs, skill-based routes and other educational directions.",
-
+            "After 12th, your choices can become more specialized. Explore courses, degrees and career paths.",
         roadmap: [
-            "Identify areas of interest",
-            "Research suitable degree options",
-            "Understand eligibility requirements",
-            "Compare institutions and programs",
-            "Plan applications and entrance requirements"
-        ],
-
-        advanced: [
-            "Create a field shortlist",
-            "Compare degree structures",
-            "Research entrance examinations",
-            "Compare universities and institutions",
-            "Review eligibility requirements",
-            "Build an application timeline",
-            "Prepare a higher-education roadmap"
+            "Identify your interests",
+            "Compare possible degrees",
+            "Research institutions",
+            "Understand entrance requirements",
+            "Compare costs",
+            "Explore scholarships",
+            "Build your application"
         ]
     },
 
-
     global: {
-        type: "PATHWAY",
-        label: "PATHWAY",
-        title: "GLOBAL EDUCATION",
-
+        type: "pathway",
+        label: "GLOBAL",
+        title: "Explore education beyond borders.",
         intro:
-            "Explore educational opportunities outside your current country and understand the preparation involved in studying abroad.",
-
+            "Studying internationally involves choosing countries, institutions, programs and application strategies.",
         roadmap: [
-            "Identify countries and fields of interest",
-            "Research university requirements",
-            "Understand language requirements",
-            "Compare tuition and living costs",
-            "Plan applications and documentation"
-        ],
-
-        advanced: [
-            "Shortlist countries and institutions",
-            "Compare degree structures",
-            "Research admission requirements",
-            "Research language and standardized tests",
-            "Plan financial requirements",
-            "Prepare application documents",
-            "Build an international application timeline"
+            "Choose target countries",
+            "Research universities",
+            "Compare programs",
+            "Check requirements",
+            "Research funding",
+            "Prepare applications",
+            "Plan your transition"
         ]
     }
 
@@ -692,130 +502,155 @@ const pathwayData = {
 
 /* =========================================================
    TEXT ANIMATION
-   IMPORTANT:
-   DOES NOT DESTROY HTML.
-   .highlight elements remain intact.
-========================================================= */
+   ========================================================= */
+
+/*
+    IMPORTANT:
+
+    We DO NOT animate spaces.
+
+    Old behavior:
+        "Discover"
+        became
+        "D i s c o v e r"
+
+    and whitespace itself was converted into animated spans.
+
+    That caused broken-looking text.
+
+    New behavior:
+        Letters = animated
+        Spaces = normal HTML whitespace
+
+    This keeps the sentence visually intact.
+*/
+
+function clearTextAnimationTimers() {
+
+    textAnimationTimers.forEach(timer => {
+        clearTimeout(timer);
+    });
+
+    textAnimationTimers = [];
+}
+
+
+function clearCardAnimationTimers() {
+
+    cardAnimationTimers.forEach(timer => {
+        clearTimeout(timer);
+    });
+
+    cardAnimationTimers = [];
+}
+
 
 function prepareTextAnimation() {
 
-    const animatedElements =
-        document.querySelectorAll(
-            ".slide .animated-heading, " +
-            ".slide .animate-text, " +
-            ".slide .eyebrow"
-        );
+    const animatedElements = document.querySelectorAll(
+        ".animated-heading, .animate-text, .eyebrow"
+    );
 
     animatedElements.forEach(element => {
 
-        if (
-            element.dataset.animationPrepared === "true"
-        ) {
+        if (element.dataset.textPrepared === "true") {
             return;
         }
 
         wrapTextNodes(element);
 
-        element.dataset.animationPrepared = "true";
+        element.dataset.textPrepared = "true";
     });
 }
 
 
-/* =========================================================
-   WRAP TEXT NODES
-========================================================= */
+function wrapTextNodes(root) {
 
-function wrapTextNodes(element) {
+    const walker = document.createTreeWalker(
+        root,
+        NodeFilter.SHOW_TEXT,
+        {
+            acceptNode(node) {
 
-    const walker =
-        document.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-            {
-                acceptNode(node) {
+                const parent = node.parentElement;
 
-                    if (
-                        !node.nodeValue ||
-                        !node.nodeValue.trim()
-                    ) {
-                        return NodeFilter.FILTER_REJECT;
-                    }
-
-                    if (
-                        node.parentElement &&
-                        (
-                            node.parentElement.closest(
-                                ".instagram-icon"
-                            )
-                        )
-                    ) {
-                        return NodeFilter.FILTER_REJECT;
-                    }
-
-                    return NodeFilter.FILTER_ACCEPT;
+                if (!parent) {
+                    return NodeFilter.FILTER_REJECT;
                 }
-            }
-        );
 
-    const textNodes = [];
+                if (
+                    parent.closest(
+                        ".char, .word, script, style, svg, .instagram-icon"
+                    )
+                ) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+
+                if (!node.nodeValue.trim()) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        }
+    );
+
+    const nodes = [];
 
     let node;
 
-    while (
-        (node = walker.nextNode())
-    ) {
-        textNodes.push(node);
+    while ((node = walker.nextNode())) {
+        nodes.push(node);
     }
 
+    nodes.forEach(textNode => {
 
-    textNodes.forEach(textNode => {
+        const fragment = document.createDocumentFragment();
 
-        const text =
-            textNode.nodeValue;
+        const text = textNode.nodeValue;
 
-        const fragment =
-            document.createDocumentFragment();
+        /*
+            Split into:
+            - whitespace
+            - actual words
 
+            Whitespace is left untouched.
+        */
 
-        for (
-            let i = 0;
-            i < text.length;
-            i++
-        ) {
+        const parts = text.split(/(\s+)/);
 
-            const character =
-                text[i];
+        parts.forEach(part => {
 
-
-            if (
-                character === " " ||
-                character === "\n" ||
-                character === "\t"
-            ) {
-
-                fragment.appendChild(
-                    document.createTextNode(
-                        character
-                    )
-                );
-
-                continue;
+            if (!part) {
+                return;
             }
 
+            if (/^\s+$/.test(part)) {
 
-            const charSpan =
-                document.createElement("span");
+                fragment.appendChild(
+                    document.createTextNode(part)
+                );
 
-            charSpan.className = "char";
+                return;
+            }
 
-            charSpan.textContent =
-                character;
+            const word = document.createElement("span");
 
-            fragment.appendChild(
-                charSpan
-            );
-        }
+            word.className = "word";
 
+            [...part].forEach(character => {
+
+                const char = document.createElement("span");
+
+                char.className = "char";
+
+                char.textContent = character;
+
+                word.appendChild(char);
+            });
+
+            fragment.appendChild(word);
+        });
 
         textNode.parentNode.replaceChild(
             fragment,
@@ -825,133 +660,70 @@ function wrapTextNodes(element) {
 }
 
 
-/* =========================================================
-   CLEAR TEXT ANIMATION
-========================================================= */
-
-function clearTextAnimationTimers() {
-
-    textAnimationTimers.forEach(
-        timer => clearTimeout(timer)
-    );
-
-    textAnimationTimers = [];
-}
-
-
-/* =========================================================
-   RESET TEXT
-========================================================= */
-
 function resetAnimatedText(slide) {
 
-    if (!slide) {
-        return;
-    }
+    slide
+        .querySelectorAll(".char-visible")
+        .forEach(char => {
 
-    const chars =
-        slide.querySelectorAll(".char");
-
-    chars.forEach(char => {
-
-        char.classList.remove(
-            "char-visible"
-        );
-
-    });
+            char.classList.remove("char-visible");
+        });
 }
 
 
-/* =========================================================
-   ANIMATE TEXT
-========================================================= */
-
 function animateSlideText(slide) {
-
-    if (!slide) {
-        return;
-    }
 
     clearTextAnimationTimers();
 
     resetAnimatedText(slide);
 
+    const chars = [
+        ...slide.querySelectorAll(
+            ".animated-heading .char, .animate-text .char, .eyebrow .char"
+        )
+    ];
 
-    const chars =
-        slide.querySelectorAll(
-            ".animated-heading .char, " +
-            ".animate-text .char, " +
-            ".eyebrow .char"
-        );
+    chars.forEach((char, index) => {
 
+        const timer = setTimeout(() => {
 
-    chars.forEach(
-        (char, index) => {
+            char.classList.add("char-visible");
 
-            const timer =
-                setTimeout(() => {
+        }, index * 14);
 
-                    char.classList.add(
-                        "char-visible"
-                    );
-
-                }, index * 16);
-
-            textAnimationTimers.push(
-                timer
-            );
-        }
-    );
+        textAnimationTimers.push(timer);
+    });
 }
 
 
 /* =========================================================
-   SKILL CARD ANIMATION
-========================================================= */
+   SLIDE ANIMATION
+   ========================================================= */
 
 function animateSkillCards(slide) {
 
-    if (!slide) {
-        return;
-    }
+    clearCardAnimationTimers();
 
-    const cards =
-        slide.querySelectorAll(
-            ".skill-card"
-        );
-
+    const cards = slide.querySelectorAll(".skill-card");
 
     cards.forEach(card => {
 
-        card.classList.remove(
-            "skill-card-visible"
-        );
+        card.classList.remove("skill-card-visible");
 
+        const timer = setTimeout(() => {
+
+            card.classList.add("skill-card-visible");
+
+        }, 80 + cards.length * 10);
+
+        cardAnimationTimers.push(timer);
     });
-
-
-    cards.forEach(
-        (card, index) => {
-
-            setTimeout(
-                () => {
-
-                    card.classList.add(
-                        "skill-card-visible"
-                    );
-
-                },
-                180 + index * 90
-            );
-
-        }
-    );
 }
 
 
 /* =========================================================
-   SLIDE COUNTER
-========================================================= */
+   SLIDE UI
+   ========================================================= */
 
 function updateSlideCounter() {
 
@@ -959,68 +731,47 @@ function updateSlideCounter() {
         return;
     }
 
-    slideCounter.textContent =
-        `${String(currentSlide + 1).padStart(2, "0")} / ` +
-        `${String(slides.length).padStart(2, "0")}`;
+    const current = String(currentSlide + 1).padStart(2, "0");
+    const total = String(slides.length).padStart(2, "0");
+
+    slideCounter.textContent = `${current} / ${total}`;
 }
 
 
-/* =========================================================
-   NAVIGATION STATE
-========================================================= */
+function updateNavigation() {
 
-function updateNavigationState() {
+    [
+        ...desktopNavButtons,
+        ...mobileNavButtons
+    ].forEach(button => {
 
-    navButtons.forEach(button => {
+        const target = Number(button.dataset.slide);
 
-        const target =
-            Number(button.dataset.slide);
+        const active = target === currentSlide;
 
-        button.classList.toggle(
-            "active",
-            target === currentSlide
+        button.classList.toggle("active", active);
+
+        button.setAttribute(
+            "aria-current",
+            active ? "page" : "false"
         );
-
-    });
-
-
-    mobileNavButtons.forEach(button => {
-
-        const target =
-            Number(button.dataset.slide);
-
-        button.classList.toggle(
-            "active",
-            target === currentSlide
-        );
-
     });
 }
 
 
 /* =========================================================
-   CLOSE MOBILE MENU
-========================================================= */
+   MOBILE MENU
+   ========================================================= */
 
 function closeMobileMenu() {
 
-    if (!mobileMenu) {
-        return;
-    }
+    document.body.classList.remove("mobile-menu-open");
 
-    mobileMenu.classList.remove(
-        "open"
-    );
+    const menuToggle =
+        document.querySelector(".mobile-menu-toggle");
 
-    mobileMenu.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    if (menuButton) {
-
-        menuButton.setAttribute(
+    if (menuToggle) {
+        menuToggle.setAttribute(
             "aria-expanded",
             "false"
         );
@@ -1028,29 +779,15 @@ function closeMobileMenu() {
 }
 
 
-/* =========================================================
-   OPEN MOBILE MENU
-========================================================= */
-
 function openMobileMenu() {
 
-    if (!mobileMenu) {
-        return;
-    }
+    document.body.classList.add("mobile-menu-open");
 
-    mobileMenu.classList.add(
-        "open"
-    );
+    const menuToggle =
+        document.querySelector(".mobile-menu-toggle");
 
-    mobileMenu.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    if (menuButton) {
-
-        menuButton.setAttribute(
+    if (menuToggle) {
+        menuToggle.setAttribute(
             "aria-expanded",
             "true"
         );
@@ -1059,1344 +796,855 @@ function openMobileMenu() {
 
 
 /* =========================================================
-   TOGGLE MOBILE MENU
-========================================================= */
+   SLIDES
+   ========================================================= */
 
-function toggleMobileMenu() {
+function setSlideVisibility(index) {
 
-    if (!mobileMenu) {
-        return;
-    }
+    slides.forEach((slide, slideIndex) => {
 
+        const active = slideIndex === index;
 
-    if (
-        mobileMenu.classList.contains(
-            "open"
-        )
-    ) {
+        slide.classList.toggle(
+            "active",
+            active
+        );
 
-        closeMobileMenu();
+        /*
+            THIS IS IMPORTANT.
 
-    } else {
+            Even if CSS accidentally fails to hide inactive slides,
+            the browser itself will hide them.
 
-        openMobileMenu();
-    }
+            Therefore only ONE slide can exist visually at once.
+        */
+
+        slide.hidden = !active;
+
+        slide.setAttribute(
+            "aria-hidden",
+            String(!active)
+        );
+    });
 }
 
 
-/* =========================================================
-   MAIN SLIDE NAVIGATION
-========================================================= */
+function goToSlide(index, updateHash = true) {
 
-function goToSlide(
-    index,
-    clearHash = true
-) {
-
-    if (
-        slides.length === 0
-    ) {
+    if (!slides.length) {
         return;
     }
 
-
-    if (
-        index < 0
-    ) {
-        index = 0;
-    }
-
-
-    if (
-        index >= slides.length
-    ) {
-        index = slides.length - 1;
-    }
-
-
-    if (
-        explorationScreen &&
-        explorationScreen.classList.contains(
-            "active"
-        )
-    ) {
-
-        closeExploration();
-    }
-
+    index = Math.max(
+        0,
+        Math.min(index, slides.length - 1)
+    );
 
     clearTextAnimationTimers();
-
-
-    const oldSlide =
-        slides[currentSlide];
-
-    const newSlide =
-        slides[index];
-
-
-    if (
-        oldSlide &&
-        oldSlide !== newSlide
-    ) {
-
-        oldSlide.classList.remove(
-            "active"
-        );
-
-        oldSlide.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-    }
-
+    clearCardAnimationTimers();
 
     currentSlide = index;
 
-
-    slides.forEach(
-        (slide, slideIndex) => {
-
-            const isActive =
-                slideIndex === currentSlide;
-
-
-            slide.classList.toggle(
-                "active",
-                isActive
-            );
-
-            slide.setAttribute(
-                "aria-hidden",
-                String(!isActive)
-            );
-
-        }
-    );
-
-
-    updateNavigationState();
+    setSlideVisibility(currentSlide);
 
     updateSlideCounter();
+    updateNavigation();
 
     closeMobileMenu();
 
-
-    /*
-        Force the browser to recognize
-        the new active state before
-        starting the text animation.
-    */
-
-    requestAnimationFrame(() => {
-
-        requestAnimationFrame(() => {
-
-            animateSlideText(
-                newSlide
-            );
-
-            animateSkillCards(
-                newSlide
-            );
-
-        });
-
-    });
-
-
-    /*
-        Remove accidental route hashes
-        when moving through normal slides.
-    */
-
-    if (
-        clearHash &&
-        window.location.hash
-    ) {
-
-        history.replaceState(
-            null,
-            "",
-            window.location.pathname +
-            window.location.search
-        );
+    if (explorationScreen) {
+        explorationScreen.classList.remove("active");
     }
 
+    document.body.classList.remove(
+        "exploration-open"
+    );
+
+    currentExplorationRoute = "";
+    currentExplorationData = null;
+    explorationMode = "base";
+
+    if (generationTimer) {
+        clearInterval(generationTimer);
+        generationTimer = null;
+    }
+
+    if (generationOverlay) {
+        generationOverlay.classList.remove("active");
+    }
 
     /*
-        Reset scroll position.
+        Stop the browser from physically scrolling to another
+        part of the document.
     */
 
     window.scrollTo({
         top: 0,
-        behavior: "instant"
+        left: 0,
+        behavior: "auto"
     });
+
+    requestAnimationFrame(() => {
+
+        const activeSlide = slides[currentSlide];
+
+        if (!activeSlide) {
+            return;
+        }
+
+        animateSlideText(activeSlide);
+
+        animateSkillCards(activeSlide);
+    });
+
+    if (updateHash) {
+
+        const newHash = `#slide-${currentSlide}`;
+
+        if (window.location.hash !== newHash) {
+
+            history.replaceState(
+                null,
+                "",
+                newHash
+            );
+        }
+    }
 }
 
-
-/* =========================================================
-   NEXT SLIDE
-========================================================= */
 
 function nextSlide() {
 
-    if (
-        currentSlide <
-        slides.length - 1
-    ) {
-
-        goToSlide(
-            currentSlide + 1
-        );
-
-    } else {
-
-        /*
-            Stay on the last slide.
-        */
-        goToSlide(
-            slides.length - 1
-        );
+    if (currentSlide < slides.length - 1) {
+        goToSlide(currentSlide + 1);
     }
 }
 
-
-/* =========================================================
-   PREVIOUS SLIDE
-========================================================= */
 
 function previousSlide() {
 
-    if (
-        currentSlide > 0
-    ) {
-
-        goToSlide(
-            currentSlide - 1
-        );
-
-    } else {
-
-        goToSlide(0);
+    if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
     }
 }
 
 
 /* =========================================================
-   ROUTE DATA
-========================================================= */
+   ROUTES
+   ========================================================= */
+
+function normalizeRoute(route) {
+
+    if (!route) {
+        return "";
+    }
+
+    return route
+        .replace(/^#/, "")
+        .replace(/^\/+|\/+$/g, "")
+        .replace(/\s+/g, "")
+        .toLowerCase();
+}
+
 
 function getRouteData(route) {
 
-    if (
-        typeof route !== "string" ||
-        route.trim() === ""
-    ) {
+    const cleanRoute = normalizeRoute(route);
+
+    if (!cleanRoute) {
         return null;
     }
 
+    const parts = cleanRoute.split("/");
 
-    const cleanRoute =
-        route
-            .replace(/^#/, "")
-            .replace(/^\/+/, "")
-            .replace(/\/+$/, "");
+    if (parts[0] === "skill") {
 
-
-    const parts =
-        cleanRoute.split("/");
-
-
-    /*
-        SKILLS
-
-        skill/communication
-        skill/creativity
-        etc.
-    */
-
-    if (
-        parts[0] === "skill" &&
-        parts[1]
-    ) {
+        const key = parts
+            .slice(1)
+            .join("-");
 
         return (
+            skillData[key] ||
             skillData[parts[1]] ||
             null
         );
     }
 
 
-    /*
-        PATHWAYS
+    if (parts[0] === "pathway") {
 
-        pathway/after10th
-        pathway/after10th/science
-        pathway/after10th/science/pcm
-        pathway/after12th
-        pathway/global
-    */
-
-    if (
-        parts[0] === "pathway"
-    ) {
-
-        const remaining =
-            parts.slice(1);
-
+        const remaining = parts.slice(1);
 
         /*
-            Direct two-part routes.
-
-            pathway/after10th
-            pathway/after12th
-            pathway/global
+            Try the complete route first.
         */
 
-        if (
-            remaining.length === 1
-        ) {
+        const fullKey = remaining.join("-");
 
-            return (
-                pathwayData[remaining[0]] ||
-                null
-            );
+        if (pathwayData[fullKey]) {
+            return pathwayData[fullKey];
         }
 
-
         /*
-            Nested routes.
+            Then search from the deepest route backwards.
 
-            after10th/science
-            after10th/science/pcm
-        */
+            Example:
 
-        const finalKey =
-            remaining.join("-");
+            pathway/after10th/science/pcm
 
+            checks:
 
-        /*
-            The data object currently
-            stores nested destinations
-            as:
-
-            science
+            after10th-science-pcm
+            science-pcm
             pcm
-            pcb
-            pcmb
-            commerce
-            humanities
-            vocational
         */
 
-        if (
-            pathwayData[finalKey]
+        for (
+            let start = 0;
+            start < remaining.length;
+            start++
         ) {
 
-            return pathwayData[finalKey];
+            const key = remaining
+                .slice(start)
+                .join("-");
+
+            if (pathwayData[key]) {
+                return pathwayData[key];
+            }
         }
 
+        /*
+            Final fallback:
+            find the last matching segment.
+        */
 
-        const lastPart =
-            remaining[
-                remaining.length - 1
-            ];
-
-
-        if (
-            pathwayData[lastPart]
+        for (
+            let i = remaining.length - 1;
+            i >= 0;
+            i--
         ) {
 
-            return pathwayData[lastPart];
+            if (pathwayData[remaining[i]]) {
+                return pathwayData[remaining[i]];
+            }
         }
     }
-
 
     return null;
 }
 
 
-/* =========================================================
-   OPEN EXPLORATION
-========================================================= */
+function navigateToRoute(route) {
 
-function openExploration(route) {
+    const normalized = normalizeRoute(route);
 
-    const data =
-        getRouteData(route);
-
+    const data = getRouteData(normalized);
 
     if (!data) {
-
-        console.warn(
-            "KAYRA: Unknown route:",
-            route
-        );
-
-        return;
+        return false;
     }
 
+    openExploration(normalized);
 
-    currentExplorationRoute =
-        route;
-
-    currentExplorationData =
-        data;
-
-
-    if (explorationScreen) {
-
-        explorationScreen.classList.add(
-            "active"
-        );
-
-        explorationScreen.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-    }
-
-
-    document.body.classList.add(
-        "exploration-open"
-    );
-
-
-    closeMobileMenu();
-
-
-    renderExploration(
-        route,
-        data
-    );
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "instant"
-    });
+    return true;
 }
 
 
 /* =========================================================
-   CLOSE EXPLORATION
-========================================================= */
+   EXPLORATION
+   ========================================================= */
 
-function closeExploration() {
+function openExploration(route) {
+
+    const normalizedRoute =
+        normalizeRoute(route);
+
+    const data =
+        getRouteData(normalizedRoute);
+
+    if (!data) {
+        return;
+    }
+
+    currentExplorationRoute =
+        normalizedRoute;
+
+    currentExplorationData =
+        data;
+
+    explorationMode = "base";
 
     if (!explorationScreen) {
         return;
     }
 
+    explorationScreen.classList.add("active");
 
-    hideGenerationOverlay();
-
-
-    explorationScreen.classList.remove(
-        "active"
+    document.body.classList.add(
+        "exploration-open"
     );
 
+    renderExploration();
 
-    explorationScreen.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto"
+    });
+}
 
+
+function closeExploration() {
+
+    if (generationTimer) {
+
+        clearInterval(generationTimer);
+
+        generationTimer = null;
+    }
+
+    if (generationOverlay) {
+        generationOverlay.classList.remove("active");
+    }
+
+    if (explorationScreen) {
+        explorationScreen.classList.remove("active");
+    }
 
     document.body.classList.remove(
         "exploration-open"
     );
 
-
     currentExplorationRoute = "";
-
     currentExplorationData = null;
+
+    explorationMode = "base";
 }
 
 
-/* =========================================================
-   PARENT ROUTE
-========================================================= */
-
 function getParentRoute(route) {
 
-    if (
-        !route ||
-        typeof route !== "string"
-    ) {
-        return null;
-    }
-
-
     const parts =
-        route
-            .split("/")
-            .filter(Boolean);
+        normalizeRoute(route).split("/");
 
-
-    if (
-        parts.length <= 2
-    ) {
-        return null;
+    if (parts.length <= 1) {
+        return "";
     }
-
 
     parts.pop();
-
 
     return parts.join("/");
 }
 
 
 /* =========================================================
-   BACK FROM EXPLORATION
-========================================================= */
+   EXPLORATION BACK
+   ========================================================= */
 
 function explorationBackAction() {
 
-    const parent =
-        getParentRoute(
-            currentExplorationRoute
-        );
-
-
     /*
-        If this is a nested pathway,
-        go one level upward.
+        If the user is looking at the advanced roadmap,
+        first return to the normal exploration page.
     */
+
+    if (explorationMode === "advanced") {
+
+        explorationMode = "base";
+
+        renderExploration();
+
+        return;
+    }
+
+
+    const parent =
+        getParentRoute(currentExplorationRoute);
 
     if (parent) {
 
-        const parentData =
-            getRouteData(parent);
-
-
-        if (parentData) {
-
-            window.location.hash =
-                parent;
-
-            return;
-        }
-    }
-
-
-    /*
-        Skills return to SKILLS.
-    */
-
-    if (
-        currentExplorationRoute.startsWith(
-            "skill/"
-        )
-    ) {
-
-        returnToSlide(2);
+        navigateToRoute(parent);
 
         return;
     }
 
 
-    /*
-        Pathways return to PATHWAYS.
-    */
+    if (
+        currentExplorationData &&
+        currentExplorationData.type === "skill"
+    ) {
 
-    returnToSlide(3);
-}
+        closeExploration();
+
+        goToSlide(2);
+
+        return;
+    }
 
 
-/* =========================================================
-   RETURN TO MAIN SLIDE
-========================================================= */
+    if (
+        currentExplorationData &&
+        currentExplorationData.type === "pathway"
+    ) {
 
-function returnToSlide(index) {
+        closeExploration();
+
+        goToSlide(3);
+
+        return;
+    }
 
     closeExploration();
-
-
-    goToSlide(
-        index,
-        true
-    );
 }
 
 
 /* =========================================================
-   ROADMAP HTML
-========================================================= */
+   EXPLORATION RENDERING
+   ========================================================= */
 
-function createRoadmapHTML(
-    roadmap
-) {
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function renderExploration() {
 
     if (
-        !Array.isArray(roadmap) ||
-        roadmap.length === 0
+        !explorationContent ||
+        !currentExplorationData
     ) {
-
-        return "";
-    }
-
-
-    return `
-
-        <div class="roadmap-list">
-
-            ${roadmap.map(
-                (step, index) => `
-
-                    <div
-                        class="roadmap-step reveal-up"
-                        style="--delay:${index * 0.08}s"
-                    >
-
-                        <div class="roadmap-number">
-                            ${String(
-                                index + 1
-                            ).padStart(2, "0")}
-                        </div>
-
-                        <div class="roadmap-line"></div>
-
-                        <div class="roadmap-text">
-                            ${step}
-                        </div>
-
-                    </div>
-
-                `
-            ).join("")}
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   CHOICE HTML
-========================================================= */
-
-function createChoiceHTML(
-    choices
-) {
-
-    if (
-        !Array.isArray(choices) ||
-        choices.length === 0
-    ) {
-
-        return "";
-    }
-
-
-    return `
-
-        <div class="exploration-choices">
-
-            ${choices.map(
-                (choice, index) => `
-
-                    <button
-                        type="button"
-                        class="exploration-choice reveal-up"
-                        data-route="${choice.route}"
-                        style="--delay:${index * 0.08}s"
-                    >
-
-                        <span class="choice-index">
-                            ${String(
-                                index + 1
-                            ).padStart(2, "0")}
-                        </span>
-
-                        <span class="choice-content">
-
-                            <span class="choice-title">
-                                ${choice.title}
-                            </span>
-
-                            <span class="choice-description">
-                                ${choice.description}
-                            </span>
-
-                        </span>
-
-                        <span class="choice-arrow">
-                            →
-                        </span>
-
-                    </button>
-
-                `
-            ).join("")}
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   EXPLORATION RENDER
-========================================================= */
-
-function renderExploration(
-    route,
-    data
-) {
-
-    if (!explorationView) {
-
-        console.error(
-            "KAYRA: #explorationContent is missing."
-        );
-
         return;
     }
+
+    const data =
+        currentExplorationData;
 
 
     const choicesHTML =
-        createChoiceHTML(
-            data.choices
-        );
+        data.choices
+            ? `
+                <div class="exploration-choices">
+                    ${data.choices.map(choice => `
+                        <button
+                            class="exploration-choice"
+                            data-route="${escapeHTML(choice.route)}"
+                            type="button"
+                        >
+                            <span>${escapeHTML(choice.label)}</span>
+                            <span class="choice-arrow">→</span>
+                        </button>
+                    `).join("")}
+                </div>
+            `
+            : "";
 
 
     const roadmapHTML =
-        createRoadmapHTML(
-            data.roadmap
-        );
+        data.roadmap
+            ? `
+                <section class="exploration-roadmap">
+
+                    <div class="exploration-section-label">
+                        ROADMAP
+                    </div>
+
+                    <div class="roadmap-list">
+
+                        ${data.roadmap.map((item, index) => `
+                            <div class="roadmap-item">
+
+                                <span class="roadmap-number">
+                                    ${String(index + 1).padStart(2, "0")}
+                                </span>
+
+                                <span class="roadmap-text">
+                                    ${escapeHTML(item)}
+                                </span>
+
+                            </div>
+                        `).join("")}
+
+                    </div>
+
+                </section>
+            `
+            : "";
 
 
-    explorationView.innerHTML = `
+    const whatHTML =
+        data.what
+            ? `
+                <section class="exploration-info">
+
+                    <span class="exploration-section-label">
+                        WHAT YOU BUILD
+                    </span>
+
+                    <p>${escapeHTML(data.what)}</p>
+
+                </section>
+            `
+            : "";
+
+
+    const whyHTML =
+        data.why
+            ? `
+                <section class="exploration-info">
+
+                    <span class="exploration-section-label">
+                        WHY IT MATTERS
+                    </span>
+
+                    <p>${escapeHTML(data.why)}</p>
+
+                </section>
+            `
+            : "";
+
+
+    const startHTML =
+        data.start
+            ? `
+                <section class="exploration-info">
+
+                    <span class="exploration-section-label">
+                        START HERE
+                    </span>
+
+                    <p>${escapeHTML(data.start)}</p>
+
+                </section>
+            `
+            : "";
+
+
+    const advancedHTML =
+        data.advanced
+            ? `
+                <button
+                    class="advanced-roadmap-button"
+                    data-action="advanced"
+                    type="button"
+                >
+                    GENERATE ADVANCED ROADMAP
+                    <span>→</span>
+                </button>
+            `
+            : "";
+
+
+    explorationContent.innerHTML = `
 
         <div class="exploration-header">
 
-            <div class="exploration-eyebrow">
-                ${data.label}
-            </div>
+            <span class="exploration-label">
+                ${escapeHTML(data.label)}
+            </span>
 
-            <h1 class="exploration-title">
-                ${data.title}
+            <h1>
+                ${escapeHTML(data.title)}
             </h1>
 
             <p class="exploration-intro">
-                ${data.intro}
+                ${escapeHTML(data.intro)}
             </p>
 
         </div>
 
+        ${choicesHTML}
 
-        ${
-            choicesHTML
-                ? `
+        ${whatHTML}
 
-                    <section
-                        class="exploration-section choices-section"
-                    >
+        ${whyHTML}
 
-                        <div class="section-label">
-                            CHOOSE YOUR DIRECTION
-                        </div>
+        ${startHTML}
 
-                        ${choicesHTML}
+        ${roadmapHTML}
 
-                    </section>
+        ${advancedHTML}
 
-                `
-                : ""
-        }
-
-
-        ${
-            data.what
-                ? `
-
-                    <section
-                        class="exploration-section"
-                    >
-
-                        <div class="section-label">
-                            WHAT IT MEANS
-                        </div>
-
-                        <div class="exploration-info">
-                            ${data.what}
-                        </div>
-
-                    </section>
-
-                `
-                : ""
-        }
-
-
-        ${
-            data.why
-                ? `
-
-                    <section
-                        class="exploration-section"
-                    >
-
-                        <div class="section-label">
-                            WHY IT MATTERS
-                        </div>
-
-                        <div class="exploration-info">
-                            ${data.why}
-                        </div>
-
-                    </section>
-
-                `
-                : ""
-        }
-
-
-        ${
-            data.start
-                ? `
-
-                    <section
-                        class="exploration-section"
-                    >
-
-                        <div class="section-label">
-                            START HERE
-                        </div>
-
-                        <div class="exploration-info start-info">
-                            ${data.start}
-                        </div>
-
-                    </section>
-
-                `
-                : ""
-        }
-
-
-        ${
-            roadmapHTML
-                ? `
-
-                    <section
-                        class="exploration-section roadmap-section"
-                    >
-
-                        <div class="section-label">
-                            YOUR ROADMAP
-                        </div>
-
-                        ${roadmapHTML}
-
-                    </section>
-
-                `
-                : ""
-        }
-
-
-        <section
-            class="exploration-section advanced-section"
-        >
-
-            <div class="advanced-copy">
-
-                <div class="section-label">
-                    GO DEEPER
-                </div>
-
-                <h2>
-                    BUILD A MORE ADVANCED PLAN
-                </h2>
-
-                <p>
-                    Some directions require more than an overview.
-                    For deeper planning, Kayra can build an advanced
-                    roadmap with more stages, preparation checkpoints,
-                    skill requirements, and next-step guidance.
-                </p>
-
-                <button
-                    type="button"
-                    class="primary-button advanced-roadmap-button"
-                    data-action="generate-advanced"
-                >
-                    GENERATE ADVANCED ROADMAP
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <section
-            class="exploration-section exploration-help"
-        >
-
-            <div class="section-label">
-                KAYRA
-            </div>
-
-            <p>
-                Explore the options, compare the directions,
-                and build your path one decision at a time.
-            </p>
-
-        </section>
-
-
-        <div class="exploration-footer">
-
-            <button
-                type="button"
-                class="exploration-back-bottom"
-                data-action="back"
-            >
-                ← BACK
-            </button>
-
-        </div>
     `;
 
 
-    revealExplorationElements();
-}
+    /*
+        Animate newly created text without
+        breaking spaces.
+    */
 
-
-/* =========================================================
-   REVEAL EXPLORATION ELEMENTS
-========================================================= */
-
-function revealExplorationElements() {
-
-    if (!explorationView) {
-        return;
-    }
-
+    prepareTextAnimation();
 
     requestAnimationFrame(() => {
 
-        const elements =
-            explorationView.querySelectorAll(
-                ".reveal-up"
-            );
+        animateSlideText(explorationContent);
 
-
-        elements.forEach(
-            element => {
-
-                requestAnimationFrame(() => {
-
-                    element.classList.add(
-                        "revealed"
-                    );
-
-                });
-
-            }
-        );
     });
 }
 
 
 /* =========================================================
-   GENERATE ADVANCED ROADMAP
-========================================================= */
+   ADVANCED ROADMAP
+   ========================================================= */
 
 function generateAdvancedRoadmap() {
 
     if (
         !currentExplorationData ||
-        !generationOverlay
+        !currentExplorationData.advanced
     ) {
         return;
     }
-
-
-    clearInterval(
-        generationTimer
-    );
-
-
-    generationOverlay.classList.add(
-        "active"
-    );
-
-
-    generationOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    if (generationBarFill) {
-
-        generationBarFill.style.width =
-            "0%";
-    }
-
-
-    if (generationPercent) {
-
-        generationPercent.textContent =
-            "0%";
-    }
-
-
-    if (generationStatus) {
-
-        generationStatus.textContent =
-            "ANALYSING DIRECTION...";
-    }
-
-
-    const statuses = [
-
-        {
-            value: 12,
-            text: "ANALYSING DIRECTION..."
-        },
-
-        {
-            value: 28,
-            text: "MAPPING REQUIREMENTS..."
-        },
-
-        {
-            value: 44,
-            text: "IDENTIFYING SKILLS..."
-        },
-
-        {
-            value: 61,
-            text: "BUILDING PREPARATION STAGES..."
-        },
-
-        {
-            value: 78,
-            text: "CONNECTING NEXT STEPS..."
-        },
-
-        {
-            value: 92,
-            text: "FINALISING ROADMAP..."
-        },
-
-        {
-            value: 100,
-            text: "ROADMAP READY"
-        }
-
-    ];
-
-
-    let progress = 0;
-
-    let statusIndex = 0;
-
-
-    generationTimer =
-        setInterval(() => {
-
-            progress +=
-                Math.floor(
-                    Math.random() * 4
-                ) + 2;
-
-
-            if (
-                progress >= 100
-            ) {
-
-                progress = 100;
-            }
-
-
-            if (generationBarFill) {
-
-                generationBarFill.style.width =
-                    `${progress}%`;
-            }
-
-
-            if (generationPercent) {
-
-                generationPercent.textContent =
-                    `${progress}%`;
-            }
-
-
-            while (
-                statusIndex <
-                    statuses.length &&
-                progress >=
-                    statuses[
-                        statusIndex
-                    ].value
-            ) {
-
-                if (generationStatus) {
-
-                    generationStatus.textContent =
-                        statuses[
-                            statusIndex
-                        ].text;
-                }
-
-
-                statusIndex++;
-            }
-
-
-            if (
-                progress >= 100
-            ) {
-
-                clearInterval(
-                    generationTimer
-                );
-
-                generationTimer =
-                    null;
-
-
-                setTimeout(() => {
-
-                    hideGenerationOverlay();
-
-
-                    if (
-                        currentExplorationData
-                    ) {
-
-                        renderAdvancedRoadmap(
-                            currentExplorationData
-                        );
-                    }
-
-                }, 650);
-            }
-
-        }, 90);
-}
-
-
-/* =========================================================
-   HIDE GENERATION OVERLAY
-========================================================= */
-
-function hideGenerationOverlay() {
-
-    clearInterval(
-        generationTimer
-    );
-
-    generationTimer = null;
-
 
     if (!generationOverlay) {
         return;
     }
 
+    if (generationTimer) {
 
-    generationOverlay.classList.remove(
-        "active"
-    );
+        clearInterval(generationTimer);
+
+        generationTimer = null;
+    }
+
+    generationOverlay.classList.add("active");
+
+    let progress = 0;
+
+    const statuses = [
+        "ANALYSING YOUR PATH",
+        "MAPPING SKILL DEPENDENCIES",
+        "BUILDING LEARNING SEQUENCE",
+        "CALCULATING NEXT STEPS",
+        "FINALISING ROADMAP"
+    ];
 
 
-    generationOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-    );
+    if (generationBarFill) {
+        generationBarFill.style.width = "0%";
+    }
+
+    if (generationPercent) {
+        generationPercent.textContent = "0%";
+    }
+
+    if (generationStatus) {
+        generationStatus.textContent =
+            statuses[0];
+    }
+
+    if (generationRing) {
+        generationRing.style.setProperty(
+            "--progress",
+            "0"
+        );
+    }
+
+
+    generationTimer = setInterval(() => {
+
+        progress += Math.floor(
+            Math.random() * 5
+        ) + 2;
+
+        if (progress >= 100) {
+            progress = 100;
+        }
+
+
+        if (generationBarFill) {
+            generationBarFill.style.width =
+                `${progress}%`;
+        }
+
+
+        if (generationPercent) {
+            generationPercent.textContent =
+                `${progress}%`;
+        }
+
+
+        if (generationRing) {
+
+            generationRing.style.setProperty(
+                "--progress",
+                progress
+            );
+        }
+
+
+        const statusIndex =
+            Math.min(
+                statuses.length - 1,
+                Math.floor(progress / 20)
+            );
+
+        if (generationStatus) {
+
+            generationStatus.textContent =
+                statuses[statusIndex];
+        }
+
+
+        if (progress >= 100) {
+
+            clearInterval(generationTimer);
+
+            generationTimer = null;
+
+            setTimeout(() => {
+
+                if (
+                    !currentExplorationData ||
+                    !explorationScreen.classList.contains("active")
+                ) {
+                    return;
+                }
+
+                generationOverlay.classList.remove(
+                    "active"
+                );
+
+                renderAdvancedRoadmap();
+
+            }, 500);
+        }
+
+    }, 90);
 }
 
 
 /* =========================================================
-   ADVANCED ROADMAP
-========================================================= */
+   ADVANCED ROADMAP SCREEN
+   ========================================================= */
 
-function renderAdvancedRoadmap(
-    data
-) {
+function renderAdvancedRoadmap() {
 
-    if (!explorationView) {
+    if (
+        !explorationContent ||
+        !currentExplorationData ||
+        !currentExplorationData.advanced
+    ) {
         return;
     }
 
+    explorationMode = "advanced";
 
-    const advanced =
-        Array.isArray(data.advanced)
-            ? data.advanced
-            : [];
+    const data =
+        currentExplorationData;
 
 
-    explorationView.innerHTML = `
+    explorationContent.innerHTML = `
 
         <div class="exploration-header">
 
-            <div class="exploration-eyebrow">
+            <span class="exploration-label">
                 ADVANCED ROADMAP
-            </div>
+            </span>
 
-            <h1 class="exploration-title">
-                ${data.title}
+            <h1>
+                Your next level.
             </h1>
 
             <p class="exploration-intro">
-                A deeper progression plan built around
-                preparation, development, and next steps.
+                A deeper progression path built around
+                the direction you selected.
             </p>
 
         </div>
 
 
-        <section
-            class="exploration-section roadmap-section"
-        >
+        <section class="exploration-roadmap">
 
-            <div class="section-label">
-                ADVANCED PROGRESSION
-            </div>
+            <div class="roadmap-list">
 
-            <div
-                class="roadmap-list advanced-roadmap-list"
-            >
+                ${data.advanced.map((item, index) => `
 
-                ${advanced.map(
-                    (step, index) => `
+                    <div class="roadmap-item">
 
-                        <div
-                            class="roadmap-step reveal-up"
-                            style="--delay:${index * 0.08}s"
-                        >
+                        <span class="roadmap-number">
+                            ${String(index + 1).padStart(2, "0")}
+                        </span>
 
-                            <div class="roadmap-number">
-                                ${String(
-                                    index + 1
-                                ).padStart(2, "0")}
-                            </div>
+                        <span class="roadmap-text">
+                            ${escapeHTML(item)}
+                        </span>
 
-                            <div class="roadmap-line"></div>
+                    </div>
 
-                            <div class="roadmap-text">
-                                ${step}
-                            </div>
-
-                        </div>
-
-                    `
-                ).join("")}
+                `).join("")}
 
             </div>
 
         </section>
 
 
-        <section
-            class="exploration-section"
-        >
+        <div class="advanced-checkpoint">
 
-            <div class="section-label">
+            <span>
                 CHECKPOINT
-            </div>
+            </span>
 
-            <div
-                class="exploration-info checkpoint-info"
-            >
-
-                Your roadmap is not a fixed route.
-                Use each stage as a checkpoint, review what
-                you have learned, and adjust your direction
-                as your goals become clearer.
-
-            </div>
-
-        </section>
-
-
-        <section
-            class="exploration-section"
-        >
-
-            <div class="section-label">
-                NEXT MOVE
-            </div>
-
-            <div class="advanced-next-box">
-
-                <h2>
-                    START WITH STAGE 01
-                </h2>
-
-                <p>
-                    Focus on the first step instead of trying
-                    to solve the entire journey at once.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <div class="exploration-footer">
-
-            <button
-                type="button"
-                class="exploration-back-bottom"
-                data-action="back"
-            >
-                ← BACK
-            </button>
+            <p>
+                Do not rush the roadmap.
+                Build each layer before moving forward.
+            </p>
 
         </div>
+
+
+        <button
+            class="advanced-roadmap-button"
+            data-action="back-base"
+            type="button"
+        >
+            RETURN TO ROADMAP
+            <span>←</span>
+        </button>
+
     `;
 
 
-    revealExplorationElements();
+    requestAnimationFrame(() => {
+
+        animateSlideText(explorationContent);
+
+    });
 }
 
 
 /* =========================================================
-   EXPLORATION EVENT DELEGATION
-========================================================= */
+   EXPLORATION EVENTS
+   ========================================================= */
 
-if (explorationView) {
+if (explorationContent) {
 
-    explorationView.addEventListener(
+    explorationContent.addEventListener(
         "click",
         event => {
 
             const routeButton =
-                event.target.closest(
-                    "[data-route]"
-                );
-
+                event.target.closest("[data-route]");
 
             if (routeButton) {
 
                 const route =
                     routeButton.dataset.route;
 
-
-                if (route) {
-
-                    window.location.hash =
-                        route;
-                }
-
+                navigateToRoute(route);
 
                 return;
             }
 
 
             const actionButton =
-                event.target.closest(
-                    "[data-action]"
-                );
-
+                event.target.closest("[data-action]");
 
             if (!actionButton) {
                 return;
@@ -2407,10 +1655,7 @@ if (explorationView) {
                 actionButton.dataset.action;
 
 
-            if (
-                action ===
-                "generate-advanced"
-            ) {
+            if (action === "advanced") {
 
                 generateAdvancedRoadmap();
 
@@ -2418,11 +1663,13 @@ if (explorationView) {
             }
 
 
-            if (
-                action === "back"
-            ) {
+            if (action === "back-base") {
 
-                explorationBackAction();
+                explorationMode = "base";
+
+                renderExploration();
+
+                return;
             }
 
         }
@@ -2431,283 +1678,159 @@ if (explorationView) {
 
 
 /* =========================================================
-   EXPLORATION TOP BACK
-========================================================= */
+   EXPLORATION BACK BUTTON
+   ========================================================= */
 
 if (explorationBack) {
 
     explorationBack.addEventListener(
         "click",
-        () => {
-
-            explorationBackAction();
-
-        }
+        explorationBackAction
     );
 }
 
 
 /* =========================================================
-   DESKTOP NAVIGATION
-========================================================= */
+   DESKTOP NAV
+   ========================================================= */
 
-navButtons.forEach(
-    button => {
+desktopNavButtons.forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-                const index =
-                    Number(
-                        button.dataset.slide
-                    );
+            const index =
+                Number(button.dataset.slide);
 
+            goToSlide(index);
 
-                if (
-                    Number.isNaN(index)
-                ) {
-                    return;
-                }
-
-
-                goToSlide(index);
-            }
-        );
-    }
-);
+        }
+    );
+});
 
 
 /* =========================================================
-   MOBILE NAVIGATION
-========================================================= */
+   MOBILE NAV
+   ========================================================= */
 
-mobileNavButtons.forEach(
-    button => {
+mobileNavButtons.forEach(button => {
 
-        button.addEventListener(
-            "click",
-            () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-                const index =
-                    Number(
-                        button.dataset.slide
-                    );
+            const index =
+                Number(button.dataset.slide);
 
+            goToSlide(index);
 
-                if (
-                    Number.isNaN(index)
-                ) {
-                    return;
-                }
+            closeMobileMenu();
 
-
-                goToSlide(index);
-
-                closeMobileMenu();
-            }
-        );
-    }
-);
+        }
+    );
+});
 
 
 /* =========================================================
-   HERO / NORMAL SLIDE BUTTONS
-========================================================= */
+   SLIDE TARGET BUTTONS
+   ========================================================= */
 
 document.addEventListener(
     "click",
     event => {
 
         const button =
-            event.target.closest(
-                "[data-slide-target]"
-            );
-
+            event.target.closest("[data-slide-target]");
 
         if (!button) {
             return;
         }
 
-
         const target =
-            Number(
-                button.dataset.slideTarget
-            );
+            Number(button.dataset.slideTarget);
 
+        if (!Number.isNaN(target)) {
 
-        if (
-            Number.isNaN(target)
-        ) {
-            return;
+            goToSlide(target);
+
         }
-
-
-        goToSlide(target);
     }
 );
 
 
 /* =========================================================
    MOBILE MENU BUTTON
-========================================================= */
+   ========================================================= */
 
-if (menuButton) {
+const mobileMenuToggle =
+    document.querySelector(".mobile-menu-toggle");
 
-    menuButton.addEventListener(
-        "click",
-        event => {
+if (mobileMenuToggle) {
 
-            event.stopPropagation();
-
-            toggleMobileMenu();
-
-        }
-    );
-}
-
-
-/* =========================================================
-   CLOSE MENU WHEN CLICKING OUTSIDE
-========================================================= */
-
-document.addEventListener(
-    "click",
-    event => {
-
-        if (
-            !mobileMenu ||
-            !menuButton
-        ) {
-            return;
-        }
-
-
-        if (
-            !mobileMenu.classList.contains(
-                "open"
-            )
-        ) {
-            return;
-        }
-
-
-        if (
-            event.target.closest(
-                "#mobileMenu"
-            ) ||
-            event.target.closest(
-                "#menuButton"
-            )
-        ) {
-            return;
-        }
-
-
-        closeMobileMenu();
-    }
-);
-
-
-/* =========================================================
-   PREVIOUS BUTTON
-========================================================= */
-
-if (previousButton) {
-
-    previousButton.addEventListener(
+    mobileMenuToggle.addEventListener(
         "click",
         () => {
 
-            if (
-                explorationScreen &&
-                explorationScreen.classList.contains(
-                    "active"
-                )
-            ) {
-                return;
+            const isOpen =
+                document.body.classList.contains(
+                    "mobile-menu-open"
+                );
+
+            if (isOpen) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
             }
 
-
-            previousSlide();
         }
     );
 }
 
 
 /* =========================================================
-   NEXT BUTTON
-========================================================= */
+   PREVIOUS / NEXT
+   ========================================================= */
 
-if (nextButton) {
+if (previousSlideButton) {
 
-    nextButton.addEventListener(
+    previousSlideButton.addEventListener(
         "click",
-        () => {
-
-            if (
-                explorationScreen &&
-                explorationScreen.classList.contains(
-                    "active"
-                )
-            ) {
-                return;
-            }
+        previousSlide
+    );
+}
 
 
-            nextSlide();
-        }
+if (nextSlideButton) {
+
+    nextSlideButton.addEventListener(
+        "click",
+        nextSlide
     );
 }
 
 
 /* =========================================================
-   KEYBOARD NAVIGATION
-========================================================= */
+   KEYBOARD
+   ========================================================= */
 
 document.addEventListener(
     "keydown",
     event => {
 
-        const activeElement =
-            document.activeElement;
-
-
         /*
-            Don't hijack keyboard controls
-            while typing into a form field.
+            Do not control slides while an exploration
+            overlay is open.
         */
 
         if (
-            activeElement &&
-            (
-                activeElement.tagName === "INPUT" ||
-                activeElement.tagName === "TEXTAREA" ||
-                activeElement.tagName === "SELECT"
-            )
-        ) {
-            return;
-        }
-
-
-        const explorationActive =
             explorationScreen &&
-            explorationScreen.classList.contains(
-                "active"
-            );
-
-
-        if (
-            explorationActive
+            explorationScreen.classList.contains("active")
         ) {
 
-            if (
-                event.key === "Escape"
-            ) {
-
-                explorationBackAction();
+            if (event.key === "Escape") {
+                closeExploration();
             }
-
 
             return;
         }
@@ -2737,95 +1860,76 @@ document.addEventListener(
 
             return;
         }
+
+
+        if (event.key === "Home") {
+
+            event.preventDefault();
+
+            goToSlide(0);
+
+            return;
+        }
+
+
+        if (event.key === "End") {
+
+            event.preventDefault();
+
+            goToSlide(slides.length - 1);
+
+        }
+
     }
 );
 
 
 /* =========================================================
-   MOUSE WHEEL SLIDE NAVIGATION
-========================================================= */
+   WHEEL
+   ========================================================= */
 
-window.addEventListener(
+/*
+    IMPORTANT:
+
+    The wheel NO LONGER changes slides.
+
+    This means scrolling cannot move the user through
+    the presentation.
+
+    CSS also needs overflow hidden, which is included
+    in the CSS patch I give below.
+*/
+
+document.addEventListener(
     "wheel",
     event => {
 
-        if (
-            Math.abs(event.deltaY) <
-            25
-        ) {
-            return;
-        }
-
-
-        if (
-            explorationScreen &&
-            explorationScreen.classList.contains(
-                "active"
-            )
-        ) {
-            return;
-        }
-
-
-        /*
-            Don't allow multiple slides
-            to fly past from one scroll.
-        */
-
-        if (wheelLocked) {
-            return;
-        }
-
-
-        wheelLocked = true;
-
-
-        if (
-            event.deltaY > 0
-        ) {
-
-            nextSlide();
-
-        } else {
-
-            previousSlide();
-        }
-
-
-        setTimeout(
-            () => {
-
-                wheelLocked = false;
-
-            },
-            700
-        );
+        event.preventDefault();
 
     },
     {
-        passive: true
+        passive: false
     }
 );
 
 
 /* =========================================================
-   TOUCH / MOBILE SWIPE
-========================================================= */
+   TOUCH
+   ========================================================= */
 
-window.addEventListener(
+/*
+    Touch scrolling is also blocked.
+
+    The user must use the navigation buttons.
+*/
+
+document.addEventListener(
     "touchstart",
     event => {
 
-        if (
-            !event.touches ||
-            event.touches.length === 0
-        ) {
-            return;
-        }
-
-
         touchStartY =
             event.touches[0].clientY;
+
     },
     {
         passive: true
@@ -2833,55 +1937,30 @@ window.addEventListener(
 );
 
 
-window.addEventListener(
+document.addEventListener(
+    "touchmove",
+    event => {
+
+        event.preventDefault();
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+document.addEventListener(
     "touchend",
     event => {
 
-        if (
-            explorationScreen &&
-            explorationScreen.classList.contains(
-                "active"
-            )
-        ) {
-            return;
-        }
+        /*
+            Deliberately do nothing.
 
+            Swiping does NOT change slides.
+        */
 
-        if (
-            !event.changedTouches ||
-            event.changedTouches.length === 0
-        ) {
-            return;
-        }
-
-
-        const touchEndY =
-            event.changedTouches[0].clientY;
-
-
-        const difference =
-            touchStartY -
-            touchEndY;
-
-
-        if (
-            Math.abs(difference) <
-            60
-        ) {
-            return;
-        }
-
-
-        if (
-            difference > 0
-        ) {
-
-            nextSlide();
-
-        } else {
-
-            previousSlide();
-        }
+        touchStartY = 0;
 
     },
     {
@@ -2892,90 +1971,81 @@ window.addEventListener(
 
 /* =========================================================
    HASH ROUTING
-========================================================= */
+   ========================================================= */
 
-function handleRoute() {
+function handleHash() {
 
     const hash =
-        window.location.hash
-            .replace(/^#/, "");
-
-
-    /*
-        No route = normal slide mode.
-    */
+        window.location.hash;
 
     if (!hash) {
 
-        if (
-            explorationScreen &&
-            explorationScreen.classList.contains(
-                "active"
-            )
-        ) {
-
-            closeExploration();
-        }
-
+        goToSlide(0, false);
 
         return;
     }
 
 
-    const data =
-        getRouteData(hash);
+    const cleanHash =
+        hash.replace("#", "");
+
+
+    if (
+        cleanHash.startsWith("slide-")
+    ) {
+
+        const index =
+            Number(
+                cleanHash.replace(
+                    "slide-",
+                    ""
+                )
+            );
+
+        if (
+            Number.isInteger(index) &&
+            index >= 0 &&
+            index < slides.length
+        ) {
+
+            goToSlide(
+                index,
+                false
+            );
+
+            return;
+        }
+    }
 
 
     /*
-        Invalid hash.
+        Support direct exploration links.
     */
 
-    if (!data) {
+    if (
+        cleanHash.startsWith("skill/") ||
+        cleanHash.startsWith("pathway/")
+    ) {
 
-        history.replaceState(
-            null,
-            "",
-            window.location.pathname +
-            window.location.search
-        );
-
-
-        closeExploration();
-
-
-        goToSlide(
-            0,
-            false
-        );
-
+        navigateToRoute(cleanHash);
 
         return;
     }
 
 
-    openExploration(hash);
+    goToSlide(0, false);
 }
 
 
-/* =========================================================
-   HASH CHANGE
-========================================================= */
-
 window.addEventListener(
     "hashchange",
-    handleRoute
+    handleHash
 );
 
 
 /* =========================================================
    START EXPLORING
-========================================================= */
-
-const startExploringButton =
-    document.getElementById(
-        "startExploringButton"
-    );
-
+   ========================================================= */
 
 if (startExploringButton) {
 
@@ -2983,121 +2053,91 @@ if (startExploringButton) {
         "click",
         () => {
 
-            /*
-                START EXPLORING goes to the
-                PATHWAYS selection screen.
-            */
-
-            goToSlide(
-                3
-            );
+            goToSlide(3);
 
         }
     );
 }
+
+
+/* =========================================================
+   HARD SCROLL LOCK
+   ========================================================= */
+
+/*
+    JS fallback for browsers.
+
+    CSS will also lock:
+        html
+        body
+        #slideContainer
+*/
+
+document.documentElement.style.overflow = "hidden";
+document.body.style.overflow = "hidden";
+document.body.style.height = "100vh";
 
 
 /* =========================================================
    INITIALIZE
-========================================================= */
+   ========================================================= */
 
-function initializeKayra() {
+function initialize() {
 
     /*
-        Check that the expected slide
-        structure actually exists.
+        Make absolutely sure that only one slide
+        can be displayed.
     */
 
-    if (
-        slides.length === 0
-    ) {
+    slides.forEach((slide, index) => {
 
-        console.error(
-            "KAYRA: No .slide elements were found."
+        const active =
+            index === 0;
+
+        slide.hidden = !active;
+
+        slide.classList.toggle(
+            "active",
+            active
         );
 
-        return;
-    }
+        slide.setAttribute(
+            "aria-hidden",
+            String(!active)
+        );
+    });
 
-
-    /*
-        Prepare the character animation
-        WITHOUT destroying HTML structure.
-    */
 
     prepareTextAnimation();
 
-
-    /*
-        Make absolutely sure only
-        the first slide is active.
-    */
-
-    slides.forEach(
-        (slide, index) => {
-
-            const active =
-                index === 0;
-
-
-            slide.classList.toggle(
-                "active",
-                active
-            );
-
-
-            slide.setAttribute(
-                "aria-hidden",
-                String(!active)
-            );
-        }
-    );
-
-
-    currentSlide = 0;
-
-
-    updateNavigationState();
+    handleHash();
 
     updateSlideCounter();
 
+    updateNavigation();
+
 
     /*
-        If the page was loaded with a
-        valid exploration hash, open it.
-        Otherwise show HOME.
+        Start K glow / orbit animation.
+        CSS handles the actual visual animation.
+        JS only makes sure the hero starts in
+        the correct state.
     */
 
-    if (
-        window.location.hash
-    ) {
-
-        handleRoute();
-
-    } else {
-
-        goToSlide(
-            0,
-            false
-        );
-    }
+    document.body.classList.add(
+        "kayra-ready"
+    );
 }
 
 
-/* =========================================================
-   START
-========================================================= */
-
-if (
-    document.readyState === "loading"
-) {
+if (document.readyState === "loading") {
 
     document.addEventListener(
         "DOMContentLoaded",
-        initializeKayra
+        initialize
     );
 
 } else {
 
-    initializeKayra();
+    initialize();
 }

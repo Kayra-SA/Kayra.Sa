@@ -3,109 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KAYRA — Pathways</title>
+  <title>KAYRA — Build Your Future</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- TOP HEADER / NAV -->
+  <!-- FIXED NAVBAR -->
   <header class="navbar">
     <div class="logo-box">
       <div class="logo-icon">K</div>
-      <div class="logo-text">KAYRA</div>
+      <span class="logo-text">KAYRA</span>
     </div>
     <div class="brand-sub">A VISION OF SAHITH KANKARA AND ANANYA BONALA.</div>
     <nav class="nav-links">
-      <a href="#home">HOME</a>
-      <a href="#about">ABOUT</a>
-      <a href="#skills">SKILLS</a>
-      <a href="#pathways" class="active">PATHWAYS</a>
-      <a href="#philosophy">PHILOSOPHY</a>
-      <a href="#start">START</a>
-      <a href="#contact">CONTACT</a>
+      <a href="#home" class="nav-item" data-slide="0">HOME</a>
+      <a href="#about" class="nav-item" data-slide="1">ABOUT</a>
+      <a href="#skills" class="nav-item" data-slide="2">SKILLS</a>
+      <a href="#pathways" class="nav-item active" data-slide="3">PATHWAYS</a>
+      <a href="#philosophy" class="nav-item" data-slide="4">PHILOSOPHY</a>
+      <a href="#start" class="nav-item" data-slide="5">START</a>
+      <a href="#contact" class="nav-item" data-slide="6">CONTACT</a>
     </nav>
   </header>
 
-  <!-- MAIN SLIDER WRAPPER -->
-  <main class="viewport">
-    
-    <!-- SLIDE 1: MAIN PATHWAY BUTTONS -->
-    <section id="slide-main" class="slide active">
-      <div class="section-tag">03 / PATHWAYS</div>
-      <h1 class="hero-heading">YOUR NEXT <span class="glow-text">PATH.</span></h1>
+  <!-- MAIN VIEWPORT SLIDER -->
+  <main class="slider-container">
 
-      <div class="buttons-container">
-        <!-- Button 10th -->
-        <button class="path-btn" onclick="openCategory('10th')">
-          <div class="btn-num">01</div>
-          <div class="btn-info">
-            <h2>AFTER 10TH</h2>
-            <p>Explore streams, subjects, and directions for the next stage.</p>
-          </div>
-          <div class="btn-arrow">&rarr;</div>
-        </button>
-
-        <!-- Button 12th -->
-        <button class="path-btn" onclick="openCategory('12th')">
-          <div class="btn-num">02</div>
-          <div class="btn-info">
-            <h2>AFTER 12TH</h2>
-            <p>Understand courses, careers, universities, and opportunities.</p>
-          </div>
-          <div class="btn-arrow">&rarr;</div>
-        </button>
-
-        <!-- Button Global -->
-        <button class="path-btn" onclick="openCategory('global')">
-          <div class="btn-num">03</div>
-          <div class="btn-info">
-            <h2>GLOBAL OPTIONS</h2>
-            <p>Discover international schools, universities, and global pathways.</p>
-          </div>
-          <div class="btn-arrow">&rarr;</div>
-        </button>
+    <!-- SLIDE 0: HOME -->
+    <section class="slide-page" id="slide-0">
+      <div class="slide-content">
+        <span class="section-tag">00 / HOME</span>
+        <h1 class="hero-heading">BUILD YOUR <span class="glow-text">FUTURE.</span></h1>
+        <p class="section-desc">Welcome to KAYRA. Navigate through our structured pathways to explore education, career streams, and global opportunities.</p>
       </div>
     </section>
 
-    <!-- SLIDE 2: DETAIL VIEW (HIDDEN UNTIL CLICKED) -->
-    <section id="slide-detail" class="slide">
-      <div class="detail-header">
-        <button class="back-btn" onclick="goBackMain()">&larr; BACK TO PATHWAYS</button>
-        <span class="category-tag" id="detail-tag">03 / AFTER 10TH</span>
+    <!-- SLIDE 1: ABOUT -->
+    <section class="slide-page" id="slide-1">
+      <div class="slide-content">
+        <span class="section-tag">01 / ABOUT</span>
+        <h1 class="hero-heading">OUR <span class="glow-text">VISION.</span></h1>
+        <p class="section-desc">KAYRA empowers students with data-driven career choices, top institution rankings, and stream roadmaps tailored for excellence.</p>
       </div>
+    </section>
 
-      <div class="detail-grid">
-        <!-- Left Pane: Streams List -->
-        <div class="streams-panel">
-          <h3 class="panel-title">SELECT OPTION</h3>
-          <div class="options-list" id="options-container"></div>
-        </div>
+    <!-- SLIDE 2: SKILLS -->
+    <section class="slide-page" id="slide-2">
+      <div class="slide-content">
+        <span class="section-tag">02 / SKILLS</span>
+        <h1 class="hero-heading">CORE <span class="glow-text">SKILLS.</span></h1>
+        <p class="section-desc">Master future-proof skills across technology, medicine, commerce, and creative disciplines.</p>
+      </div>
+    </section>
 
-        <!-- Right Pane: Stream Specs & Top Institutions -->
-        <div class="specs-panel">
-          <div class="spec-header">
-            <h2 id="stream-title">SCIENCE (PCM)</h2>
-            <div class="diff-block">
-              <span class="diff-label">DIFFICULTY LEVEL: <strong id="diff-value">85%</strong></span>
-              <div class="diff-bar-bg">
-                <div class="diff-bar-fill" id="diff-bar"></div>
-              </div>
+    <!-- SLIDE 3: PATHWAYS (MAIN HUB + SUB-SLIDE DETAILS) -->
+    <section class="slide-page active" id="slide-3">
+      
+      <!-- MAIN PATHWAYS LIST (EXACT DESIGN MATCH) -->
+      <div class="pathways-main-view" id="pathways-main">
+        <span class="section-tag">03 / PATHWAYS</span>
+        <h1 class="hero-heading">YOUR NEXT <span class="glow-text">PATH.</span></h1>
+
+        <div class="pathways-list">
+          
+          <!-- ITEM 01: AFTER 10TH -->
+          <div class="path-row" onclick="openPathDetails('10th')">
+            <span class="row-num">01</span>
+            <div class="row-content">
+              <h2>AFTER 10TH</h2>
+              <p>Explore streams, subjects, and directions for the next stage.</p>
             </div>
+            <span class="row-arrow">&rarr;</span>
           </div>
 
-          <h4 class="section-subtitle">TOP 3 INSTITUTIONS / SCHOOLS</h4>
-          <div class="cards-grid" id="institutions-container"></div>
+          <!-- ITEM 02: AFTER 12TH -->
+          <div class="path-row" onclick="openPathDetails('12th')">
+            <span class="row-num">02</span>
+            <div class="row-content">
+              <h2>AFTER 12TH</h2>
+              <p>Understand courses, careers, universities, and opportunities.</p>
+            </div>
+            <span class="row-arrow">&rarr;</span>
+          </div>
+
+          <!-- ITEM 03: GLOBAL OPTIONS -->
+          <div class="path-row" onclick="openPathDetails('global')">
+            <span class="row-num">03</span>
+            <div class="row-content">
+              <h2>GLOBAL OPTIONS</h2>
+              <p>Discover international schools, universities, and global pathways.</p>
+            </div>
+            <span class="row-arrow">&rarr;</span>
+          </div>
+
         </div>
+      </div>
+
+      <!-- SUB-SLIDE DETAIL VIEW (ACCESSIBLE ONLY ON ROW CLICK) -->
+      <div class="pathways-detail-view" id="pathways-detail">
+        <div class="detail-topbar">
+          <button class="back-link" onclick="closePathDetails()">&larr; BACK TO PATHWAYS</button>
+          <span class="section-tag" id="detail-category-tag">03 / AFTER 10TH</span>
+        </div>
+
+        <div class="detail-body">
+          <!-- LEFT SIDE: OPTIONS / STREAMS -->
+          <div class="options-sidebar">
+            <span class="sidebar-title">AVAILABLE STREAMS</span>
+            <div class="options-menu" id="options-menu"></div>
+          </div>
+
+          <!-- RIGHT SIDE: SPECIFICATIONS & TOP 3 INSTITUTIONS -->
+          <div class="options-content">
+            <div class="spec-card">
+              <h2 id="stream-name">SCIENCE (PCM)</h2>
+              <div class="difficulty-wrapper">
+                <div class="diff-header">
+                  <span>DIFFICULTY LEVEL</span>
+                  <strong id="diff-percentage">85%</strong>
+                </div>
+                <div class="diff-track">
+                  <div class="diff-fill" id="diff-bar-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <span class="institutions-title">TOP 3 INSTITUTIONS / COLLEGES</span>
+            <div class="cards-grid" id="institutions-grid"></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SLIDE 4: PHILOSOPHY -->
+    <section class="slide-page" id="slide-4">
+      <div class="slide-content">
+        <span class="section-tag">04 / PHILOSOPHY</span>
+        <h1 class="hero-heading">OUR <span class="glow-text">BELIEF.</span></h1>
+        <p class="section-desc">Education should be clear, accessible, and structured to lead every individual to their true potential.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: START -->
+    <section class="slide-page" id="slide-5">
+      <div class="slide-content">
+        <span class="section-tag">05 / START</span>
+        <h1 class="hero-heading">GET <span class="glow-text">STARTED.</span></h1>
+        <p class="section-desc">Take the first step toward mapping your academic roadmap with KAYRA.</p>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: CONTACT -->
+    <section class="slide-page" id="slide-6">
+      <div class="slide-content">
+        <span class="section-tag">06 / CONTACT</span>
+        <h1 class="hero-heading">REACH <span class="glow-text">OUT.</span></h1>
+        <p class="section-desc">Connect with Sahith Kankara and Ananya Bonala for support, inquiries, or feedback.</p>
       </div>
     </section>
 
   </main>
 
-  <!-- BOTTOM FOOTER NAV -->
-  <footer class="footer-nav">
-    <span>&larr; PREVIOUS</span>
-    <span class="slide-count">04 / 07</span>
-    <span>NEXT &rarr;</span>
+  <!-- FIXED FOOTER CONTROLS -->
+  <footer class="footer-bar">
+    <button class="footer-btn" id="prev-btn" onclick="navigateSlide(-1)">&larr; PREVIOUS</button>
+    <div class="slide-indicator" id="slide-counter">04 / 07</div>
+    <button class="footer-btn" id="next-btn" onclick="navigateSlide(1)">NEXT &rarr;</button>
   </footer>
 
   <script src="script.js"></script>

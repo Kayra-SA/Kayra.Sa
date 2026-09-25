@@ -1065,7 +1065,7 @@ body {
 }
 
 /* =========================================
-   ROADMAP OVERLAY (HIDDEN BY DEFAULT)
+   ROADMAP OVERLAY (VERTICAL & ELABORATE)
 ========================================= */
 
 .roadmap-overlay {
@@ -1078,7 +1078,7 @@ body {
 
     z-index: 2000;
 
-    padding: 110px 8vw 60px;
+    padding: 100px 8vw 60px;
 
     overflow-y: auto;
 
@@ -1093,6 +1093,19 @@ body {
         opacity 0.4s ease,
         transform 0.4s ease,
         visibility 0.4s ease;
+}
+
+.roadmap-overlay::-webkit-scrollbar {
+    width: 6px;
+}
+
+.roadmap-overlay::-webkit-scrollbar-track {
+    background: var(--black);
+}
+
+.roadmap-overlay::-webkit-scrollbar-thumb {
+    background: var(--red-wine);
+    border-radius: 3px;
 }
 
 .roadmap-overlay.active {
@@ -1129,116 +1142,144 @@ body {
 }
 
 .roadmap-container {
-    max-width: 1000px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.roadmap-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+.roadmap-header {
+    margin-bottom: 40px;
+}
 
-    margin-top: 45px;
-
+/* Vertical Timeline Structure */
+.roadmap-vertical-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     position: relative;
+    margin-top: 20px;
 }
 
 .roadmap-step {
-    border: 1px solid var(--border);
-
-    background: linear-gradient(135deg, rgba(229, 9, 36, 0.05), rgba(10, 10, 10, 0.9));
-
-    padding: 28px;
-
     display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
+    gap: 30px;
     position: relative;
 }
 
-.roadmap-step::after {
-    content: "";
-
-    position: absolute;
-
-    right: -13px;
-
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 10px;
-
-    height: 1px;
-
-    background: var(--red-bright);
-
-    box-shadow: 0 0 6px var(--red-bright);
-}
-
-.roadmap-step:last-child::after {
-    display: none;
+.step-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50px;
+    flex-shrink: 0;
 }
 
 .step-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--red-bright);
+    background: var(--black-soft);
     color: var(--red-bright);
 
-    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    box-shadow: 0 0 12px rgba(229, 9, 36, 0.25);
+    z-index: 2;
+}
+
+.timeline-line {
+    width: 2px;
+    flex-grow: 1;
+    background: linear-gradient(to bottom, var(--red-bright), rgba(229, 9, 36, 0.15));
+    margin: 10px 0;
+    min-height: 80px;
+}
+
+.step-content {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(229, 9, 36, 0.04), rgba(10, 10, 10, 0.95));
+    padding: 24px 28px;
+    margin-bottom: 35px;
+    border-radius: 4px;
+    position: relative;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-content:hover {
+    border-color: rgba(229, 9, 36, 0.5);
+    box-shadow: 0 0 25px rgba(229, 9, 36, 0.08);
+}
+
+.step-header-tag {
+    color: var(--red-bright);
+    font-size: 8px;
     font-weight: 800;
-
     letter-spacing: 2px;
-
-    margin-bottom: 15px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
 }
 
 .step-content h4 {
-    font-size: 16px;
-
+    font-size: 18px;
     font-weight: 800;
-
     letter-spacing: 1px;
-
-    margin-bottom: 10px;
+    color: var(--white);
+    margin-bottom: 8px;
 }
 
 .step-desc {
     color: var(--gray);
-
     font-size: 13px;
-
     line-height: 1.6;
+    margin-bottom: 16px;
+}
 
-    margin-bottom: 25px;
+.step-points {
+    list-style-type: none;
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+
+.step-points li {
+    position: relative;
+    padding-left: 18px;
+    color: #cccccc;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.step-points li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--red-bright);
 }
 
 .kayra-impact {
     border-top: 1px dashed rgba(229, 9, 36, 0.25);
-
-    padding-top: 15px;
+    padding-top: 14px;
 }
 
 .kayra-badge {
     color: var(--red-bright);
-
     font-size: 8px;
-
     font-weight: 800;
-
     letter-spacing: 1.5px;
-
     display: block;
-
     margin-bottom: 6px;
 }
 
 .kayra-impact p {
     color: var(--white);
-
     font-size: 12px;
-
     line-height: 1.5;
 }
 
@@ -1553,14 +1594,6 @@ body {
     .skills-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .roadmap-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .roadmap-step::after {
-        display: none;
-    }
 }
 
 @media (max-width: 800px) {
@@ -1613,6 +1646,24 @@ body {
     .pathway-row {
         grid-template-columns:
             45px 1fr 30px;
+    }
+
+    .roadmap-step {
+        gap: 18px;
+    }
+
+    .step-marker {
+        width: 36px;
+    }
+
+    .step-num {
+        width: 36px;
+        height: 36px;
+        font-size: 11px;
+    }
+
+    .step-content {
+        padding: 18px 20px;
     }
 }
 

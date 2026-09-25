@@ -20,75 +20,260 @@ let currentSlide = 0;
 let isRoadmapOpen = false;
 
 /* =========================================
-   ROADMAP DATA (6 SKILLS)
+   ROADMAP DATA (6 SKILLS, DETAILED & VERTICAL)
 ========================================= */
 
 const roadmapData = {
     "communication": {
         num: "02 / SKILLS / 01",
         title: "COMMUNICATION",
-        subtitle: "Master articulate speech, active listening, and impact.",
-        s1Desc: "Understand non-verbal cues & structural clarity.",
-        s1Kayra: "Kayra's foundational diagnostics and real-time reflection logs.",
-        s2Desc: "Public speaking exercises & structured essay writing.",
-        s2Kayra: "Safe peer-to-peer feedback circles and articulation challenges.",
-        s3Desc: "High-stakes negotiations, debate & leadership storytelling.",
-        s3Kayra: "Direct mentorship sessions with experienced student leaders."
+        subtitle: "Master articulate speech, active listening, structural narrative, and audience resonance.",
+        
+        s1Title: "FOUNDATIONAL EXPRESSION",
+        s1Desc: "Understand core message structuring, tone awareness, and active listening dynamics.",
+        s1Points: [
+            "Deconstruct non-verbal signals, vocal cadence, and posture.",
+            "Learn the Pyramid Principle to structure messages top-down.",
+            "Practice reflective listening to process viewpoints before formulating answers."
+        ],
+        s1Kayra: "Diagnostic articulation assessments and foundational speech structure blueprints.",
+
+        s2Title: "STRUCTURED WRITING & PUBLIC SPEAKING",
+        s2Desc: "Transform raw thoughts into compelling speeches, essays, and presentations.",
+        s2Points: [
+            "Write concise pitch briefs and structured opinion pieces.",
+            "Eliminate speech clutter (filler words, passive voice, rambling).",
+            "Deliver short impromptu speeches under tight constraints."
+        ],
+        s2Kayra: "Safe-space peer feedback circles, video speech analysis, and voice modulation labs.",
+
+        s3Title: "PERSUASION & NEGOTIATION",
+        s3Desc: "Navigate complex discussions, resolve disagreements, and align divergent viewpoints.",
+        s3Points: [
+            "Map stakeholder incentives and adapt language to audience archetypes.",
+            "Master negotiation dynamics: BATNA, empathetic pushback, and compromise.",
+            "De-escalate high-pressure debates using calm, structured logic."
+        ],
+        s3Kayra: "Simulated Model UN / debate arenas and guided conflict resolution workshops.",
+
+        s4Title: "INSPIRATIONAL LEADERSHIP STORYTELLING",
+        s4Desc: "Inspire communities, articulate vision, and command presence in high-stakes environments.",
+        s4Points: [
+            "Craft personal leadership narratives that resonate authentically.",
+            "Host podcasts, lead town halls, or represent projects on external stages.",
+            "Mentor junior peers in developing their own communication style."
+        ],
+        s4Kayra: "Keynote presentation opportunities, public showcase platforms, and 1-on-1 executive coaching."
     },
+
     "creativity": {
         num: "02 / SKILLS / 02",
         title: "CREATIVITY",
-        subtitle: "Unlock original thinking and unconventional problem solving.",
-        s1Desc: "Divergent thinking patterns & curiosity habits.",
-        s1Kayra: "Daily lateral thinking prompts and concept mapping tools.",
-        s2Desc: "Interdisciplinary project building & rapid prototyping.",
-        s2Kayra: "Collaborative design sprints across different domain fields.",
-        s3Desc: "Executing original ideas into real-world projects.",
-        s3Kayra: "Showcasing platforms to turn creative projects into portfolios."
+        subtitle: "Unlock original thinking, break cognitive patterns, and convert concepts into tangible realities.",
+
+        s1Title: "CURIOSITY & DIVERGENT THINKING",
+        s1Desc: "Break routine mental shortcuts and develop acute observational habits.",
+        s1Points: [
+            "Challenge implicit assumptions using First Principles reasoning.",
+            "Maintain daily idea journals capturing observations across industries.",
+            "Practice lateral thinking drills to connect seemingly unrelated fields."
+        ],
+        s1Kayra: "Daily brain-teaser prompts, cross-domain reading lists, and concept mapping tools.",
+
+        s2Title: "IDEATION & RAPID PROTOTYPING",
+        s2Desc: "Iterate swiftly on ideas and build low-fidelity conceptual models.",
+        s2Points: [
+            "Apply Design Thinking frameworks (Empathize, Define, Ideate, Prototype, Test).",
+            "Build quick wireframes, storyboards, or mockups without fear of failure.",
+            "Gather immediate peer feedback to refine early hypotheses."
+        ],
+        s2Kayra: "Collaborative 48-hour design sprints and multi-disciplinary sandbox sessions.",
+
+        s3Title: "INTERDISCIPLINARY FUSION",
+        s3Desc: "Merge artistic expression, scientific rigor, and human psychology.",
+        s3Points: [
+            "Analyze world-class innovations across design, technology, and literature.",
+            "Synthesize ideas from nature (biomimicry) into real-world utility.",
+            "Refine aesthetic intuition alongside functional necessity."
+        ],
+        s3Kayra: "Cross-domain workshops bridging art, technology, and social systems.",
+
+        s4Title: "PORTFOLIO CREATION & REAL-WORLD LAUNCH",
+        s4Desc: "Execute original vision into published works, products, or original ventures.",
+        s4Points: [
+            "Curate a professional portfolio highlighting design/thought processes.",
+            "Launch creative campaigns, open-source projects, or publications.",
+            "Establish a distinctive personal style and creative voice."
+        ],
+        s4Kayra: "KAYRA Creative Incubator, student showcases, and exhibition grants."
     },
+
     "problem-solving": {
         num: "02 / SKILLS / 03",
         title: "PROBLEM SOLVING",
-        subtitle: "Deconstruct complexity into clear, actionable solutions.",
-        s1Desc: "Root cause analysis & analytical reasoning.",
-        s1Kayra: "Real-world case studies and analytical frameworks.",
-        s2Desc: "Strategic formulation & multi-perspective testing.",
-        s2Kayra: "Interactive problem-solving challenges with expert guidance.",
-        s3Desc: "Building resilient systems & long-term solution strategy.",
-        s3Kayra: "Project incubators that tackle real societal/academic challenges."
+        subtitle: "Deconstruct complex challenges into manageable variables and craft resilient, high-impact solutions.",
+
+        s1Title: "ROOT CAUSE ANALYSIS",
+        s1Desc: "Distinguish symptoms from true underlying problems through systematic inquiry.",
+        s1Points: [
+            "Apply the '5 Whys' and MECE (Mutually Exclusive, Collectively Exhaustive) frameworks.",
+            "Gather quantitative and qualitative data without cognitive bias.",
+            "Map problem trees to pinpoint exact structural bottlenecks."
+        ],
+        s1Kayra: "Interactive analytical case studies and structured problem breakdown toolkits.",
+
+        s2Title: "STRATEGIC OPTION GENERATION",
+        s2Desc: "Formulate multiple viable solution pathways before committing resources.",
+        s2Points: [
+            "Conduct impact-versus-effort trade-off evaluations.",
+            "Perform stress testing on proposed solutions against worst-case scenarios.",
+            "Draft clear decision matrix frameworks for complex scenarios."
+        ],
+        s2Kayra: "Guided scenario analysis exercises and real-world strategy simulations.",
+
+        s3Title: "EXECUTION & TACTICAL ADAPTATION",
+        s3Desc: "Translate strategy into phased, measurable implementation plans.",
+        s3Points: [
+            "Define concrete KPIs, target milestones, and risk mitigation strategies.",
+            "Execute pilot tests to gather real-world performance metrics.",
+            "Pivot swiftly when empirical feedback contradicts initial assumptions."
+        ],
+        s3Kayra: "Project incubators that tackle real campus, community, or industry problems.",
+
+        s4Title: "SYSTEMS THINKING & SCALABILITY",
+        s4Desc: "Design long-term operational systems that prevent problems from recurring.",
+        s4Points: [
+            "Identify second- and third-order consequences within complex ecosystems.",
+            "Automate repetitive workflows and build sustainable operating frameworks.",
+            "Document playbooks so solutions scale independently of individual effort."
+        ],
+        s4Kayra: "Mentorship from industry problem solvers and policy/system design labs."
     },
+
     "leadership": {
         num: "02 / SKILLS / 04",
         title: "LEADERSHIP",
-        subtitle: "Guide teams with empathy, decisiveness, and vision.",
-        s1Desc: "Self-awareness, integrity, and personal accountability.",
-        s1Kayra: "Leadership self-assessment tools and goal setting.",
-        s2Desc: "Team dynamics, delegation, and empathetic listening.",
-        s2Kayra: "Simulated team initiatives and group project leadership roles.",
-        s3Desc: "Strategic visioning, conflict resolution & culture building.",
-        s3Kayra: "Direct leadership roles in Kayra's student-led initiatives."
+        subtitle: "Guide teams with empathy, strategic vision, ethical grounding, and decisive clarity.",
+
+        s1Title: "SELF-MASTERY & ETHICAL FOUNDATION",
+        s1Desc: "Establish core personal values, self-awareness, and emotional regulation.",
+        s1Points: [
+            "Identify personal biases, triggers, and core driving principles.",
+            "Demonstrate radical accountability for personal mistakes and choices.",
+            "Align daily behaviors with long-term ethical standards."
+        ],
+        s1Kayra: "Leadership self-assessment diagnostics, goal setting, and reflection logs.",
+
+        s2Title: "TEAM DYNAMICS & EMPATHETIC MANAGEMENT",
+        s2Desc: "Build psychological safety, delegate effectively, and motivate diverse individuals.",
+        s2Points: [
+            "Understand individual strength profiles (CliftonStrengths, MBTI context).",
+            "Practice active delegation while offering necessary support structures.",
+            "Give actionable, empathetic feedback that inspires growth rather than defense."
+        ],
+        s2Kayra: "Simulated group project leadership roles and team dynamics workshops.",
+
+        s3Title: "STRATEGIC ALIGNMENT & CONFLICT RESOLUTION",
+        s3Desc: "Unify teams around a compelling shared vision and navigate interpersonal tension.",
+        s3Points: [
+            "Translate high-level vision into clear team objectives and key results (OKRs).",
+            "Resolve internal team friction swiftly using non-violent communication.",
+            "Maintain composure and clear decision-making during high-stress crises."
+        ],
+        s3Kayra: "Real-time leadership roles in KAYRA's student initiatives and team challenges.",
+
+        s4Title: "CULTURE BUILDING & TRANSFORMATIONAL VISION",
+        s4Desc: "Build enduring organizational cultures and empower the next generation of leaders.",
+        s4Points: [
+            "Establish norms of excellence, inclusivity, and continuous learning.",
+            "Identify and cultivate leadership potential in peers and juniors.",
+            "Drive meaningful institutional or societal impact beyond short-term goals."
+        ],
+        s4Kayra: "Direct placement in KAYRA executive steering positions and alumni networks."
     },
+
     "adaptability": {
         num: "02 / SKILLS / 05",
         title: "ADAPTABILITY",
-        subtitle: "Navigate ambiguity and thrive in changing environments.",
-        s1Desc: "Building a growth mindset & emotional resilience.",
-        s1Kayra: "Mindset coaching exercises and stress management guides.",
-        s2Desc: "Rapid learning techniques & unlearning old habits.",
-        s2Kayra: "Cross-disciplinary micro-courses designed for fast adaptation.",
-        s3Desc: "Thriving under uncertainty & leading through transition.",
-        s3Kayra: "Dynamic real-world simulations that test tactical flexibility."
+        subtitle: "Navigate ambiguity, bounce back from setbacks, and continuously evolve in volatile environments.",
+
+        s1Title: "GROWTH MINDSET & RESILIENCE",
+        s1Desc: "Reframe failure as informative data and cultivate cognitive flexibility.",
+        s1Points: [
+            "Recognize fixed-mindset triggers and actively reframe negative feedback.",
+            "Build stress management routines to maintain emotional equilibrium.",
+            "Conduct post-mortem analysis on failures without self-judgment."
+        ],
+        s1Kayra: "Mindset coaching exercises, resilience reflection logs, and stress-response guides.",
+
+        s2Title: "RAPID UNLEARNING & RE-LEARNING",
+        s2Desc: "Discard outdated knowledge quickly when new paradigms emerge.",
+        s2Points: [
+            "Develop accelerated learning frameworks (Feynman Technique, deliberate practice).",
+            "Identify shift signals in tech, academic, and economic landscapes.",
+            "Step comfortably into completely unfamiliar domains outside comfort zones."
+        ],
+        s2Kayra: "Cross-disciplinary micro-courses designed for rapid skill acquisition.",
+
+        s3Title: "THIVING IN AMBIGUITY",
+        s3Desc: "Make high-quality decisions with incomplete or rapidly changing information.",
+        s3Points: [
+            "Formulate probabilistic thinking models under uncertain conditions.",
+            "Maintain progress even when clear instructions or roadmaps are absent.",
+            "Pivot project scope smoothly without losing momentum or morale."
+        ],
+        s3Kayra: "Dynamic, changing-parameter simulations that test tactical flexibility under pressure.",
+
+        s4Title: "AGILE TRANSFORMATION LEADERSHIP",
+        s4Desc: "Help teams and organizations navigate disruptive change effortlessly.",
+        s4Points: [
+            "Guide peers through organizational changes with clear, comforting communication.",
+            "Build resilient systems designed to absorb sudden external shocks.",
+            "Proactively drive innovation before legacy methods become obsolete."
+        ],
+        s4Kayra: "Crisis management simulations and advisory roles in dynamic student ventures."
     },
+
     "technical-literacy": {
         num: "02 / SKILLS / 06",
         title: "TECHNICAL LITERACY",
-        subtitle: "Harness modern tools, code, and digital workflows.",
-        s1Desc: "Understanding digital workflows & algorithmic thinking.",
-        s1Kayra: "Curated tech fundamentals and interactive digital tool guides.",
-        s2Desc: "Hands-on experience with modern tools & basic development.",
-        s2Kayra: "Guided coding workshops & tech project sandboxes.",
-        s3Desc: "Building automated workflows & leveraging AI responsibly.",
-        s3Kayra: "Advanced tech bootcamps & digital product creation tracks."
+        subtitle: "Harness modern computational tools, data systems, digital workflows, and emerging technologies.",
+
+        s1Title: "DIGITAL FOUNDATIONS & ALGORITHMIC THINKING",
+        s1Desc: "Grasp how digital systems operate, process data, and execute logic.",
+        s1Points: [
+            "Understand computational thinking (Decomposition, Pattern Recognition, Abstraction, Algorithms).",
+            "Master cloud file architecture, digital hygiene, and cybersecurity basics.",
+            "Analyze data structures and fundamental programming constructs."
+        ],
+        s1Kayra: "Curated tech fundamentals, interactive tool guides, and computer science logic maps.",
+
+        s2Title: "HANDS-ON TOOL MASTERY & DEVELOPMENT",
+        s2Desc: "Build functional prototypes using code, low-code engines, and modern workflows.",
+        s2Points: [
+            "Write modular code (Python, JavaScript, HTML/CSS) to solve real tasks.",
+            "Utilize developer tools, version control (Git/GitHub), and API integrations.",
+            "Leverage productivity suites, databases, and digital workspace tools effectively."
+        ],
+        s2Kayra: "Guided coding bootcamps, tech project sandboxes, and developer feedback sessions.",
+
+        s3Title: "AI INTEGRATION & AUTOMATION WORKFLOWS",
+        s3Desc: "Leverage AI models responsibly and automate tedious operational tasks.",
+        s3Points: [
+            "Master prompt engineering, contextual framing, and AI-assisted creation.",
+            "Build automated scripts or workflows connecting multiple digital platforms.",
+            "Evaluate technological solutions critically regarding data ethics, privacy, and bias."
+        ],
+        s3Kayra: "Advanced AI workflow labs, prompt engineering masterclasses, and tech stack builders.",
+
+        s4Title: "FULL-STACK PRODUCT CREATION",
+        s4Desc: "Architect, deploy, and maintain end-to-end digital solutions or platforms.",
+        s4Points: [
+            "Deploy functional web/mobile applications or data analytics dashboards.",
+            "Maintain technical documentation and open-source or commercial repositories.",
+            "Stay ahead of frontier technologies (Web3, spatial computing, AI agents)."
+        ],
+        s4Kayra: "Full-stack project incubators, tech hackathons, and direct product mentorship."
     }
 };
 
@@ -171,8 +356,21 @@ function triggerSkillCards(slideElement) {
 }
 
 /* =========================================
-   ROADMAP MODAL LOGIC
+   ROADMAP MODAL LOGIC (VERTICAL & DETAILED)
 ========================================= */
+
+function populatePointsList(elementId, points) {
+    const listElement = document.getElementById(elementId);
+    if (!listElement) return;
+    listElement.innerHTML = "";
+    if (points && points.length > 0) {
+        points.forEach(pt => {
+            const li = document.createElement("li");
+            li.textContent = pt;
+            listElement.appendChild(li);
+        });
+    }
+}
 
 function openRoadmap(skillKey) {
     const data = roadmapData[skillKey];
@@ -182,18 +380,36 @@ function openRoadmap(skillKey) {
     document.getElementById("roadmapTitle").innerHTML = `${data.title} <span class="highlight">ROADMAP</span>`;
     document.getElementById("roadmapSubtitle").textContent = data.subtitle;
 
+    // STEP 1
+    document.getElementById("step1Title").textContent = data.s1Title;
     document.getElementById("step1Desc").textContent = data.s1Desc;
+    populatePointsList("step1Points", data.s1Points);
     document.getElementById("step1Kayra").textContent = data.s1Kayra;
 
+    // STEP 2
+    document.getElementById("step2Title").textContent = data.s2Title;
     document.getElementById("step2Desc").textContent = data.s2Desc;
+    populatePointsList("step2Points", data.s2Points);
     document.getElementById("step2Kayra").textContent = data.s2Kayra;
 
+    // STEP 3
+    document.getElementById("step3Title").textContent = data.s3Title;
     document.getElementById("step3Desc").textContent = data.s3Desc;
+    populatePointsList("step3Points", data.s3Points);
     document.getElementById("step3Kayra").textContent = data.s3Kayra;
+
+    // STEP 4
+    document.getElementById("step4Title").textContent = data.s4Title;
+    document.getElementById("step4Desc").textContent = data.s4Desc;
+    populatePointsList("step4Points", data.s4Points);
+    document.getElementById("step4Kayra").textContent = data.s4Kayra;
 
     roadmapOverlay.classList.add("active");
     slideControls.classList.add("hidden");
     isRoadmapOpen = true;
+
+    // Scroll to top of overlay content
+    roadmapOverlay.scrollTop = 0;
 }
 
 function closeRoadmap() {

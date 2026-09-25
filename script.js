@@ -1,510 +1,531 @@
 /* =========================================
-   DATA STRUCTURES & STATE MANAGEMENT
+   KAYRA
+   SLIDE + ROADMAP INTERACTION LOGIC
 ========================================= */
 
-const skillsData = {
-    1: {
-        title: "Adaptive Learning Paths",
-        description: "Creates dynamic, personalized study roadmaps tailored specifically to individual academic goals, learning pace, and skill gaps.",
-        steps: [
-            { title: "Diagnostic Assessment", desc: "Evaluates current knowledge level and identifies core strengths and foundational weaknesses.", impact: "Saves up to 40% of preliminary review time by skipping mastered topics." },
-            { title: "Milestone Generation", desc: "Breaks comprehensive curricula into structured, achievable weekly targets with clear deadlines.", impact: "Keeps motivation high through frequent, achievable completion signals." },
-            { title: "Real-time Adjustment", desc: "Continuously recalculates study pacing based on daily quiz scores and retention rates.", impact: "Prevents burnout and ensures steady mastery without cognitive overload." }
-        ]
-    },
-    2: {
-        title: "Core Subject Mastery",
-        description: "Deepens understanding across Mathematics, Physics, Chemistry, and Computer Science through structured concept breakdowns.",
-        steps: [
-            { title: "First-Principles Breakdown", desc: "Deconstructs complex theorems and equations into intuitive, fundamental core concepts.", impact: "Eliminates rote memorization in favor of deep structural comprehension." },
-            { title: "Interactive Problem Solving", desc: "Presents step-by-step guided solutions that adapt dynamically to mistaken assumptions.", impact: "Builds problem-solving resilience across high-stakes exam scenarios." },
-            { title: "Cross-Topic Synthesis", desc: "Connects isolated subjects to highlight interdisciplinary applications in modern science.", impact: "Enhances higher-order analytical thinking required for advanced research." }
-        ]
-    },
-    3: {
-        title: "Exam Preparation",
-        description: "Offers targeted practice strategies, mock exams, and time-management techniques for global competitive assessments.",
-        steps: [
-            { title: "Pattern Analysis", desc: "Analyzes decade-long exam trends to pinpoint recurring high-value question formats.", impact: "Maximizes exam performance efficiency relative to study hours." },
-            { title: "Timed Mock Simulation", desc: "Simulates test-day conditions with real-time pressure tracking and pacing feedback.", impact: "Reduces exam anxiety and optimizes pacing strategies per section." },
-            { title: "Error Diagnostics", desc: "Categorizes incorrect answers into conceptual gaps, misreadings, or calculation errors.", impact: "Provides actionable, hyper-focused remediation targets immediately." }
-        ]
-    },
-    4: {
-        title: "University Guidance",
-        description: "Guides students through admissions criteria, application strategies, portfolio building, and institution selection.",
-        steps: [
-            { title: "Profile Matching", desc: "Correlates personal academic metrics and ambitions against global institution datasets.", impact: "Identifies optimal reach, match, and safety target universities." },
-            { title: "Portfolio Curation", desc: "Provides structural frameworks for presenting research projects, essays, and extra-curriculars.", impact: "Transforms raw achievements into a compelling applicant narrative." },
-            { title: "Admissions Optimization", desc: "Tracks deadlines, requirements, and essay prompts across multiple global systems.", impact: "Eliminates application errors and ensures flawless submission timeliness." }
-        ]
-    },
-    5: {
-        title: "Skill Gap Analysis",
-        description: "Identifies missing prerequisite knowledge and delivers targeted remedial modules before advancing.",
-        steps: [
-            { title: "Prerequisite Mapping", desc: "Traces advanced topics back to their foundational prerequisites across subjects.", impact: "Uncovers hidden conceptual debt preventing progress." },
-            { title: "Micro-Module Delivery", desc: "Serves concise 10-minute refresher modules to plug specific missing skills quickly.", impact: "Restores learning momentum without derailing primary study plans." },
-            { title: "Verification Checks", desc: "Validates remediation success before unlocking advanced coursework modules.", impact: "Guarantees a rock-solid foundation for advanced specialization." }
-        ]
-    },
-    6: {
-        title: "Career Mapping",
-        description: "Connects academic disciplines directly to emerging industry careers, research domains, and skill demands.",
-        steps: [
-            { title: "Industry Demand Scanning", desc: "Tracks real-time skills required by top research institutions and tech companies.", impact: "Aligns study choices with actual future workforce demands." },
-            { title: "Career Trajectory Projection", desc: "Maps academic degrees to long-term career outcomes and specialization options.", impact: "Provides clarity on long-term ROI for different educational paths." },
-            { title: "Actionable Skill Checklists", desc: "Generates practical lists of tools, languages, and certifications to acquire.", impact: "Bridges the gap between academic theory and industry readiness." }
-        ]
-    }
-};
-
-const pathwaysData = {
-    1: {
-        title: "Engineering & Technology",
-        subtitle: "Pioneer cutting-edge innovations across computing, robotics, hardware, and aerospace engineering.",
-        options: {
-            "Computer Science": {
-                desc: "Focuses on algorithms, software architecture, artificial intelligence, systems design, and computational theory.",
-                difficulty: "High",
-                prereq: "Strong foundation in Higher Mathematics, Calculus, Linear Algebra, and basic Logical Programming.",
-                institutions: [
-                    { rank: "#1 Global", name: "MIT", loc: "USA", tag: "Top Tech" },
-                    { rank: "#2 Global", name: "Stanford University", loc: "USA", tag: "Silicon Valley Hub" },
-                    { rank: "#3 Global", name: "ETH Zurich", loc: "Switzerland", tag: "Excellence in AI" }
-                ],
-                roadmap: "Master Data Structures & Algorithms -> System Design -> Specialized AI/Cloud Engineering -> Production Architecture.",
-                advancedSteps: [
-                    { phase: "Phase 1: Mathematical & Algorithmic Foundations", desc: "Master Calculus, Discrete Mathematics, Linear Algebra, and basic Data Structures in C++ or Python." },
-                    { phase: "Phase 2: Core Systems & Architecture", desc: "Study Operating Systems, Computer Architecture, Networking Protocols, and Database Design." },
-                    { phase: "Phase 3: Software Engineering & Design Patterns", desc: "Build scalable full-stack applications, apply object-oriented design patterns, and practice CI/CD workflows." },
-                    { phase: "Phase 4: Specialization (AI / Distributed Systems)", desc: "Deep dive into Neural Networks, Machine Learning pipelines, microservices, and cloud architecture (AWS/GCP)." }
-                ]
-            },
-            "Artificial Intelligence": {
-                desc: "Dedicated specialization in neural networks, machine learning algorithms, NLP, and autonomous intelligent agents.",
-                difficulty: "Very High",
-                prereq: "Advanced Calculus, Multivariable Calculus, Probability & Statistics, Linear Algebra, Python proficiency.",
-                institutions: [
-                    { rank: "#1 AI Research", name: "Carnegie Mellon University", loc: "USA", tag: "Robotics & AI" },
-                    { rank: "#2 Global", name: "Stanford University", loc: "USA", tag: "HAI Institute" },
-                    { rank: "#1 Europe", name: "University of Oxford", loc: "UK", tag: "Deep Learning" }
-                ],
-                roadmap: "Linear Algebra & Probabilities -> Classical Machine Learning -> Deep Learning & Transformers -> AI Ethics & Deployment.",
-                advancedSteps: [
-                    { phase: "Phase 1: Advanced Applied Mathematics", desc: "Focus heavily on Probability Theory, Vector Calculus, Optimization Techniques, and Statistical Modeling." },
-                    { phase: "Phase 2: Classical Machine Learning", desc: "Implement Decision Trees, SVMs, Regression models, and Clustering algorithms from scratch using NumPy." },
-                    { phase: "Phase 3: Deep Learning Architecture", desc: "Build Convolutional Networks, Transformers, and Generative models using PyTorch or TensorFlow." },
-                    { phase: "Phase 4: MLOps & Production AI", desc: "Optimize model inference, deploy LLMs on edge devices, and build continuous retraining pipelines." }
-                ]
-            },
-            "Aerospace Engineering": {
-                desc: "Designing aircraft, spacecraft, satellite systems, propulsion, and fluid dynamics for atmospheric and orbital flight.",
-                difficulty: "Extreme",
-                prereq: "Advanced Physics (Mechanics & Thermodynamics), Multivariable Calculus, Differential Equations.",
-                institutions: [
-                    { rank: "#1 Global", name: "MIT", loc: "USA", tag: "AeroAstro" },
-                    { rank: "#2 Global", name: "Georgia Tech", loc: "USA", tag: "Propulsion Lab" },
-                    { rank: "#1 Europe", name: "Imperial College London", loc: "UK", tag: "Aeronautics" }
-                ],
-                roadmap: "Classical Mechanics -> Aerodynamics & Thermodynamics -> Orbital Mechanics -> Space Systems Design.",
-                advancedSteps: [
-                    { phase: "Phase 1: Core Physics & Mechanics", desc: "Gain mastery over Statics, Dynamics, Fluid Mechanics, and Engineering Materials." },
-                    { phase: "Phase 2: Thermodynamics & Aerodynamics", desc: "Study compressible flow, heat transfer, shockwaves, and propulsion engine cycles." },
-                    { phase: "Phase 3: Flight Dynamics & Avionics", desc: "Analyze flight stability, control systems, structural loading, and sensor suites." },
-                    { phase: "Phase 4: Systems Engineering & Spacecraft Design", desc: "Participate in capstone satellite payload design, orbital trajectory optimization, and launch tests." }
-                ]
-            }
-        }
-    },
-    2: {
-        title: "Medical & Health Sciences",
-        subtitle: "Advance human health through clinical practice, biomedical research, biotechnology, and surgical mastery.",
-        options: {
-            "Clinical Medicine (MBBS/MD)": {
-                desc: "Comprehensive diagnostic and therapeutic clinical training leading to practicing physician or surgeon roles.",
-                difficulty: "Extreme",
-                prereq: "Human Biology, General & Organic Chemistry, Biochemistry, high-level empathy and critical diagnostic thinking.",
-                institutions: [
-                    { rank: "#1 Global", name: "Harvard University", loc: "USA", tag: "HMS Clinical" },
-                    { rank: "#2 Global", name: "University of Oxford", loc: "UK", tag: "Medical Sciences" },
-                    { rank: "#3 Global", name: "Johns Hopkins University", loc: "USA", tag: "Surgical Excellence" }
-                ],
-                roadmap: "Pre-Med Sciences -> Pre-Clinical Foundations -> Clinical Rotations -> Residency Specialization.",
-                advancedSteps: [
-                    { phase: "Phase 1: Pre-Clinical Science Foundation", desc: "Master Human Anatomy, Physiology, Pathology, Pharmacology, and Medical Biochemistry." },
-                    { phase: "Phase 2: Clinical Diagnostics & Skills", desc: "Learn clinical examination techniques, patient communication, differential diagnostics, and laboratory testing." },
-                    { phase: "Phase 3: Core Clinical Rotations", desc: "Rotate through Internal Medicine, General Surgery, Pediatrics, Psychiatry, and Obstetrics." },
-                    { phase: "Phase 4: Residency & Board Certification", desc: "Complete intensive hospital residency in chosen sub-specialty and pass medical licensing boards." }
-                ]
-            },
-            "Biomedical Engineering": {
-                desc: "Bridges engineering principles with biological systems to create artificial organs, prosthetics, and medical devices.",
-                difficulty: "High",
-                prereq: "Biology, Chemistry, Physics, Calculus, basic Signals & Systems understanding.",
-                institutions: [
-                    { rank: "#1 Global", name: "Johns Hopkins University", loc: "USA", tag: "BME Department" },
-                    { rank: "#2 Global", name: "Georgia Tech", loc: "USA", tag: "Bioengineering" },
-                    { rank: "#3 Global", name: "ETH Zurich", loc: "Switzerland", tag: "Medical Tech" }
-                ],
-                roadmap: "Biology + Physics Integrations -> Biomaterials & Biomechanics -> Medical Device Prototyping -> Clinical Regulatory Approval.",
-                advancedSteps: [
-                    { phase: "Phase 1: Bio-Physics & Molecular Foundations", desc: "Combine Cell Biology with Mechanics, Thermodynamics, and Circuit Theory." },
-                    { phase: "Phase 2: Biomaterials & Biomechanics", desc: "Study biocompatible materials, tissue mechanics, fluid flow in cardiovascular systems, and prosthetics." },
-                    { phase: "Phase 3: Bioinstrumentation & Imaging", desc: "Design diagnostic devices, ECG sensors, ultrasound circuits, and MRI signal processing algorithms." },
-                    { phase: "Phase 4: Clinical Translation & FDA Approval", desc: "Execute prototype testing, conduct clinical safety trials, and navigate medical device regulatory standards." }
-                ]
-            }
-        }
-    },
-    3: {
-        title: "Pure & Applied Sciences",
-        subtitle: "Unravel fundamental laws of nature, matter, universe, mathematics, and complex chemical processes.",
-        options: {
-            "Theoretical Physics": {
-                desc: "Exploring quantum mechanics, general relativity, string theory, high-energy particle physics, and cosmology.",
-                difficulty: "Extreme",
-                prereq: "Advanced Physics, Partial Differential Equations, Vector Calculus, Quantum Mechanics basics.",
-                institutions: [
-                    { rank: "#1 Global", name: "University of Cambridge", loc: "UK", tag: "DAMTP" },
-                    { rank: "#2 Global", name: "Princeton University", loc: "USA", tag: "IAS Connection" },
-                    { rank: "#3 Global", name: "Caltech", loc: "USA", tag: "Particle Physics" }
-                ],
-                roadmap: "Classical Mechanics & Electrodynamics -> Quantum Mechanics -> General Relativity -> Quantum Field Theory.",
-                advancedSteps: [
-                    { phase: "Phase 1: Advanced Theoretical Mathematics", desc: "Master Real Analysis, Complex Analysis, Differential Geometry, and Tensor Calculus." },
-                    { phase: "Phase 2: Quantum Mechanics & Electrodynamics", desc: "Solve Schrödinger and Dirac equations, study electrodynamics, operator theory, and perturbation methods." },
-                    { phase: "Phase 3: Statistical Mechanics & Relativity", desc: "Explore thermodynamics at micro scales and general relativity field equations." },
-                    { phase: "Phase 4: Advanced Frontier Research", desc: "Conduct original research in Quantum Field Theory, String Theory, or High-Energy Astrophysics." }
-                ]
-            }
-        }
-    },
-    4: {
-        title: "Business & Quantitative Finance",
-        subtitle: "Drive strategic enterprise growth, algorithmic trading models, financial markets, and economic policy.",
-        options: {
-            "Quantitative Finance": {
-                desc: "Applying mathematical algorithms, stochastic calculus, and machine learning to financial markets and risk models.",
-                difficulty: "Very High",
-                prereq: "Stochastic Calculus, Probability, Linear Algebra, C++/Python, Algorithmic Logic.",
-                institutions: [
-                    { rank: "#1 Quant", name: "Princeton University", loc: "USA", tag: "Bendheim Center" },
-                    { rank: "#2 Global", name: "CMU", loc: "USA", tag: "MSCFF" },
-                    { rank: "#1 Europe", name: "Oxford University", loc: "UK", tag: "Mathematical Finance" }
-                ],
-                roadmap: "Probability & Microeconomics -> Stochastic Calculus & Asset Pricing -> Algorithmic Trading Systems -> Risk Models.",
-                advancedSteps: [
-                    { phase: "Phase 1: Mathematical Foundations", desc: "Master Measure-Theoretic Probability, Multivariable Calculus, and High-Performance C++ Programming." },
-                    { phase: "Phase 2: Financial Derivatives & Markets", desc: "Study options pricing models (Black-Scholes), interest rate models, and fixed income derivatives." },
-                    { phase: "Phase 3: Stochastic Calculus & Econometrics", desc: "Apply Brownian motion, Ito's Lemma, time-series forecasting, and statistical arbitrage strategies." },
-                    { phase: "Phase 4: Algorithmic Execution & Risk", desc: "Build ultra-low latency execution systems, portfolio optimization algorithms, and Stress Testing models." }
-                ]
-            }
-        }
-    }
-};
-
-let currentSlideIndex = 0;
-const totalSlides = 5;
-
-/* =========================================
-   DOM ELEMENTS
-========================================= */
-
-const slideContainer = document.getElementById("slideContainer");
-const slides = document.querySelectorAll(".slide");
+const slides = Array.from(document.querySelectorAll(".slide"));
+const navButtons = document.querySelectorAll(".nav-links button");
+const mobileNavButtons = document.querySelectorAll(".mobile-nav-link");
+const previousButton = document.getElementById("previousSlide");
+const nextButton = document.getElementById("nextSlide");
 const slideCounter = document.getElementById("slideCounter");
-const prevSlideBtn = document.getElementById("prevSlide");
-const nextSlideBtn = document.getElementById("nextSlide");
-const navButtons = document.querySelectorAll(".nav-link");
-const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
-const menuButton = document.querySelector(".menu-button");
-const mobileMenu = document.querySelector(".mobile-menu");
+const menuButton = document.getElementById("menuButton");
+const mobileMenu = document.getElementById("mobileMenu");
+const slideControls = document.getElementById("slideControls");
 
-/* Overlays */
 const roadmapOverlay = document.getElementById("roadmapOverlay");
-const pathwayOverlay = document.getElementById("pathwayOverlay");
-const advancedRoadmapOverlay = document.getElementById("advancedRoadmapOverlay");
-const loadingOverlay = document.getElementById("loadingOverlay");
+const closeRoadmapButton = document.getElementById("closeRoadmap");
 
-/* Pathway Elements */
-const pathwayTitle = document.getElementById("pathwayTitle");
-const pathwaySubtitle = document.getElementById("pathwaySubtitle");
-const pathwayOptionsPills = document.getElementById("pathwayOptionsPills");
-const optionTitle = document.getElementById("optionTitle");
-const optionDesc = document.getElementById("optionDesc");
-const optionDiff = document.getElementById("optionDiff");
-const optionPrereq = document.getElementById("optionPrereq");
-const optionInstitutions = document.getElementById("optionInstitutions");
-const optionRoadmapText = document.getElementById("optionRoadmapText");
-
-/* Advanced Roadmap Elements */
-const advRoadmapTitle = document.getElementById("advRoadmapTitle");
-const advRoadmapSubtitle = document.getElementById("advRoadmapSubtitle");
-const advRoadmapStepsContainer = document.getElementById("advRoadmapStepsContainer");
-const loadingProgressBar = document.getElementById("loadingProgressBar");
-
-let currentSelectedPathway = null;
-let currentSelectedOptionKey = null;
+let currentSlide = 0;
+let isRoadmapOpen = false;
 
 /* =========================================
-   SLIDE NAVIGATION SYSTEM
+   ROADMAP DATA (6 SKILLS, DETAILED & VERTICAL)
 ========================================= */
 
-function updateSlideView(index) {
-    if (index < 0 || index >= totalSlides) return;
+const roadmapData = {
+    "communication": {
+        num: "02 / SKILLS / 01",
+        title: "COMMUNICATION",
+        subtitle: "Master articulate speech, active listening, structural narrative, and audience resonance.",
+        
+        s1Title: "FOUNDATIONAL EXPRESSION",
+        s1Desc: "Understand core message structuring, tone awareness, and active listening dynamics.",
+        s1Points: [
+            "Deconstruct non-verbal signals, vocal cadence, and posture.",
+            "Learn the Pyramid Principle to structure messages top-down.",
+            "Practice reflective listening to process viewpoints before formulating answers."
+        ],
+        s1Kayra: "Diagnostic articulation assessments and foundational speech structure blueprints.",
 
-    slides.forEach((slide, i) => {
-        if (i === index) {
-            slide.classList.add("active");
-            triggerSlideAnimations(slide);
-        } else {
-            slide.classList.remove("active");
+        s2Title: "STRUCTURED WRITING & PUBLIC SPEAKING",
+        s2Desc: "Transform raw thoughts into compelling speeches, essays, and presentations.",
+        s2Points: [
+            "Write concise pitch briefs and structured opinion pieces.",
+            "Eliminate speech clutter (filler words, passive voice, rambling).",
+            "Deliver short impromptu speeches under tight constraints."
+        ],
+        s2Kayra: "Safe-space peer feedback circles, video speech analysis, and voice modulation labs.",
+
+        s3Title: "PERSUASION & NEGOTIATION",
+        s3Desc: "Navigate complex discussions, resolve disagreements, and align divergent viewpoints.",
+        s3Points: [
+            "Map stakeholder incentives and adapt language to audience archetypes.",
+            "Master negotiation dynamics: BATNA, empathetic pushback, and compromise.",
+            "De-escalate high-pressure debates using calm, structured logic."
+        ],
+        s3Kayra: "Simulated Model UN / debate arenas and guided conflict resolution workshops.",
+
+        s4Title: "INSPIRATIONAL LEADERSHIP STORYTELLING",
+        s4Desc: "Inspire communities, articulate vision, and command presence in high-stakes environments.",
+        s4Points: [
+            "Craft personal leadership narratives that resonate authentically.",
+            "Host podcasts, lead town halls, or represent projects on external stages.",
+            "Mentor junior peers in developing their own communication style."
+        ],
+        s4Kayra: "Keynote presentation opportunities, public showcase platforms, and 1-on-1 executive coaching."
+    },
+
+    "creativity": {
+        num: "02 / SKILLS / 02",
+        title: "CREATIVITY",
+        subtitle: "Unlock original thinking, break cognitive patterns, and convert concepts into tangible realities.",
+
+        s1Title: "CURIOSITY & DIVERGENT THINKING",
+        s1Desc: "Break routine mental shortcuts and develop acute observational habits.",
+        s1Points: [
+            "Challenge implicit assumptions using First Principles reasoning.",
+            "Maintain daily idea journals capturing observations across industries.",
+            "Practice lateral thinking drills to connect seemingly unrelated fields."
+        ],
+        s1Kayra: "Daily brain-teaser prompts, cross-domain reading lists, and concept mapping tools.",
+
+        s2Title: "IDEATION & RAPID PROTOTYPING",
+        s2Desc: "Iterate swiftly on ideas and build low-fidelity conceptual models.",
+        s2Points: [
+            "Apply Design Thinking frameworks (Empathize, Define, Ideate, Prototype, Test).",
+            "Build quick wireframes, storyboards, or mockups without fear of failure.",
+            "Gather immediate peer feedback to refine early hypotheses."
+        ],
+        s2Kayra: "Collaborative 48-hour design sprints and multi-disciplinary sandbox sessions.",
+
+        s3Title: "INTERDISCIPLINARY FUSION",
+        s3Desc: "Merge artistic expression, scientific rigor, and human psychology.",
+        s3Points: [
+            "Analyze world-class innovations across design, technology, and literature.",
+            "Synthesize ideas from nature (biomimicry) into real-world utility.",
+            "Refine aesthetic intuition alongside functional necessity."
+        ],
+        s3Kayra: "Cross-domain workshops bridging art, technology, and social systems.",
+
+        s4Title: "PORTFOLIO CREATION & REAL-WORLD LAUNCH",
+        s4Desc: "Execute original vision into published works, products, or original ventures.",
+        s4Points: [
+            "Curate a professional portfolio highlighting design/thought processes.",
+            "Launch creative campaigns, open-source projects, or publications.",
+            "Establish a distinctive personal style and creative voice."
+        ],
+        s4Kayra: "KAYRA Creative Incubator, student showcases, and exhibition grants."
+    },
+
+    "problem-solving": {
+        num: "02 / SKILLS / 03",
+        title: "PROBLEM SOLVING",
+        subtitle: "Deconstruct complex challenges into manageable variables and craft resilient, high-impact solutions.",
+
+        s1Title: "ROOT CAUSE ANALYSIS",
+        s1Desc: "Distinguish symptoms from true underlying problems through systematic inquiry.",
+        s1Points: [
+            "Apply the '5 Whys' and MECE (Mutually Exclusive, Collectively Exhaustive) frameworks.",
+            "Gather quantitative and qualitative data without cognitive bias.",
+            "Map problem trees to pinpoint exact structural bottlenecks."
+        ],
+        s1Kayra: "Interactive analytical case studies and structured problem breakdown toolkits.",
+
+        s2Title: "STRATEGIC OPTION GENERATION",
+        s2Desc: "Formulate multiple viable solution pathways before committing resources.",
+        s2Points: [
+            "Conduct impact-versus-effort trade-off evaluations.",
+            "Perform stress testing on proposed solutions against worst-case scenarios.",
+            "Draft clear decision matrix frameworks for complex scenarios."
+        ],
+        s2Kayra: "Guided scenario analysis exercises and real-world strategy simulations.",
+
+        s3Title: "EXECUTION & TACTICAL ADAPTATION",
+        s3Desc: "Translate strategy into phased, measurable implementation plans.",
+        s3Points: [
+            "Define concrete KPIs, target milestones, and risk mitigation strategies.",
+            "Execute pilot tests to gather real-world performance metrics.",
+            "Pivot swiftly when empirical feedback contradicts initial assumptions."
+        ],
+        s3Kayra: "Project incubators that tackle real campus, community, or industry problems.",
+
+        s4Title: "SYSTEMS THINKING & SCALABILITY",
+        s4Desc: "Design long-term operational systems that prevent problems from recurring.",
+        s4Points: [
+            "Identify second- and third-order consequences within complex ecosystems.",
+            "Automate repetitive workflows and build sustainable operating frameworks.",
+            "Document playbooks so solutions scale independently of individual effort."
+        ],
+        s4Kayra: "Mentorship from industry problem solvers and policy/system design labs."
+    },
+
+    "leadership": {
+        num: "02 / SKILLS / 04",
+        title: "LEADERSHIP",
+        subtitle: "Guide teams with empathy, strategic vision, ethical grounding, and decisive clarity.",
+
+        s1Title: "SELF-MASTERY & ETHICAL FOUNDATION",
+        s1Desc: "Establish core personal values, self-awareness, and emotional regulation.",
+        s1Points: [
+            "Identify personal biases, triggers, and core driving principles.",
+            "Demonstrate radical accountability for personal mistakes and choices.",
+            "Align daily behaviors with long-term ethical standards."
+        ],
+        s1Kayra: "Leadership self-assessment diagnostics, goal setting, and reflection logs.",
+
+        s2Title: "TEAM DYNAMICS & EMPATHETIC MANAGEMENT",
+        s2Desc: "Build psychological safety, delegate effectively, and motivate diverse individuals.",
+        s2Points: [
+            "Understand individual strength profiles (CliftonStrengths, MBTI context).",
+            "Practice active delegation while offering necessary support structures.",
+            "Give actionable, empathetic feedback that inspires growth rather than defense."
+        ],
+        s2Kayra: "Simulated group project leadership roles and team dynamics workshops.",
+
+        s3Title: "STRATEGIC ALIGNMENT & CONFLICT RESOLUTION",
+        s3Desc: "Unify teams around a compelling shared vision and navigate interpersonal tension.",
+        s3Points: [
+            "Translate high-level vision into clear team objectives and key results (OKRs).",
+            "Resolve internal team friction swiftly using non-violent communication.",
+            "Maintain composure and clear decision-making during high-stress crises."
+        ],
+        s3Kayra: "Real-time leadership roles in KAYRA's student initiatives and team challenges.",
+
+        s4Title: "CULTURE BUILDING & TRANSFORMATIONAL VISION",
+        s4Desc: "Build enduring organizational cultures and empower the next generation of leaders.",
+        s4Points: [
+            "Establish norms of excellence, inclusivity, and continuous learning.",
+            "Identify and cultivate leadership potential in peers and juniors.",
+            "Drive meaningful institutional or societal impact beyond short-term goals."
+        ],
+        s4Kayra: "Direct placement in KAYRA executive steering positions and alumni networks."
+    },
+
+    "adaptability": {
+        num: "02 / SKILLS / 05",
+        title: "ADAPTABILITY",
+        subtitle: "Navigate ambiguity, bounce back from setbacks, and continuously evolve in volatile environments.",
+
+        s1Title: "GROWTH MINDSET & RESILIENCE",
+        s1Desc: "Reframe failure as informative data and cultivate cognitive flexibility.",
+        s1Points: [
+            "Recognize fixed-mindset triggers and actively reframe negative feedback.",
+            "Build stress management routines to maintain emotional equilibrium.",
+            "Conduct post-mortem analysis on failures without self-judgment."
+        ],
+        s1Kayra: "Mindset coaching exercises, resilience reflection logs, and stress-response guides.",
+
+        s2Title: "RAPID UNLEARNING & RE-LEARNING",
+        s2Desc: "Discard outdated knowledge quickly when new paradigms emerge.",
+        s2Points: [
+            "Develop accelerated learning frameworks (Feynman Technique, deliberate practice).",
+            "Identify shift signals in tech, academic, and economic landscapes.",
+            "Step comfortably into completely unfamiliar domains outside comfort zones."
+        ],
+        s2Kayra: "Cross-disciplinary micro-courses designed for rapid skill acquisition.",
+
+        s3Title: "THIVING IN AMBIGUITY",
+        s3Desc: "Make high-quality decisions with incomplete or rapidly changing information.",
+        s3Points: [
+            "Formulate probabilistic thinking models under uncertain conditions.",
+            "Maintain progress even when clear instructions or roadmaps are absent.",
+            "Pivot project scope smoothly without losing momentum or morale."
+        ],
+        s3Kayra: "Dynamic, changing-parameter simulations that test tactical flexibility under pressure.",
+
+        s4Title: "AGILE TRANSFORMATION LEADERSHIP",
+        s4Desc: "Help teams and organizations navigate disruptive change effortlessly.",
+        s4Points: [
+            "Guide peers through organizational changes with clear, comforting communication.",
+            "Build resilient systems designed to absorb sudden external shocks.",
+            "Proactively drive innovation before legacy methods become obsolete."
+        ],
+        s4Kayra: "Crisis management simulations and advisory roles in dynamic student ventures."
+    },
+
+    "technical-literacy": {
+        num: "02 / SKILLS / 06",
+        title: "TECHNICAL LITERACY",
+        subtitle: "Harness modern computational tools, data systems, digital workflows, and emerging technologies.",
+
+        s1Title: "DIGITAL FOUNDATIONS & ALGORITHMIC THINKING",
+        s1Desc: "Grasp how digital systems operate, process data, and execute logic.",
+        s1Points: [
+            "Understand computational thinking (Decomposition, Pattern Recognition, Abstraction, Algorithms).",
+            "Master cloud file architecture, digital hygiene, and cybersecurity basics.",
+            "Analyze data structures and fundamental programming constructs."
+        ],
+        s1Kayra: "Curated tech fundamentals, interactive tool guides, and computer science logic maps.",
+
+        s2Title: "HANDS-ON TOOL MASTERY & DEVELOPMENT",
+        s2Desc: "Build functional prototypes using code, low-code engines, and modern workflows.",
+        s2Points: [
+            "Write modular code (Python, JavaScript, HTML/CSS) to solve real tasks.",
+            "Utilize developer tools, version control (Git/GitHub), and API integrations.",
+            "Leverage productivity suites, databases, and digital workspace tools effectively."
+        ],
+        s2Kayra: "Guided coding bootcamps, tech project sandboxes, and developer feedback sessions.",
+
+        s3Title: "AI INTEGRATION & AUTOMATION WORKFLOWS",
+        s3Desc: "Leverage AI models responsibly and automate tedious operational tasks.",
+        s3Points: [
+            "Master prompt engineering, contextual framing, and AI-assisted creation.",
+            "Build automated scripts or workflows connecting multiple digital platforms.",
+            "Evaluate technological solutions critically regarding data ethics, privacy, and bias."
+        ],
+        s3Kayra: "Advanced AI workflow labs, prompt engineering masterclasses, and tech stack builders.",
+
+        s4Title: "FULL-STACK PRODUCT CREATION",
+        s4Desc: "Architect, deploy, and maintain end-to-end digital solutions or platforms.",
+        s4Points: [
+            "Deploy functional web/mobile applications or data analytics dashboards.",
+            "Maintain technical documentation and open-source or commercial repositories.",
+            "Stay ahead of frontier technologies (Web3, spatial computing, AI agents)."
+        ],
+        s4Kayra: "Full-stack project incubators, tech hackathons, and direct product mentorship."
+    }
+};
+
+/* =========================================
+   TEXT ANIMATION PREPARATION
+========================================= */
+
+function prepareTextAnimation() {
+    const animatedElements = document.querySelectorAll(".animated-heading, .animate-text");
+    animatedElements.forEach(element => {
+        if (!element.dataset.originalHTML) {
+            element.dataset.originalHTML = element.innerHTML;
         }
     });
-
-    currentSlideIndex = index;
-    
-    // Update counter text
-    if (slideCounter) {
-        slideCounter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
-    }
-
-    // Update active nav links
-    navButtons.forEach(btn => {
-        const target = parseInt(btn.getAttribute("data-slide"));
-        btn.classList.toggle("active", target === index);
-    });
-
-    // Close mobile menu if open
-    if (mobileMenu) {
-        mobileMenu.classList.remove("open");
-    }
 }
 
-function triggerSlideAnimations(slide) {
-    const cards = slide.querySelectorAll(".skill-card");
-    cards.forEach((card, idx) => {
+function resetAnimatedText(slideElement) {
+    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
+    animatedElements.forEach(element => {
+        if (element.dataset.originalHTML) {
+            element.innerHTML = element.dataset.originalHTML;
+        }
+    });
+}
+
+function animateSlideText(slideElement) {
+    resetAnimatedText(slideElement);
+    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
+    
+    let globalCharIndex = 0;
+
+    animatedElements.forEach(element => {
+        const wrapTextNodes = (node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.nodeValue;
+                const fragment = document.createDocumentFragment();
+                const words = text.split(/(\s+)/);
+
+                words.forEach(word => {
+                    if (word.trim() === "") {
+                        fragment.appendChild(document.createTextNode(word));
+                    } else {
+                        const wordSpan = document.createElement("span");
+                        wordSpan.className = "word";
+
+                        for (let i = 0; i < word.length; i++) {
+                            const charSpan = document.createElement("span");
+                            charSpan.className = "char";
+                            charSpan.textContent = word[i];
+                            charSpan.style.animationDelay = `${globalCharIndex * 0.025}s`;
+                            globalCharIndex++;
+                            wordSpan.appendChild(charSpan);
+                        }
+                        fragment.appendChild(wordSpan);
+                    }
+                });
+
+                node.parentNode.replaceChild(fragment, node);
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                Array.from(node.childNodes).forEach(wrapTextNodes);
+            }
+        };
+
+        wrapTextNodes(element);
+    });
+}
+
+/* =========================================
+   SKILL CARDS ANIMATION
+========================================= */
+
+function triggerSkillCards(slideElement) {
+    const cards = slideElement.querySelectorAll(".skill-card");
+    cards.forEach((card, index) => {
         card.classList.remove("skill-card-visible");
         setTimeout(() => {
             card.classList.add("skill-card-visible");
-        }, idx * 80);
+        }, 120 * index + 200);
     });
 }
 
-/* Event Listeners for Slide Navigation */
-if (prevSlideBtn) prevSlideBtn.addEventListener("click", () => updateSlideView(currentSlideIndex - 1));
-if (nextSlideBtn) nextSlideBtn.addEventListener("click", () => updateSlideView(currentSlideIndex + 1));
+/* =========================================
+   ROADMAP MODAL LOGIC (VERTICAL & DETAILED)
+========================================= */
 
-navButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const targetSlide = parseInt(btn.getAttribute("data-slide"));
-        updateSlideView(targetSlide);
+function populatePointsList(elementId, points) {
+    const listElement = document.getElementById(elementId);
+    if (!listElement) return;
+    listElement.innerHTML = "";
+    if (points && points.length > 0) {
+        points.forEach(pt => {
+            const li = document.createElement("li");
+            li.textContent = pt;
+            listElement.appendChild(li);
+        });
+    }
+}
+
+function openRoadmap(skillKey) {
+    const data = roadmapData[skillKey];
+    if (!data) return;
+
+    document.getElementById("roadmapNumber").textContent = data.num;
+    document.getElementById("roadmapTitle").innerHTML = `${data.title} <span class="highlight">ROADMAP</span>`;
+    document.getElementById("roadmapSubtitle").textContent = data.subtitle;
+
+    // STEP 1
+    document.getElementById("step1Title").textContent = data.s1Title;
+    document.getElementById("step1Desc").textContent = data.s1Desc;
+    populatePointsList("step1Points", data.s1Points);
+    document.getElementById("step1Kayra").textContent = data.s1Kayra;
+
+    // STEP 2
+    document.getElementById("step2Title").textContent = data.s2Title;
+    document.getElementById("step2Desc").textContent = data.s2Desc;
+    populatePointsList("step2Points", data.s2Points);
+    document.getElementById("step2Kayra").textContent = data.s2Kayra;
+
+    // STEP 3
+    document.getElementById("step3Title").textContent = data.s3Title;
+    document.getElementById("step3Desc").textContent = data.s3Desc;
+    populatePointsList("step3Points", data.s3Points);
+    document.getElementById("step3Kayra").textContent = data.s3Kayra;
+
+    // STEP 4
+    document.getElementById("step4Title").textContent = data.s4Title;
+    document.getElementById("step4Desc").textContent = data.s4Desc;
+    populatePointsList("step4Points", data.s4Points);
+    document.getElementById("step4Kayra").textContent = data.s4Kayra;
+
+    roadmapOverlay.classList.add("active");
+    slideControls.classList.add("hidden");
+    isRoadmapOpen = true;
+
+    // Scroll to top of overlay content
+    roadmapOverlay.scrollTop = 0;
+}
+
+function closeRoadmap() {
+    roadmapOverlay.classList.remove("active");
+    slideControls.classList.remove("hidden");
+    isRoadmapOpen = false;
+}
+
+/* =========================================
+   SLIDE SWITCHING LOGIC
+========================================= */
+
+function goToSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+
+    if (isRoadmapOpen) closeRoadmap();
+
+    slides[currentSlide].classList.remove("active");
+    currentSlide = index;
+    slides[currentSlide].classList.add("active");
+
+    // Update active navbar button
+    navButtons.forEach((btn, i) => {
+        btn.classList.toggle("active", i === currentSlide);
+    });
+
+    // Update slide counter text
+    if (slideCounter) {
+        const slideNum = String(currentSlide + 1).padStart(2, "0");
+        const totalSlides = String(slides.length).padStart(2, "0");
+        slideCounter.textContent = `${slideNum} / ${totalSlides}`;
+    }
+
+    // Trigger animations for the new active slide
+    animateSlideText(slides[currentSlide]);
+    triggerSkillCards(slides[currentSlide]);
+
+    // Close mobile menu if open
+    if (mobileMenu) mobileMenu.classList.remove("open");
+}
+
+/* =========================================
+   EVENT LISTENERS
+========================================= */
+
+// Skill Card Clicks
+document.querySelectorAll(".skill-card").forEach(card => {
+    card.addEventListener("click", () => {
+        const skillKey = card.getAttribute("data-skill");
+        openRoadmap(skillKey);
     });
 });
 
-mobileNavLinks.forEach(btn => {
-    btn.addEventListener("click", () => {
-        const targetSlide = parseInt(btn.getAttribute("data-slide"));
-        updateSlideView(targetSlide);
+if (closeRoadmapButton) {
+    closeRoadmapButton.addEventListener("click", closeRoadmap);
+}
+
+if (nextButton) {
+    nextButton.addEventListener("click", () => {
+        if (currentSlide < slides.length - 1) {
+            goToSlide(currentSlide + 1);
+        } else {
+            goToSlide(0);
+        }
+    });
+}
+
+if (previousButton) {
+    previousButton.addEventListener("click", () => {
+        if (currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        } else {
+            goToSlide(slides.length - 1);
+        }
+    });
+}
+
+navButtons.forEach((button, index) => {
+    button.addEventListener("click", () => goToSlide(index));
+});
+
+mobileNavButtons.forEach((button, index) => {
+    button.addEventListener("click", () => goToSlide(index));
+});
+
+document.querySelectorAll("[data-slide-target]").forEach(button => {
+    button.addEventListener("click", (e) => {
+        const target = parseInt(e.currentTarget.getAttribute("data-slide-target"), 10);
+        if (!isNaN(target)) goToSlide(target);
     });
 });
 
-if (menuButton) {
+if (menuButton && mobileMenu) {
     menuButton.addEventListener("click", () => {
         mobileMenu.classList.toggle("open");
     });
 }
 
-// Keyboard Navigation
-document.addEventListener("keydown", (e) => {
-    // Only allow slide switching if no overlays are open
-    if (roadmapOverlay.classList.contains("active") || 
-        pathwayOverlay.classList.contains("active") || 
-        advancedRoadmapOverlay.classList.contains("active") ||
-        loadingOverlay.classList.contains("active")) {
+// Keyboard arrow navigation
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isRoadmapOpen) {
+        closeRoadmap();
         return;
     }
 
-    if (e.key === "ArrowRight" || e.key === "PageDown") {
-        updateSlideView(currentSlideIndex + 1);
-    } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
-        updateSlideView(currentSlideIndex - 1);
+    if (!isRoadmapOpen) {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+            if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+            if (currentSlide > 0) goToSlide(currentSlide - 1);
+        }
     }
 });
 
-/* =========================================
-   SKILLS & BASIC ROADMAP MODAL
-========================================= */
-
-function openSkillRoadmap(skillId) {
-    const data = skillsData[skillId];
-    if (!data) return;
-
-    document.getElementById("roadmapTitle").textContent = data.title;
-    document.getElementById("roadmapDescription").textContent = data.description;
-
-    const stepsContainer = document.getElementById("roadmapStepsContainer");
-    stepsContainer.innerHTML = "";
-
-    data.steps.forEach((step, index) => {
-        const stepCard = document.createElement("div");
-        stepCard.className = "roadmap-step";
-        stepCard.innerHTML = `
-            <div class="step-num">0${index + 1}</div>
-            <div class="step-content">
-                <h4>${step.title}</h4>
-                <p class="step-desc">${step.desc}</p>
-                <div class="kayra-impact">
-                    <span class="kayra-badge">KAYRA IMPACT</span>
-                    <p>${step.impact}</p>
-                </div>
-            </div>
-        `;
-        stepsContainer.appendChild(stepCard);
-    });
-
-    roadmapOverlay.classList.add("active");
-}
-
-function closeRoadmap() {
-    roadmapOverlay.classList.remove("active");
-}
-
-/* =========================================
-   PATHWAY DETAILS & OPTION SWITCHING
-========================================= */
-
-function openPathwayDetail(id) {
-    const pathway = pathwaysData[id];
-    if (!pathway) return;
-
-    currentSelectedPathway = pathway;
-    pathwayTitle.textContent = pathway.title;
-    pathwaySubtitle.textContent = pathway.subtitle;
-
-    // Render Option Pills
-    pathwayOptionsPills.innerHTML = "";
-    const optionKeys = Object.keys(pathway.options);
-
-    optionKeys.forEach((key, index) => {
-        const pill = document.createElement("button");
-        pill.className = `option-pill ${index === 0 ? "active" : ""}`;
-        pill.textContent = key;
-        pill.onclick = () => selectPathwayOption(key);
-        pathwayOptionsPills.appendChild(pill);
-    });
-
-    // Default select first option
-    if (optionKeys.length > 0) {
-        selectPathwayOption(optionKeys[0]);
-    }
-
-    pathwayOverlay.classList.add("active");
-}
-
-function selectPathwayOption(optionKey) {
-    if (!currentSelectedPathway || !currentSelectedPathway.options[optionKey]) return;
-
-    currentSelectedOptionKey = optionKey;
-    const optionData = currentSelectedPathway.options[optionKey];
-
-    // Update Pills active state
-    document.querySelectorAll(".option-pill").forEach(pill => {
-        pill.classList.toggle("active", pill.textContent === optionKey);
-    });
-
-    // Populate Details
-    optionTitle.textContent = optionKey;
-    optionDesc.textContent = optionData.desc;
-    optionDiff.textContent = optionData.difficulty;
-    optionPrereq.textContent = optionData.prereq;
-    optionRoadmapText.textContent = optionData.roadmap;
-
-    // Institutions
-    optionInstitutions.innerHTML = "";
-    optionData.institutions.forEach(inst => {
-        const instCard = document.createElement("div");
-        instCard.className = "institution-card";
-        instCard.innerHTML = `
-            <div class="inst-rank">${inst.rank}</div>
-            <div class="inst-name">${inst.name}</div>
-            <div class="inst-loc">${inst.loc}</div>
-            <span class="inst-tag">${inst.tag}</span>
-        `;
-        optionInstitutions.appendChild(instCard);
-    });
-}
-
-function closePathwayDetail() {
-    pathwayOverlay.classList.remove("active");
-}
-
-/* =========================================
-   ADVANCED ROADMAP GENERATION (SIMULATION)
-========================================= */
-
-function generateAdvancedRoadmap() {
-    if (!currentSelectedPathway || !currentSelectedOptionKey) return;
-
-    const optionData = currentSelectedPathway.options[currentSelectedOptionKey];
-    if (!optionData || !optionData.advancedSteps) return;
-
-    // Show Loading Overlay with simulated progress
-    loadingOverlay.classList.add("active");
-    loadingProgressBar.style.width = "0%";
-
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += 10;
-        loadingProgressBar.style.width = `${progress}%`;
-
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                loadingOverlay.classList.remove("active");
-                displayAdvancedRoadmap(optionData);
-            }, 300);
-        }
-    }, 80);
-}
-
-function displayAdvancedRoadmap(optionData) {
-    advRoadmapTitle.textContent = currentSelectedOptionKey;
-    advRoadmapSubtitle.textContent = `Comprehensive Academic Execution Strategy for ${currentSelectedOptionKey}`;
-
-    advRoadmapStepsContainer.innerHTML = "";
-
-    optionData.advancedSteps.forEach((step, idx) => {
-        const stepItem = document.createElement("div");
-        stepItem.className = "vertical-step-item";
-        stepItem.innerHTML = `
-            <div class="vertical-step-marker">${idx + 1}</div>
-            <div class="vertical-step-body">
-                <div class="vertical-step-phase">${step.phase}</div>
-                <div class="vertical-step-desc">${step.desc}</div>
-            </div>
-        `;
-        advRoadmapStepsContainer.appendChild(stepItem);
-    });
-
-    advancedRoadmapOverlay.classList.add("active");
-}
-
-function closeAdvancedRoadmap() {
-    advancedRoadmapOverlay.classList.remove("active");
-}
-
-/* Global Exposing for Onclick Handlers */
-window.openSkillRoadmap = openSkillRoadmap;
-window.closeRoadmap = closeRoadmap;
-window.openPathwayDetail = openPathwayDetail;
-window.closePathwayDetail = closePathwayDetail;
-window.generateAdvancedRoadmap = generateAdvancedRoadmap;
-window.closeAdvancedRoadmap = closeAdvancedRoadmap;
-
-/* Initialize Default View */
+/* Initialize */
 document.addEventListener("DOMContentLoaded", () => {
-    updateSlideView(0);
+    prepareTextAnimation();
+    goToSlide(0);
 });

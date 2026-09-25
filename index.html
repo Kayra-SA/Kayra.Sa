@@ -22,7 +22,7 @@
 
     <!-- =========================================
          NAVBAR
-    ========================================== -->
+    ========================================= -->
 
     <header class="navbar">
 
@@ -37,17 +37,37 @@
 
         <nav class="nav-links">
 
-            <button class="active" data-slide="0">HOME</button>
-            <button data-slide="1">ABOUT</button>
-            <button data-slide="2">SKILLS</button>
-            <button data-slide="3">PATHWAYS</button>
-            <button data-slide="4">PHILOSOPHY</button>
-            <button data-slide="5">START</button>
-            <button data-slide="6">CONTACT</button>
+            <button type="button" class="active" data-slide="0">
+                HOME
+            </button>
+
+            <button type="button" data-slide="1">
+                ABOUT
+            </button>
+
+            <button type="button" data-slide="2">
+                SKILLS
+            </button>
+
+            <button type="button" data-slide="3">
+                PATHWAYS
+            </button>
+
+            <button type="button" data-slide="4">
+                PHILOSOPHY
+            </button>
+
+            <button type="button" data-slide="5">
+                START
+            </button>
+
+            <button type="button" data-slide="6">
+                CONTACT
+            </button>
 
         </nav>
 
-        <button class="menu-button" id="menuButton">
+        <button type="button" class="menu-button" id="menuButton">
             MENU
         </button>
 
@@ -56,35 +76,35 @@
 
     <!-- =========================================
          MOBILE MENU
-    ========================================== -->
+    ========================================= -->
 
     <div class="mobile-menu" id="mobileMenu">
 
-        <button class="mobile-nav-link" data-slide="0">
+        <button type="button" class="mobile-nav-link" data-slide="0">
             HOME
         </button>
 
-        <button class="mobile-nav-link" data-slide="1">
+        <button type="button" class="mobile-nav-link" data-slide="1">
             ABOUT
         </button>
 
-        <button class="mobile-nav-link" data-slide="2">
+        <button type="button" class="mobile-nav-link" data-slide="2">
             SKILLS
         </button>
 
-        <button class="mobile-nav-link" data-slide="3">
+        <button type="button" class="mobile-nav-link" data-slide="3">
             PATHWAYS
         </button>
 
-        <button class="mobile-nav-link" data-slide="4">
+        <button type="button" class="mobile-nav-link" data-slide="4">
             PHILOSOPHY
         </button>
 
-        <button class="mobile-nav-link" data-slide="5">
+        <button type="button" class="mobile-nav-link" data-slide="5">
             START
         </button>
 
-        <button class="mobile-nav-link" data-slide="6">
+        <button type="button" class="mobile-nav-link" data-slide="6">
             CONTACT
         </button>
 
@@ -93,13 +113,13 @@
 
     <!-- =========================================
          MAIN SLIDES
-    ========================================== -->
+    ========================================= -->
 
     <main id="slideContainer">
 
 
         <!-- =====================================
-             HOME
+             00 / HOME
         ====================================== -->
 
         <section class="slide active" id="hero">
@@ -115,7 +135,11 @@
                     <h1 class="animated-heading">
 
                         BUILD YOUR
-                        <span class="highlight">K</span>
+
+                        <span class="highlight">
+                            K
+                        </span>
+
                         FUTURE.
 
                     </h1>
@@ -131,19 +155,19 @@
                     <div class="hero-buttons">
 
                         <button
+                            type="button"
                             class="primary-button"
-                            data-slide-target="5">
-
+                            data-slide-target="5"
+                        >
                             BEGIN YOUR JOURNEY
-
                         </button>
 
                         <button
+                            type="button"
                             class="secondary-button"
-                            data-slide-target="1">
-
+                            data-slide-target="1"
+                        >
                             DISCOVER KAYRA
-
                         </button>
 
                     </div>
@@ -151,7 +175,7 @@
                 </div>
 
 
-                <!-- HERO K -->
+                <!-- HERO PLANETS -->
 
                 <div class="hero-symbol">
 
@@ -204,7 +228,6 @@
                     <div class="star star-four"></div>
                     <div class="star star-five"></div>
 
-
                     <div class="dot dot-one"></div>
                     <div class="dot dot-two"></div>
                     <div class="dot dot-three"></div>
@@ -221,8 +244,9 @@
         </section>
 
 
+
         <!-- =====================================
-             ABOUT
+             01 / ABOUT
         ====================================== -->
 
         <section class="slide" id="about">
@@ -236,7 +260,11 @@
                 <h2 class="animated-heading">
 
                     FIND THE
-                    <span class="highlight">DIRECTION</span>
+
+                    <span class="highlight">
+                        DIRECTION
+                    </span>
+
                     THAT BELONGS TO YOU.
 
                 </h2>
@@ -274,8 +302,9 @@
         </section>
 
 
+
         <!-- =====================================
-             SKILLS
+             02 / SKILLS
         ====================================== -->
 
         <section class="slide" id="skills">
@@ -286,12 +315,17 @@
                     02 / SKILLS
                 </div>
 
+
                 <h2 class="animated-heading">
 
                     BUILD WHAT
-                    <span class="highlight">MATTERS.</span>
+
+                    <span class="highlight">
+                        MATTERS.
+                    </span>
 
                 </h2>
+
 
                 <p class="section-intro animate-text">
 
@@ -302,134 +336,204 @@
                 </p>
 
 
+                <!--
+                    IMPORTANT:
+
+                    These are REAL BUTTONS.
+
+                    JavaScript will use data-route
+                    to open the corresponding screen.
+                -->
+
                 <div class="skills-grid">
 
 
                     <button
-                        class="skill-card"
-                        data-route="skill/communication">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/communication"
+                    >
 
-                        <span class="skill-number">01</span>
+                        <div class="skill-number">
+                            01
+                        </div>
 
-                        <h3>COMMUNICATION</h3>
+                        <h3>
+                            COMMUNICATION
+                        </h3>
 
                         <p>
                             Express ideas clearly, listen effectively,
                             and connect with people.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/creativity">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/creativity"
+                    >
 
-                        <span class="skill-number">02</span>
+                        <div class="skill-number">
+                            02
+                        </div>
 
-                        <h3>CREATIVITY</h3>
+                        <h3>
+                            CREATIVITY
+                        </h3>
 
                         <p>
                             Turn ideas into possibilities and approach
                             problems from different perspectives.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/problem-solving">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/problem-solving"
+                    >
 
-                        <span class="skill-number">03</span>
+                        <div class="skill-number">
+                            03
+                        </div>
 
-                        <h3>PROBLEM SOLVING</h3>
+                        <h3>
+                            PROBLEM SOLVING
+                        </h3>
 
                         <p>
-                            Break complex problems into smaller parts
-                            and build meaningful solutions.
+                            Understand complex problems, break them down,
+                            and find meaningful solutions.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/critical-thinking">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/critical-thinking"
+                    >
 
-                        <span class="skill-number">04</span>
+                        <div class="skill-number">
+                            04
+                        </div>
 
-                        <h3>CRITICAL THINKING</h3>
+                        <h3>
+                            CRITICAL THINKING
+                        </h3>
 
                         <p>
-                            Question assumptions, evaluate evidence,
-                            and make better-informed decisions.
+                            Question assumptions, evaluate information,
+                            and make thoughtful decisions.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/leadership">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/leadership"
+                    >
 
-                        <span class="skill-number">05</span>
+                        <div class="skill-number">
+                            05
+                        </div>
 
-                        <h3>LEADERSHIP</h3>
+                        <h3>
+                            LEADERSHIP
+                        </h3>
 
                         <p>
-                            Take responsibility, coordinate people,
-                            and move ideas into action.
+                            Take responsibility, guide others,
+                            and turn ideas into action.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/digital-literacy">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/digital-literacy"
+                    >
 
-                        <span class="skill-number">06</span>
+                        <div class="skill-number">
+                            06
+                        </div>
 
-                        <h3>DIGITAL LITERACY</h3>
+                        <h3>
+                            DIGITAL LITERACY
+                        </h3>
 
                         <p>
-                            Use digital tools, information, data,
-                            and technology effectively.
+                            Understand digital tools, technology,
+                            information, and modern workflows.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
 
 
+
                     <button
-                        class="skill-card"
-                        data-route="skill/adaptability">
+                        type="button"
+                        class="skill-card exploration-trigger"
+                        data-route="skill/adaptability"
+                    >
 
-                        <span class="skill-number">07</span>
+                        <div class="skill-number">
+                            07
+                        </div>
 
-                        <h3>ADAPTABILITY</h3>
+                        <h3>
+                            ADAPTABILITY
+                        </h3>
 
                         <p>
                             Learn continuously, respond to change,
-                            and stay effective in new situations.
+                            and grow through new situations.
                         </p>
 
-                        <span class="card-arrow">→</span>
+                        <span class="card-arrow">
+                            →
+                        </span>
 
                     </button>
-
 
                 </div>
 
@@ -438,8 +542,9 @@
         </section>
 
 
+
         <!-- =====================================
-             PATHWAYS
+             03 / PATHWAYS
         ====================================== -->
 
         <section class="slide" id="pathways">
@@ -450,10 +555,14 @@
                     03 / PATHWAYS
                 </div>
 
+
                 <h2 class="animated-heading">
 
                     YOUR NEXT
-                    <span class="highlight">PATH.</span>
+
+                    <span class="highlight">
+                        PATH.
+                    </span>
 
                 </h2>
 
@@ -461,15 +570,19 @@
                 <div class="pathways-list">
 
 
+                    <!-- AFTER 10TH -->
+
                     <button
-                        class="pathway-row"
-                        data-route="pathway/after10th">
+                        type="button"
+                        class="pathway-row exploration-trigger"
+                        data-route="pathway/after10th"
+                    >
 
                         <span class="pathway-number">
                             01
                         </span>
 
-                        <div class="pathway-copy">
+                        <div class="pathway-content">
 
                             <h3>
                                 AFTER 10TH
@@ -489,15 +602,20 @@
                     </button>
 
 
+
+                    <!-- AFTER 12TH -->
+
                     <button
-                        class="pathway-row"
-                        data-route="pathway/after12th">
+                        type="button"
+                        class="pathway-row exploration-trigger"
+                        data-route="pathway/after12th"
+                    >
 
                         <span class="pathway-number">
                             02
                         </span>
 
-                        <div class="pathway-copy">
+                        <div class="pathway-content">
 
                             <h3>
                                 AFTER 12TH
@@ -517,15 +635,20 @@
                     </button>
 
 
+
+                    <!-- GLOBAL OPTIONS -->
+
                     <button
-                        class="pathway-row"
-                        data-route="pathway/global">
+                        type="button"
+                        class="pathway-row exploration-trigger"
+                        data-route="pathway/global"
+                    >
 
                         <span class="pathway-number">
                             03
                         </span>
 
-                        <div class="pathway-copy">
+                        <div class="pathway-content">
 
                             <h3>
                                 GLOBAL OPTIONS
@@ -544,7 +667,6 @@
 
                     </button>
 
-
                 </div>
 
             </div>
@@ -552,8 +674,9 @@
         </section>
 
 
+
         <!-- =====================================
-             PHILOSOPHY
+             04 / PHILOSOPHY
         ====================================== -->
 
         <section class="slide" id="philosophy">
@@ -564,12 +687,20 @@
                     04 / PHILOSOPHY
                 </div>
 
+
                 <h2 class="animated-heading">
 
                     YOUR FUTURE
-                    <span class="slash">/</span>
+
+                    <span class="slash">
+                        /
+                    </span>
+
                     IS
-                    <span class="highlight">BUILT.</span>
+
+                    <span class="highlight">
+                        BUILT.
+                    </span>
 
                 </h2>
 
@@ -597,8 +728,9 @@
         </section>
 
 
+
         <!-- =====================================
-             START
+             05 / START
         ====================================== -->
 
         <section class="slide" id="start">
@@ -609,10 +741,14 @@
                     05 / START
                 </div>
 
+
                 <h2 class="animated-heading">
 
                     READY TO
-                    <span class="highlight">BEGIN?</span>
+
+                    <span class="highlight">
+                        BEGIN?
+                    </span>
 
                 </h2>
 
@@ -625,12 +761,20 @@
                 </p>
 
 
+                <!--
+                    IMPORTANT:
+
+                    No data-slide-target here.
+
+                    This button is intentionally independent.
+                -->
+
                 <button
+                    type="button"
                     class="primary-button start-button"
-                    id="startExploringButton">
-
+                    id="startExploringButton"
+                >
                     START EXPLORING
-
                 </button>
 
             </div>
@@ -638,8 +782,9 @@
         </section>
 
 
+
         <!-- =====================================
-             CONTACT
+             06 / CONTACT
         ====================================== -->
 
         <section class="slide" id="contact">
@@ -650,10 +795,14 @@
                     06 / CONTACT
                 </div>
 
+
                 <h2 class="animated-heading">
 
                     LET'S
-                    <span class="highlight">CONNECT.</span>
+
+                    <span class="highlight">
+                        CONNECT.
+                    </span>
 
                 </h2>
 
@@ -661,93 +810,117 @@
                 <div class="contact-line"></div>
 
 
-                <!-- OLD STYLE INSTAGRAM -->
+                <!--
+                    OLD-STYLE INSTAGRAM CONTACTS
 
-                <div class="instagram-links">
+                    Only the glowing Instagram logo
+                    + username.
+
+                    No cards.
+                -->
+
+                <div class="instagram-accounts">
 
 
-                    <a
-                        href="https://www.instagram.com/ananyakbonala/"
-                        class="instagram-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Instagram - @ananyakbonala">
+                    <!-- ANANYA -->
 
-                        <svg
-                            class="instagram-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
+                    <div class="instagram-account">
 
-                            <rect
-                                x="3"
-                                y="3"
-                                width="18"
-                                height="18"
-                                rx="5">
-                            </rect>
+                        <a
+                            href="https://www.instagram.com/ananyakbonala/"
+                            class="instagram-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram - @ananyakbonala"
+                        >
 
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="4.2">
-                            </circle>
+                            <svg
+                                class="instagram-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
 
-                            <circle
-                                cx="17.4"
-                                cy="6.6"
-                                r="1.1"
-                                class="instagram-dot">
-                            </circle>
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="5"
+                                ></rect>
 
-                        </svg>
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="4.2"
+                                ></circle>
 
-                        <span>
+                                <circle
+                                    cx="17.4"
+                                    cy="6.6"
+                                    r="1.1"
+                                    class="instagram-dot"
+                                ></circle>
+
+                            </svg>
+
+                        </a>
+
+                        <div class="instagram-username">
                             @ananyakbonala
-                        </span>
+                        </div>
 
-                    </a>
+                    </div>
 
 
-                    <a
-                        href="https://www.instagram.com/kayra_.sa/"
-                        class="instagram-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Instagram - @kayra_.sa">
 
-                        <svg
-                            class="instagram-icon"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true">
+                    <!-- KAYRA -->
 
-                            <rect
-                                x="3"
-                                y="3"
-                                width="18"
-                                height="18"
-                                rx="5">
-                            </rect>
+                    <div class="instagram-account">
 
-                            <circle
-                                cx="12"
-                                cy="12"
-                                r="4.2">
-                            </circle>
+                        <a
+                            href="https://www.instagram.com/kayra_.sa/"
+                            class="instagram-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram - @kayra_.sa"
+                        >
 
-                            <circle
-                                cx="17.4"
-                                cy="6.6"
-                                r="1.1"
-                                class="instagram-dot">
-                            </circle>
+                            <svg
+                                class="instagram-icon"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
 
-                        </svg>
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="5"
+                                ></rect>
 
-                        <span>
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="4.2"
+                                ></circle>
+
+                                <circle
+                                    cx="17.4"
+                                    cy="6.6"
+                                    r="1.1"
+                                    class="instagram-dot"
+                                ></circle>
+
+                            </svg>
+
+                        </a>
+
+                        <div class="instagram-username">
                             @kayra_.sa
-                        </span>
+                        </div>
 
-                    </a>
+                    </div>
 
 
                 </div>
@@ -759,74 +932,68 @@
     </main>
 
 
+
     <!-- =========================================
          EXPLORATION SCREEN
-    ========================================== -->
 
-    <section
+         JavaScript will dynamically fill this.
+    ========================================= -->
+
+    <div
         class="exploration-screen"
         id="explorationScreen"
-        aria-hidden="true">
+        aria-hidden="true"
+    >
 
         <div class="exploration-shell">
 
-
-            <div class="exploration-topline">
-
-                <div class="exploration-brand">
-
-                    KAYRA
-                    <span>/ EXPLORATION</span>
-
-                </div>
-
-
-                <button
-                    class="exploration-back"
-                    id="explorationBack">
-
-                    ← BACK
-
-                </button>
-
-            </div>
+            <button
+                type="button"
+                class="exploration-back"
+                id="explorationBack"
+            >
+                ← BACK
+            </button>
 
 
             <div
-                id="explorationView"
-                class="exploration-view">
-
+                class="exploration-content"
+                id="explorationContent"
+            >
+                <!-- Dynamic exploration content goes here -->
             </div>
 
         </div>
 
-    </section>
+    </div>
+
 
 
     <!-- =========================================
-         ADVANCED ROADMAP GENERATION
-    ========================================== -->
+         ADVANCED ROADMAP GENERATION OVERLAY
+    ========================================= -->
 
     <div
         class="generation-overlay"
         id="generationOverlay"
-        aria-hidden="true">
+        aria-hidden="true"
+    >
 
         <div class="generation-card">
 
 
             <div class="generation-visual">
 
-                <div class="generation-orbit generation-orbit-one">
-                    <span class="generation-planet generation-planet-one"></span>
+                <div class="generation-orbit orbit-one">
+                    <div class="generation-planet"></div>
                 </div>
 
-                <div class="generation-orbit generation-orbit-two">
-                    <span class="generation-planet generation-planet-two"></span>
+                <div class="generation-orbit orbit-two">
+                    <div class="generation-planet"></div>
                 </div>
 
-                <div class="generation-orbit generation-orbit-three">
-                    <span class="generation-planet generation-planet-three"></span>
+                <div class="generation-orbit orbit-three">
+                    <div class="generation-planet"></div>
                 </div>
 
                 <div class="generation-core">
@@ -836,58 +1003,36 @@
             </div>
 
 
-            <div class="generation-kicker">
-                KAYRA SYSTEM / ANALYSIS
+            <div class="generation-title">
+                BUILDING YOUR ADVANCED ROADMAP
             </div>
 
 
-            <h3>
-
-                BUILDING YOUR
-                <span>ADVANCED ROADMAP</span>
-
-            </h3>
+            <div class="generation-status" id="generationStatus">
+                ANALYSING DIRECTION...
+            </div>
 
 
-            <p
-                id="generationStatus"
-                aria-live="polite">
-
-                Mapping your direction...
-
-            </p>
-
-
-            <div class="generation-progress-row">
+            <div class="generation-progress">
 
                 <div class="generation-bar">
 
                     <div
                         class="generation-bar-fill"
-                        id="generationBarFill">
-                    </div>
-
-                    <div class="generation-scan"></div>
+                        id="generationBarFill"
+                    ></div>
 
                 </div>
 
 
                 <div
                     class="generation-ring"
-                    id="generationRing">
-
-                    <span></span>
-
+                    id="generationRing"
+                >
+                    <span id="generationPercent">
+                        0%
+                    </span>
                 </div>
-
-            </div>
-
-
-            <div
-                class="generation-percent"
-                id="generationPercent">
-
-                00%
 
             </div>
 
@@ -896,26 +1041,40 @@
     </div>
 
 
+
     <!-- =========================================
          SLIDE CONTROLS
-    ========================================== -->
+    ========================================= -->
 
     <div class="slide-controls">
 
-        <button id="previousSlide">
+        <button
+            type="button"
+            id="previousSlide"
+        >
             ← PREVIOUS
         </button>
+
 
         <div id="slideCounter">
             01 / 07
         </div>
 
-        <button id="nextSlide">
+
+        <button
+            type="button"
+            id="nextSlide"
+        >
             NEXT →
         </button>
 
     </div>
 
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================= -->
 
     <script src="script.js"></script>
 

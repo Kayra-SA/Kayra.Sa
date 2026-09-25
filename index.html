@@ -3,1314 +3,720 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
     <title>KAYRA — Build Your Future</title>
 
-    <meta
-        name="description"
-        content="KAYRA helps students build skills, explore opportunities, and prepare for their future after school."
-    >
+    <meta name="description"
+        content="KAYRA helps students build skills, explore opportunities, and prepare for their future after school.">
 
-    <meta
-        name="keywords"
-        content="KAYRA, Kayra, student skills, education, career development, future planning"
-    >
+    <meta name="keywords"
+        content="KAYRA, Kayra, student skills, career development, education, future planning">
 
-    <meta
-        name="author"
-        content="KAYRA"
-    >
+    <meta name="author" content="KAYRA">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KAYRA — A Vision</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
-
 <body>
 
-    <!-- =====================================================
-         PAGE
-    ====================================================== -->
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
 
-    <div class="page" id="page">
+    <header class="navbar">
 
+        <div class="brand">
+            <div class="brand-mark">K</div>
+            <span>KAYRA</span>
+        </div>
 
-        <!-- =================================================
-             NAVBAR
-        ================================================== -->
+        <div class="vision-text">
+            A Vision Of Sahith Kankara And Ananya Bonala.
+        </div>
 
-        <header class="navbar" id="navbar">
+        <nav class="nav-links">
 
-            <div class="brand">
-
-                <div class="brand-mark">
-                    K
-                </div>
-
-                <span class="brand-name">
-                    KAYRA
-                </span>
-
-            </div>
-
-
-            <div class="vision-text">
-                A Vision Of Sahith Kankara And Ananya Bonala.
-            </div>
-
-
-            <!-- DESKTOP NAVIGATION -->
-
-            <nav
-                class="nav-links"
-                id="desktopNavigation"
-                aria-label="Main navigation"
-            >
-
-                <button
-                    type="button"
-                    class="nav-link active"
-                    data-slide="0"
-                >
-                    HOME
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="1"
-                >
-                    ABOUT
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="2"
-                >
-                    SKILLS
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="3"
-                >
-                    PATHWAYS
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="4"
-                >
-                    PHILOSOPHY
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="5"
-                >
-                    START
-                </button>
-
-                <button
-                    type="button"
-                    class="nav-link"
-                    data-slide="6"
-                >
-                    CONTACT
-                </button>
-
-            </nav>
-
-
-            <!-- MOBILE MENU BUTTON -->
-
-            <button
-                type="button"
-                class="menu-button"
-                id="menuButton"
-                aria-label="Open navigation menu"
-                aria-expanded="false"
-            >
-                MENU
-            </button>
-
-        </header>
-
-
-
-        <!-- =================================================
-             MOBILE NAVIGATION
-        ================================================== -->
-
-        <div
-            class="mobile-menu"
-            id="mobileMenu"
-            aria-hidden="true"
-        >
-
-            <button
-                type="button"
-                class="mobile-nav-link active"
-                data-slide="0"
-            >
+            <button class="active" data-slide="0">
                 HOME
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="1"
-            >
+            <button data-slide="1">
                 ABOUT
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="2"
-            >
+            <button data-slide="2">
                 SKILLS
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="3"
-            >
+            <button data-slide="3">
                 PATHWAYS
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="4"
-            >
+            <button data-slide="4">
                 PHILOSOPHY
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="5"
-            >
+            <button data-slide="5">
                 START
             </button>
 
-            <button
-                type="button"
-                class="mobile-nav-link"
-                data-slide="6"
-            >
+            <button data-slide="6">
                 CONTACT
             </button>
 
-        </div>
+        </nav>
 
+        <button class="menu-button" id="menuButton">
+            MENU
+        </button>
 
+    </header>
 
-        <!-- =================================================
-             MAIN SLIDE SYSTEM
 
-             IMPORTANT:
-             JavaScript controls which .slide receives
-             the .active class.
-        ================================================== -->
+    <!-- =========================================
+         MOBILE MENU
+    ========================================== -->
 
-        <main
-            class="slide-container"
-            id="slideContainer"
-        >
+    <div class="mobile-menu" id="mobileMenu">
 
+        <button class="mobile-nav-link" data-slide="0">
+            HOME
+        </button>
 
-            <!-- =================================================
-                 00 — HOME
-            ================================================== -->
+        <button class="mobile-nav-link" data-slide="1">
+            ABOUT
+        </button>
 
-            <section
-                class="slide active"
-                id="hero"
-                data-slide-index="0"
-                aria-hidden="false"
-            >
+        <button class="mobile-nav-link" data-slide="2">
+            SKILLS
+        </button>
 
-                <div class="section hero-section">
+        <button class="mobile-nav-link" data-slide="3">
+            PATHWAYS
+        </button>
 
+        <button class="mobile-nav-link" data-slide="4">
+            PHILOSOPHY
+        </button>
 
-                    <!-- HERO TEXT -->
+        <button class="mobile-nav-link" data-slide="5">
+            START
+        </button>
 
-                    <div class="hero-content">
-
-                        <div class="eyebrow animate-item">
-                            A NEW DIRECTION
-                        </div>
-
-
-                        <h1 class="animated-heading">
-
-                            <span class="heading-line">
-                                BUILD YOUR
-                            </span>
-
-                            <span class="heading-line">
-                                <span class="highlight">
-                                    K
-                                </span>
-                                FUTURE.
-                            </span>
-
-                        </h1>
-
-
-                        <p class="hero-description animate-text">
-                            A place to discover your strengths,
-                            develop meaningful skills,
-                            and build a direction for what comes next.
-                        </p>
-
-
-                        <div class="hero-buttons">
-
-                            <button
-                                type="button"
-                                class="primary-button"
-                                data-slide-target="5"
-                            >
-                                BEGIN YOUR JOURNEY
-                            </button>
-
-                            <button
-                                type="button"
-                                class="secondary-button"
-                                data-slide-target="1"
-                            >
-                                DISCOVER KAYRA
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         HERO PLANET SYSTEM
-                    ================================================== -->
-
-                    <div
-                        class="hero-symbol"
-                        aria-hidden="true"
-                    >
-
-                        <!-- OUTER ORBIT -->
-
-                        <div class="orbit orbit-outer">
-
-                            <div class="planet earth">
-
-                                <div class="earth-land land-one"></div>
-                                <div class="earth-land land-two"></div>
-                                <div class="earth-land land-three"></div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- MIDDLE ORBIT -->
-
-                        <div class="orbit orbit-middle">
-
-                            <div class="planet venus">
-
-                                <div class="venus-line line-one"></div>
-                                <div class="venus-line line-two"></div>
-                                <div class="venus-line line-three"></div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- INNER ORBIT -->
-
-                        <div class="orbit orbit-inner">
-
-                            <div class="planet mars">
-
-                                <div class="mars-land mars-land-one"></div>
-                                <div class="mars-land mars-land-two"></div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- CENTER -->
-
-                        <div class="symbol-core">
-                            K
-                        </div>
-
-
-                        <!-- STARS -->
-
-                        <span class="star star-one"></span>
-                        <span class="star star-two"></span>
-                        <span class="star star-three"></span>
-                        <span class="star star-four"></span>
-                        <span class="star star-five"></span>
-
-
-                        <!-- DECORATIVE DOTS -->
-
-                        <span class="dot dot-one"></span>
-                        <span class="dot dot-two"></span>
-                        <span class="dot dot-three"></span>
-
-                    </div>
-
-
-
-                    <!-- SCROLL INDICATOR -->
-
-                    <div class="scroll-indicator">
-                        SCROLL TO EXPLORE
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 01 — ABOUT
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="about"
-                data-slide-index="1"
-                aria-hidden="true"
-            >
-
-                <div class="section about-section">
-
-                    <div class="section-label">
-                        01 / ABOUT
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            FIND THE
-                        </span>
-
-                        <span class="heading-line">
-                            <span class="highlight">
-                                DIRECTION
-                            </span>
-                        </span>
-
-                        <span class="heading-line">
-                            THAT BELONGS TO YOU.
-                        </span>
-
-                    </h2>
-
-
-                    <div class="about-content">
-
-                        <p class="animate-text">
-                            Kayra exists to help students understand
-                            themselves before deciding what comes next.
-                        </p>
-
-                        <p class="animate-text">
-                            The world offers thousands of possibilities.
-                            Choosing between them should begin with
-                            understanding your own strengths, interests,
-                            and ambitions.
-                        </p>
-
-                        <p class="animate-text">
-                            Kayra brings those pieces together into a
-                            clearer direction for the future.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 02 — SKILLS
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="skills"
-                data-slide-index="2"
-                aria-hidden="true"
-            >
-
-                <div class="section skills-section">
-
-                    <div class="section-label">
-                        02 / SKILLS
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            BUILD WHAT
-                        </span>
-
-                        <span class="heading-line">
-                            <span class="highlight">
-                                MATTERS.
-                            </span>
-                        </span>
-
-                    </h2>
-
-
-                    <p class="section-intro animate-text">
-                        Education is more than marks.
-                        The skills you build shape what you can
-                        create, communicate, and solve.
-                    </p>
-
-
-
-                    <!-- SKILL CARDS -->
-
-                    <div class="skills-grid">
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/communication"
-                        >
-
-                            <span class="skill-number">
-                                01
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    COMMUNICATION
-                                </span>
-
-                                <span class="skill-description">
-                                    Express ideas clearly, listen effectively,
-                                    and connect with people.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/creativity"
-                        >
-
-                            <span class="skill-number">
-                                02
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    CREATIVITY
-                                </span>
-
-                                <span class="skill-description">
-                                    Turn ideas into possibilities and approach
-                                    problems from different perspectives.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/problem-solving"
-                        >
-
-                            <span class="skill-number">
-                                03
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    PROBLEM SOLVING
-                                </span>
-
-                                <span class="skill-description">
-                                    Understand complex problems, break them down,
-                                    and find meaningful solutions.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/critical-thinking"
-                        >
-
-                            <span class="skill-number">
-                                04
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    CRITICAL THINKING
-                                </span>
-
-                                <span class="skill-description">
-                                    Question assumptions, evaluate information,
-                                    and make thoughtful decisions.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/leadership"
-                        >
-
-                            <span class="skill-number">
-                                05
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    LEADERSHIP
-                                </span>
-
-                                <span class="skill-description">
-                                    Take responsibility, guide others,
-                                    and turn ideas into action.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/digital-literacy"
-                        >
-
-                            <span class="skill-number">
-                                06
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    DIGITAL LITERACY
-                                </span>
-
-                                <span class="skill-description">
-                                    Understand digital tools, technology,
-                                    information, and modern workflows.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <button
-                            type="button"
-                            class="skill-card exploration-trigger"
-                            data-route="skill/adaptability"
-                        >
-
-                            <span class="skill-number">
-                                07
-                            </span>
-
-                            <span class="skill-card-content">
-
-                                <span class="skill-title">
-                                    ADAPTABILITY
-                                </span>
-
-                                <span class="skill-description">
-                                    Learn continuously, respond to change,
-                                    and grow through new situations.
-                                </span>
-
-                            </span>
-
-                            <span class="card-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 03 — PATHWAYS
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="pathways"
-                data-slide-index="3"
-                aria-hidden="true"
-            >
-
-                <div class="section pathways-section">
-
-                    <div class="section-label">
-                        03 / PATHWAYS
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            YOUR NEXT
-                        </span>
-
-                        <span class="heading-line">
-                            <span class="highlight">
-                                PATH.
-                            </span>
-                        </span>
-
-                    </h2>
-
-
-                    <div class="pathways-list">
-
-
-                        <!-- AFTER 10TH -->
-
-                        <button
-                            type="button"
-                            class="pathway-row exploration-trigger"
-                            data-route="pathway/after10th"
-                        >
-
-                            <span class="pathway-number">
-                                01
-                            </span>
-
-                            <span class="pathway-content">
-
-                                <span class="pathway-title">
-                                    AFTER 10TH
-                                </span>
-
-                                <span class="pathway-description">
-                                    Explore streams, subjects,
-                                    and directions for the next stage.
-                                </span>
-
-                            </span>
-
-                            <span class="pathway-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <!-- AFTER 12TH -->
-
-                        <button
-                            type="button"
-                            class="pathway-row exploration-trigger"
-                            data-route="pathway/after12th"
-                        >
-
-                            <span class="pathway-number">
-                                02
-                            </span>
-
-                            <span class="pathway-content">
-
-                                <span class="pathway-title">
-                                    AFTER 12TH
-                                </span>
-
-                                <span class="pathway-description">
-                                    Understand courses, careers,
-                                    universities, and opportunities.
-                                </span>
-
-                            </span>
-
-                            <span class="pathway-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-
-
-                        <!-- GLOBAL OPTIONS -->
-
-                        <button
-                            type="button"
-                            class="pathway-row exploration-trigger"
-                            data-route="pathway/global"
-                        >
-
-                            <span class="pathway-number">
-                                03
-                            </span>
-
-                            <span class="pathway-content">
-
-                                <span class="pathway-title">
-                                    GLOBAL OPTIONS
-                                </span>
-
-                                <span class="pathway-description">
-                                    Discover international schools,
-                                    universities, and global pathways.
-                                </span>
-
-                            </span>
-
-                            <span class="pathway-arrow">
-                                →
-                            </span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 04 — PHILOSOPHY
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="philosophy"
-                data-slide-index="4"
-                aria-hidden="true"
-            >
-
-                <div class="section philosophy-section">
-
-                    <div class="section-label">
-                        04 / PHILOSOPHY
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            YOUR FUTURE
-                        </span>
-
-                        <span class="heading-line">
-
-                            <span class="slash">
-                                /
-                            </span>
-
-                            IS
-
-                            <span class="highlight">
-                                BUILT.
-                            </span>
-
-                        </span>
-
-                    </h2>
-
-
-                    <div class="philosophy-content">
-
-                        <p class="large-philosophy animate-text">
-                            You don't have to know exactly
-                            where you're going.
-                        </p>
-
-                        <p class="animate-text">
-                            You only need to start understanding
-                            what moves you forward.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 05 — START
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="start"
-                data-slide-index="5"
-                aria-hidden="true"
-            >
-
-                <div class="section start-section">
-
-                    <div class="section-label">
-                        05 / START
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            READY TO
-                        </span>
-
-                        <span class="heading-line">
-                            <span class="highlight">
-                                BEGIN?
-                            </span>
-                        </span>
-
-                    </h2>
-
-
-                    <p class="start-description animate-text">
-                        Your direction doesn't have to be perfect.
-                        It just has to begin somewhere.
-                    </p>
-
-
-                    <button
-                        type="button"
-                        class="primary-button start-button"
-                        id="startExploringButton"
-                    >
-                        START EXPLORING
-                    </button>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 06 — CONTACT
-            ================================================== -->
-
-            <section
-                class="slide"
-                id="contact"
-                data-slide-index="6"
-                aria-hidden="true"
-            >
-
-                <div class="section contact-section">
-
-                    <div class="section-label">
-                        06 / CONTACT
-                    </div>
-
-
-                    <h2 class="animated-heading">
-
-                        <span class="heading-line">
-                            LET'S
-                        </span>
-
-                        <span class="heading-line">
-                            <span class="highlight">
-                                CONNECT.
-                            </span>
-                        </span>
-
-                    </h2>
-
-
-                    <div class="contact-line"></div>
-
-
-                    <div class="instagram-accounts">
-
-
-                        <!-- ANANYA -->
-
-                        <div class="instagram-account">
-
-                            <a
-                                href="https://www.instagram.com/ananyakbonala/"
-                                class="instagram-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Instagram - @ananyakbonala"
-                            >
-
-                                <svg
-                                    class="instagram-icon"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-
-                                    <rect
-                                        x="3"
-                                        y="3"
-                                        width="18"
-                                        height="18"
-                                        rx="5"
-                                    ></rect>
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="4.2"
-                                    ></circle>
-
-                                    <circle
-                                        cx="17.4"
-                                        cy="6.6"
-                                        r="1.1"
-                                        class="instagram-dot"
-                                    ></circle>
-
-                                </svg>
-
-                            </a>
-
-                            <div class="instagram-username">
-                                @ananyakbonala
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- KAYRA -->
-
-                        <div class="instagram-account">
-
-                            <a
-                                href="https://www.instagram.com/kayra_.sa/"
-                                class="instagram-link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Instagram - @kayra_.sa"
-                            >
-
-                                <svg
-                                    class="instagram-icon"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-
-                                    <rect
-                                        x="3"
-                                        y="3"
-                                        width="18"
-                                        height="18"
-                                        rx="5"
-                                    ></rect>
-
-                                    <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="4.2"
-                                    ></circle>
-
-                                    <circle
-                                        cx="17.4"
-                                        cy="6.6"
-                                        r="1.1"
-                                        class="instagram-dot"
-                                    ></circle>
-
-                                </svg>
-
-                            </a>
-
-                            <div class="instagram-username">
-                                @kayra_.sa
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-
-
-        <!-- =====================================================
-             EXPLORATION SCREEN
-
-             Used by:
-             - Skill cards
-             - Pathway cards
-             - Start Exploring
-        ====================================================== -->
-
-        <div
-            class="exploration-screen"
-            id="explorationScreen"
-            aria-hidden="true"
-        >
-
-            <div class="exploration-shell">
-
-                <button
-                    type="button"
-                    class="exploration-back"
-                    id="explorationBack"
-                >
-                    ← BACK
-                </button>
-
-
-                <div
-                    class="exploration-content"
-                    id="explorationContent"
-                >
-                    <!-- JavaScript inserts exploration content here -->
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================================
-             ROADMAP GENERATION OVERLAY
-        ====================================================== -->
-
-        <div
-            class="generation-overlay"
-            id="generationOverlay"
-            aria-hidden="true"
-        >
-
-            <div class="generation-card">
-
-
-                <!-- GENERATION PLANETS -->
-
-                <div
-                    class="generation-visual"
-                    aria-hidden="true"
-                >
-
-                    <div class="generation-orbit orbit-one">
-
-                        <div class="generation-planet"></div>
-
-                    </div>
-
-
-                    <div class="generation-orbit orbit-two">
-
-                        <div class="generation-planet"></div>
-
-                    </div>
-
-
-                    <div class="generation-orbit orbit-three">
-
-                        <div class="generation-planet"></div>
-
-                    </div>
-
-
-                    <div class="generation-core">
-                        K
-                    </div>
-
-                </div>
-
-
-
-                <!-- GENERATION TEXT -->
-
-                <div class="generation-title">
-                    BUILDING YOUR ADVANCED ROADMAP
-                </div>
-
-
-                <div
-                    class="generation-status"
-                    id="generationStatus"
-                >
-                    ANALYSING DIRECTION...
-                </div>
-
-
-
-                <!-- PROGRESS -->
-
-                <div class="generation-progress">
-
-                    <div class="generation-bar">
-
-                        <div
-                            class="generation-bar-fill"
-                            id="generationBarFill"
-                        ></div>
-
-                    </div>
-
-
-                    <div
-                        class="generation-ring"
-                        id="generationRing"
-                    >
-
-                        <span id="generationPercent">
-                            0%
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =====================================================
-             SLIDE CONTROLS
-        ====================================================== -->
-
-        <div
-            class="slide-controls"
-            id="slideControls"
-        >
-
-            <button
-                type="button"
-                id="previousSlide"
-                aria-label="Previous slide"
-            >
-                ← PREVIOUS
-            </button>
-
-
-            <div
-                id="slideCounter"
-                aria-live="polite"
-            >
-                01 / 07
-            </div>
-
-
-            <button
-                type="button"
-                id="nextSlide"
-                aria-label="Next slide"
-            >
-                NEXT →
-            </button>
-
-        </div>
+        <button class="mobile-nav-link" data-slide="6">
+            CONTACT
+        </button>
 
     </div>
 
 
-    <!-- =====================================================
+    <!-- =========================================
+         SLIDES
+    ========================================== -->
+
+    <main id="slideContainer">
+
+
+        <!-- =====================================
+             01 — HERO
+        ====================================== -->
+
+        <section class="slide active" id="hero">
+
+            <div class="section hero-section">
+
+                <div class="hero-content">
+
+                    <div class="eyebrow">
+                        A NEW DIRECTION
+                    </div>
+
+                    <h1 class="animated-heading">
+
+                        BUILD YOUR
+
+                        <span class="highlight">
+                            K
+                        </span>
+
+                        FUTURE.
+
+                    </h1>
+
+
+                    <p class="hero-description animate-text">
+
+                        A place to discover your strengths,
+                        develop meaningful skills,
+                        and build a direction for what comes next.
+
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <button
+                            class="primary-button"
+                            data-slide-target="5"
+                        >
+                            BEGIN YOUR JOURNEY
+                        </button>
+
+                        <button
+                            class="secondary-button"
+                            data-slide-target="1"
+                        >
+                            DISCOVER KAYRA
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     PLANET SYSTEM
+                ================================== -->
+
+                <div class="hero-symbol">
+
+                    <div class="orbit-outer">
+
+                        <div class="planet earth">
+
+                            <div class="earth-land land-one"></div>
+                            <div class="earth-land land-two"></div>
+                            <div class="earth-land land-three"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="orbit-middle">
+
+                        <div class="planet venus">
+
+                            <div class="venus-line"></div>
+                            <div class="venus-line line-two"></div>
+                            <div class="venus-line line-three"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="orbit-inner">
+
+                        <div class="planet mars">
+
+                            <div class="mars-land mars-land-one"></div>
+                            <div class="mars-land mars-land-two"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="symbol-core">
+                        K
+                    </div>
+
+
+                    <div class="star star-one"></div>
+                    <div class="star star-two"></div>
+                    <div class="star star-three"></div>
+                    <div class="star star-four"></div>
+                    <div class="star star-five"></div>
+
+                    <div class="dot dot-one"></div>
+                    <div class="dot dot-two"></div>
+                    <div class="dot dot-three"></div>
+
+                </div>
+
+
+                <div class="scroll-indicator">
+                    SCROLL TO EXPLORE
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             02 — ABOUT
+        ====================================== -->
+
+        <section class="slide" id="about">
+
+            <div class="section">
+
+                <div class="section-label">
+                    01 / ABOUT
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    FIND THE
+
+                    <span class="highlight">
+                        DIRECTION
+                    </span>
+
+                    THAT BELONGS TO YOU.
+
+                </h2>
+
+
+                <div class="about-content">
+
+                    <p class="animate-text">
+                        Kayra exists to help students understand
+                        themselves before deciding what comes next.
+                    </p>
+
+                    <p class="animate-text">
+                        The world offers thousands of possibilities.
+                        Choosing between them should begin with
+                        understanding your own strengths, interests,
+                        and ambitions.
+                    </p>
+
+                    <p class="animate-text">
+                        Kayra brings those pieces together into a
+                        clearer direction for the future.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             03 — SKILLS
+        ====================================== -->
+
+        <section class="slide" id="skills">
+
+            <div class="section">
+
+                <div class="section-label">
+                    02 / SKILLS
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    BUILD WHAT
+
+                    <span class="highlight">
+                        MATTERS.
+                    </span>
+
+                </h2>
+
+
+                <p class="section-intro animate-text">
+
+                    Education is more than marks.
+                    The skills you build shape what you can
+                    create, communicate, and solve.
+
+                </p>
+
+
+                <div class="skills-grid">
+
+
+                    <article class="skill-card">
+
+                        <div class="skill-number">
+                            01
+                        </div>
+
+                        <h3>
+                            COMMUNICATION
+                        </h3>
+
+                        <p>
+                            Express ideas clearly, listen effectively,
+                            and connect with people.
+                        </p>
+
+                    </article>
+
+
+                    <article class="skill-card">
+
+                        <div class="skill-number">
+                            02
+                        </div>
+
+                        <h3>
+                            CREATIVITY
+                        </h3>
+
+                        <p>
+                            Turn ideas into possibilities and approach
+                            problems from different perspectives.
+                        </p>
+
+                    </article>
+
+
+                    <article class="skill-card">
+
+                        <div class="skill-number">
+                            03
+                        </div>
+
+                        <h3>
+                            PROBLEM SOLVING
+                        </h3>
+
+                        <p>
+                            Understand complex problems, break them down,
+                            and find meaningful solutions.
+                        </p>
+
+                    </article>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             04 — PATHWAYS
+        ====================================== -->
+
+        <section class="slide" id="pathways">
+
+            <div class="section">
+
+                <div class="section-label">
+                    03 / PATHWAYS
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    YOUR NEXT
+
+                    <span class="highlight">
+                        PATH.
+                    </span>
+
+                </h2>
+
+
+                <div class="pathways-list">
+
+
+                    <div class="pathway-row">
+
+                        <span class="pathway-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                AFTER 10TH
+                            </h3>
+
+                            <p>
+                                Explore streams, subjects,
+                                and directions for the next stage.
+                            </p>
+
+                        </div>
+
+                        <span class="pathway-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+
+                    <div class="pathway-row">
+
+                        <span class="pathway-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                AFTER 12TH
+                            </h3>
+
+                            <p>
+                                Understand courses, careers,
+                                universities, and opportunities.
+                            </p>
+
+                        </div>
+
+                        <span class="pathway-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+
+                    <div class="pathway-row">
+
+                        <span class="pathway-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                GLOBAL OPTIONS
+                            </h3>
+
+                            <p>
+                                Discover international schools,
+                                universities, and global pathways.
+                            </p>
+
+                        </div>
+
+                        <span class="pathway-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             05 — PHILOSOPHY
+        ====================================== -->
+
+        <section class="slide" id="philosophy">
+
+            <div class="section philosophy-section">
+
+                <div class="section-label">
+                    04 / PHILOSOPHY
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    YOUR FUTURE
+
+                    <span class="slash">
+                        /
+                    </span>
+
+                    IS
+
+                    <span class="highlight">
+                        BUILT.
+                    </span>
+
+                </h2>
+
+
+                <div class="philosophy-content">
+
+                    <p class="large-philosophy animate-text">
+
+                        You don't have to know exactly
+                        where you're going.
+
+                    </p>
+
+
+                    <p class="animate-text">
+
+                        You only need to start understanding
+                        what moves you forward.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             06 — START
+        ====================================== -->
+
+        <section class="slide" id="start">
+
+            <div class="section start-section">
+
+                <div class="section-label">
+                    05 / START
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    READY TO
+
+                    <span class="highlight">
+                        BEGIN?
+                    </span>
+
+                </h2>
+
+
+                <p class="start-description animate-text">
+
+                    Your direction doesn't have to be perfect.
+                    It just has to begin somewhere.
+
+                </p>
+
+
+                <button
+                    class="primary-button start-button"
+                    data-slide-target="2"
+                >
+                    START EXPLORING
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             07 — CONTACT
+        ====================================== -->
+
+        <section class="slide" id="contact">
+
+            <div class="section contact-section">
+
+                <div class="section-label">
+                    06 / CONTACT
+                </div>
+
+
+                <h2 class="animated-heading">
+
+                    LET'S
+
+                    <span class="highlight">
+                        CONNECT.
+                    </span>
+
+                </h2>
+
+
+                <div class="contact-line"></div>
+
+
+                <!-- INSTAGRAM -->
+
+                <a
+                    href="https://www.instagram.com/ananyakbonala/"
+                    class="instagram-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram - @ananyakbonala"
+                >
+
+                    <svg
+                        class="instagram-icon"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="5"
+                        ></rect>
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="4.2"
+                        ></circle>
+
+                        <circle
+                            cx="17.4"
+                            cy="6.6"
+                            r="1.1"
+                            class="instagram-dot"
+                        ></circle>
+
+                    </svg>
+
+                </a>
+
+
+                <div class="instagram-username">
+                    @ananyakbonala
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         SLIDE CONTROLS
+    ========================================== -->
+
+    <div class="slide-controls">
+
+        <button id="previousSlide">
+            ← PREVIOUS
+        </button>
+
+
+        <div id="slideCounter">
+            01 / 07
+        </div>
+
+
+        <button id="nextSlide">
+            NEXT →
+        </button>
+
+    </div>
+
+
+    <!-- =========================================
          JAVASCRIPT
-    ====================================================== -->
+    ========================================== -->
 
     <script src="script.js"></script>
 
 </body>
 
 </html>
+

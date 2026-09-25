@@ -406,7 +406,7 @@ const overlayData = {
 };
 
 /* =========================================
-   TEXT ANIMATION MECHANICS
+   TEXT ANIMATION PREPARATION
 ========================================= */
 
 function prepareTextAnimation() {
@@ -438,16 +438,12 @@ function animateSlideText(slideElement) {
             if (node.nodeType === Node.TEXT_NODE) {
                 const text = node.nodeValue;
                 const fragment = document.createDocumentFragment();
-                
-                // Split by spaces preserving space delimiters
                 const words = text.split(/(\s+)/);
 
                 words.forEach(word => {
                     if (word.trim() === "") {
-                        // Preserve space nodes exactly as standard inline text
                         fragment.appendChild(document.createTextNode(word));
                     } else {
-                        // Wrap non-space words in an inline-block word wrapper to prevent bad line-breaks
                         const wordSpan = document.createElement("span");
                         wordSpan.className = "word";
 
@@ -540,6 +536,7 @@ function openRoadmap(itemKey) {
     slideControls.classList.add("hidden");
     isRoadmapOpen = true;
 
+    // Scroll to top of overlay content
     roadmapOverlay.scrollTop = 0;
 }
 
@@ -562,19 +559,23 @@ function goToSlide(index) {
     currentSlide = index;
     slides[currentSlide].classList.add("active");
 
+    // Update active navbar button
     navButtons.forEach((btn, i) => {
         btn.classList.toggle("active", i === currentSlide);
     });
 
+    // Update slide counter text
     if (slideCounter) {
         const slideNum = String(currentSlide + 1).padStart(2, "0");
         const totalSlides = String(slides.length).padStart(2, "0");
         slideCounter.textContent = `${slideNum} / ${totalSlides}`;
     }
 
+    // Trigger animations for the new active slide
     animateSlideText(slides[currentSlide]);
     triggerSkillCards(slides[currentSlide]);
 
+    // Close mobile menu if open
     if (mobileMenu) mobileMenu.classList.remove("open");
 }
 
@@ -582,6 +583,7 @@ function goToSlide(index) {
    EVENT LISTENERS
 ========================================= */
 
+// Skill Card Clicks
 document.querySelectorAll(".skill-card").forEach(card => {
     card.addEventListener("click", () => {
         const skillKey = card.getAttribute("data-skill");
@@ -589,6 +591,7 @@ document.querySelectorAll(".skill-card").forEach(card => {
     });
 });
 
+// Pathway Row Clicks
 document.querySelectorAll(".pathway-row").forEach(row => {
     row.addEventListener("click", () => {
         const pathwayKey = row.getAttribute("data-pathway");
@@ -643,6 +646,7 @@ if (menuButton && mobileMenu) {
     });
 }
 
+// Keyboard arrow navigation
 window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && isRoadmapOpen) {
         closeRoadmap();

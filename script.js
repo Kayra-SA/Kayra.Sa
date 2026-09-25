@@ -1,32 +1,58 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const menuBtn = document.querySelector(".menu-btn");
-    const mobileMenu = document.querySelector(".mobile-menu");
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const navItems = document.querySelectorAll('.nav-item');
+const counter = document.getElementById('slide-counter');
+const totalSlides = slides.length;
 
-    if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("active");
-            menuBtn.textContent = mobileMenu.classList.contains("active") ? "CLOSE" : "MENU";
-        });
-    }
+function updateSlides() {
+  slides.forEach((slide, index) => {
+    slide.classList.toggle('active', index === currentSlide);
+  });
 
-    // Smooth scroll offset for fixed navbar
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute("href");
-            if (targetId === "#") return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                const headerOffset = 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  navItems.forEach((item, index) => {
+    item.classList.toggle('active', index === currentSlide);
+  });
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-            }
-        });
-    });
+  const formattedCurrent = String(currentSlide + 1).padStart(2, '0');
+  const formattedTotal = String(totalSlides).padStart(2, '0');
+  counter.textContent = `${formattedCurrent} / ${formattedTotal}`;
+}
+
+function goToSlide(index) {
+  if (index >= 0 && index < totalSlides) {
+    currentSlide = index;
+    updateSlides();
+  }
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % totalSlides;
+  updateSlides();
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  updateSlides();
+}
+
+/* Keyboard Navigation */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    nextSlide();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    prevSlide();
+  }
+});
+
+/* Wheel Scroll Navigation */
+let isScrolling = false;
+window.addEventListener('wheel', (e) => {
+  if (isScrolling) return;
+  isScrolling = true;
+  if (e.deltaY > 0) {
+    nextSlide();
+  } else if (e.deltaY < 0) {
+    prevSlide();
+  }
+  setTimeout(() => { isScrolling = false; }, 800);
 });

@@ -1,503 +1,339 @@
 /* =========================================
-   KAYRA
-   SLIDE + ROADMAP INTERACTION LOGIC
+   OVERLAY DATA & ROADMAP CONTENT
 ========================================= */
-
-const slides = Array.from(document.querySelectorAll(".slide"));
-const navButtons = document.querySelectorAll(".nav-links button");
-const mobileNavButtons = document.querySelectorAll(".mobile-nav-link");
-const previousButton = document.getElementById("previousSlide");
-const nextButton = document.getElementById("nextSlide");
-const slideCounter = document.getElementById("slideCounter");
-const menuButton = document.getElementById("menuButton");
-const mobileMenu = document.getElementById("mobileMenu");
-const slideControls = document.getElementById("slideControls");
-
-const roadmapOverlay = document.getElementById("roadmapOverlay");
-const closeRoadmapButton = document.getElementById("closeRoadmap");
-
-let currentSlide = 0;
-let isRoadmapOpen = false;
-
-/* =========================================
-   ROADMAP & PATHWAY DATA
-========================================= */
-
 const overlayData = {
-    // SKILLS DATA
     "communication": {
-        num: "02 / SKILLS / 01",
-        title: "COMMUNICATION",
-        subtitle: "Master articulate speech, active listening, structural narrative, and audience resonance.",
-        
-        s1Title: "FOUNDATIONAL EXPRESSION",
-        s1Desc: "Understand core message structuring, tone awareness, and active listening dynamics.",
+        num: "SKILL 01",
+        title: "COMMUNICATION & PUBLIC SPEAKING",
+        subtitle: "Master articulate expression, active listening, structured debate, and narrative power.",
+        s1Title: "FOUNDATION",
+        s1Desc: "Active Listening & Structural Clarity.",
         s1Points: [
-            "Deconstruct non-verbal signals, vocal cadence, and posture.",
-            "Learn the Pyramid Principle to structure messages top-down.",
-            "Practice reflective listening to process viewpoints before formulating answers."
+            "Deconstruct conversations to grasp underlying tone and intent.",
+            "Use the PREP framework (Point, Reason, Example, Point) for quick thoughts.",
+            "Eliminate vocal fillers and refine body language posture."
         ],
-        s1Kayra: "Diagnostic articulation assessments and foundational speech structure blueprints.",
+        s1Kayra: "Interactive workshops, speech analysis, and baseline diagnostic feedback.",
 
-        s2Title: "STRUCTURED WRITING & PUBLIC SPEAKING",
-        s2Desc: "Transform raw thoughts into compelling speeches, essays, and presentations.",
+        s2Title: "PRACTICE",
+        s2Desc: "Public Speaking & Structured Writing.",
         s2Points: [
-            "Write concise pitch briefs and structured opinion pieces.",
-            "Eliminate speech clutter (filler words, passive voice, rambling).",
-            "Deliver short impromptu speeches under tight constraints."
+            "Deliver 3-minute impromptu speeches on diverse topics.",
+            "Draft clear, concise executive emails and persuasive outlines.",
+            "Practice eye contact, vocal modulation, and intentional pausing."
         ],
-        s2Kayra: "Safe-space peer feedback circles, video speech analysis, and voice modulation labs.",
+        s2Kayra: "Safe-space speaking labs, AI speech pacing metrics, and peer critique sessions.",
 
-        s3Title: "PERSUASION & NEGOTIATION",
-        s3Desc: "Navigate complex discussions, resolve disagreements, and align divergent viewpoints.",
+        s3Title: "ADVANCED APPLICATION",
+        s3Desc: "Persuasion, Negotiation & Audience Dynamics.",
         s3Points: [
-            "Map stakeholder incentives and adapt language to audience archetypes.",
-            "Master negotiation dynamics: BATNA, empathetic pushback, and compromise.",
-            "De-escalate high-pressure debates using calm, structured logic."
+            "Learn audience profiling to tailor argument density.",
+            "Master negotiation dynamics and principled persuasion techniques.",
+            "Handle surprise questions gracefully under pressure."
         ],
-        s3Kayra: "Simulated Model UN / debate arenas and guided conflict resolution workshops.",
+        s3Kayra: "Live debate simulations, crisis communication exercises, and argument breakdowns.",
 
-        s4Title: "INSPIRATIONAL LEADERSHIP STORYTELLING",
-        s4Desc: "Inspire communities, articulate vision, and command presence in high-stakes environments.",
+        s4Title: "MASTERY",
+        s4Desc: "Real-world Impact & Authentic Storytelling.",
         s4Points: [
-            "Craft personal leadership narratives that resonate authentically.",
-            "Host podcasts, lead town halls, or represent projects on external stages.",
-            "Mentor junior peers in developing their own communication style."
+            "Craft compelling keynotes using classical storytelling arcs.",
+            "Lead high-stakes meetings, town halls, or panel discussions.",
+            "Mentor peers in developing their unique public speaking presence."
         ],
-        s4Kayra: "Keynote presentation opportunities, public showcase platforms, and 1-on-1 executive coaching."
+        s4Kayra: "Live showcase opportunities, capstone keynotes, and direct mentorship from industry guides."
     },
 
-    "creativity": {
-        num: "02 / SKILLS / 02",
-        title: "CREATIVITY",
-        subtitle: "Unlock original thinking, break cognitive patterns, and convert concepts into tangible realities.",
-
-        s1Title: "CURIOSITY & DIVERGENT THINKING",
-        s1Desc: "Break routine mental shortcuts and develop acute observational habits.",
+    "critical-thinking": {
+        num: "SKILL 02",
+        title: "CRITICAL THINKING & PROBLEM SOLVING",
+        subtitle: "Deconstruct complex challenges using first-principles thinking and logical deduction.",
+        s1Title: "CORE LOGIC",
+        s1Desc: "Identifying Biases & Structural Fallacies.",
         s1Points: [
-            "Challenge implicit assumptions using First Principles reasoning.",
-            "Maintain daily idea journals capturing observations across industries.",
-            "Practice lateral thinking drills to connect seemingly unrelated fields."
+            "Identify common cognitive biases in everyday decision making.",
+            "Separate core facts from emotional assumptions.",
+            "Construct logical trees to map out complex problem domains."
         ],
-        s1Kayra: "Daily brain-teaser prompts, cross-domain reading lists, and concept mapping tools.",
+        s1Kayra: "Mental model masterclasses and analytical problem-solving sets.",
 
-        s2Title: "IDEATION & RAPID PROTOTYPING",
-        s2Desc: "Iterate swiftly on ideas and build low-fidelity conceptual models.",
+        s2Title: "SYSTEMS THINKING",
+        s2Desc: "Root Cause Analysis & Mental Models.",
         s2Points: [
-            "Apply Design Thinking frameworks (Empathize, Define, Ideate, Prototype, Test).",
-            "Build quick wireframes, storyboards, or mockups without fear of failure.",
-            "Gather immediate peer feedback to refine early hypotheses."
+            "Apply '5 Whys' and Pareto principles to root-cause diagnosis.",
+            "Evaluate second-order consequences in strategic decisions.",
+            "Analyze complex systems with interconnected variables."
         ],
-        s2Kayra: "Collaborative 48-hour design sprints and multi-disciplinary sandbox sessions.",
+        s2Kayra: "Case-study walkthroughs and interactive systems-mapping workshops.",
 
-        s3Title: "INTERDISCIPLINARY FUSION",
-        s3Desc: "Merge artistic expression, scientific rigor, and human psychology.",
+        s3Title: "STRATEGIC EXECUTION",
+        s3Desc: "Data-Driven Decision Making & Strategy.",
         s3Points: [
-            "Analyze world-class innovations across design, technology, and literature.",
-            "Synthesize ideas from nature (biomimicry) into real-world utility.",
-            "Refine aesthetic intuition alongside functional necessity."
+            "Synthesize qualitative and quantitative data inputs.",
+            "Formulate and stress-test strategic hypotheses.",
+            "Design contingency frameworks for unexpected scenarios."
         ],
-        s3Kayra: "Cross-domain workshops bridging art, technology, and social systems.",
+        s3Kayra: "Simulated business case competitions and real-world scenario analysis.",
 
-        s4Title: "PORTFOLIO CREATION & REAL-WORLD LAUNCH",
-        s4Desc: "Execute original vision into published works, products, or original ventures.",
+        s4Title: "INNOVATION & MASTERY",
+        s4Desc: "First-Principles Innovation & Design.",
         s4Points: [
-            "Curate a professional portfolio highlighting design/thought processes.",
-            "Launch creative campaigns, open-source projects, or publications.",
-            "Establish a distinctive personal style and creative voice."
+            "Reframe entrenched industry problems from baseline truths.",
+            "Lead cross-functional problem-solving design sprints.",
+            "Publish analytical whitepapers or strategic teardowns."
         ],
-        s4Kayra: "KAYRA Creative Incubator, student showcases, and exhibition grants."
+        s4Kayra: "Capstone innovation challenges and guidance on publishing research pieces."
     },
 
-    "problem-solving": {
-        num: "02 / SKILLS / 03",
-        title: "PROBLEM SOLVING",
-        subtitle: "Deconstruct complex challenges into manageable variables and craft resilient, high-impact solutions.",
-
-        s1Title: "ROOT CAUSE ANALYSIS",
-        s1Desc: "Distinguish symptoms from true underlying problems through systematic inquiry.",
-        s1Points: [
-            "Apply the '5 Whys' and MECE (Mutually Exclusive, Collectively Exhaustive) frameworks.",
-            "Gather quantitative and qualitative data without cognitive bias.",
-            "Map problem trees to pinpoint exact structural bottlenecks."
-        ],
-        s1Kayra: "Interactive analytical case studies and structured problem breakdown toolkits.",
-
-        s2Title: "STRATEGIC OPTION GENERATION",
-        s2Desc: "Formulate multiple viable solution pathways before committing resources.",
-        s2Points: [
-            "Conduct impact-versus-effort trade-off evaluations.",
-            "Perform stress testing on proposed solutions against worst-case scenarios.",
-            "Draft clear decision matrix frameworks for complex scenarios."
-        ],
-        s2Kayra: "Guided scenario analysis exercises and real-world strategy simulations.",
-
-        s3Title: "EXECUTION & TACTICAL ADAPTATION",
-        s3Desc: "Translate strategy into phased, measurable implementation plans.",
-        s3Points: [
-            "Define concrete KPIs, target milestones, and risk mitigation strategies.",
-            "Execute pilot tests to gather real-world performance metrics.",
-            "Pivot swiftly when empirical feedback contradicts initial assumptions."
-        ],
-        s3Kayra: "Project incubators that tackle real campus, community, or industry problems.",
-
-        s4Title: "SYSTEMS THINKING & SCALABILITY",
-        s4Desc: "Design long-term operational systems that prevent problems from recurring.",
-        s4Points: [
-            "Identify second- and third-order consequences within complex ecosystems.",
-            "Automate repetitive workflows and build sustainable operating frameworks.",
-            "Document playbooks so solutions scale independently of individual effort."
-        ],
-        s4Kayra: "Mentorship from industry problem solvers and policy/system design labs."
-    },
-
-    "leadership": {
-        num: "02 / SKILLS / 04",
-        title: "LEADERSHIP",
-        subtitle: "Guide teams with empathy, strategic vision, ethical grounding, and decisive clarity.",
-
-        s1Title: "SELF-MASTERY & ETHICAL FOUNDATION",
-        s1Desc: "Establish core personal values, self-awareness, and emotional regulation.",
-        s1Points: [
-            "Identify personal biases, triggers, and core driving principles.",
-            "Demonstrate radical accountability for personal mistakes and choices.",
-            "Align daily behaviors with long-term ethical standards."
-        ],
-        s1Kayra: "Leadership self-assessment diagnostics, goal setting, and reflection logs.",
-
-        s2Title: "TEAM DYNAMICS & EMPATHETIC MANAGEMENT",
-        s2Desc: "Build psychological safety, delegate effectively, and motivate diverse individuals.",
-        s2Points: [
-            "Understand individual strength profiles (CliftonStrengths, MBTI context).",
-            "Practice active delegation while offering necessary support structures.",
-            "Give actionable, empathetic feedback that inspires growth rather than defense."
-        ],
-        s2Kayra: "Simulated group project leadership roles and team dynamics workshops.",
-
-        s3Title: "STRATEGIC ALIGNMENT & CONFLICT RESOLUTION",
-        s3Desc: "Unify teams around a compelling shared vision and navigate interpersonal tension.",
-        s3Points: [
-            "Translate high-level vision into clear team objectives and key results (OKRs).",
-            "Resolve internal team friction swiftly using non-violent communication.",
-            "Maintain composure and clear decision-making during high-stress crises."
-        ],
-        s3Kayra: "Real-time leadership roles in KAYRA's student initiatives and team challenges.",
-
-        s4Title: "CULTURE BUILDING & TRANSFORMATIONAL VISION",
-        s4Desc: "Build enduring organizational cultures and empower the next generation of leaders.",
-        s4Points: [
-            "Establish norms of excellence, inclusivity, and continuous learning.",
-            "Identify and cultivate leadership potential in peers and juniors.",
-            "Drive meaningful institutional or societal impact beyond short-term goals."
-        ],
-        s4Kayra: "Direct placement in KAYRA executive steering positions and alumni networks."
-    },
-
-    "adaptability": {
-        num: "02 / SKILLS / 05",
-        title: "ADAPTABILITY",
-        subtitle: "Navigate ambiguity, bounce back from setbacks, and continuously evolve in volatile environments.",
-
-        s1Title: "GROWTH MINDSET & RESILIENCE",
-        s1Desc: "Reframe failure as informative data and cultivate cognitive flexibility.",
-        s1Points: [
-            "Recognize fixed-mindset triggers and actively reframe negative feedback.",
-            "Build stress management routines to maintain emotional equilibrium.",
-            "Conduct post-mortem analysis on failures without self-judgment."
-        ],
-        s1Kayra: "Mindset coaching exercises, resilience reflection logs, and stress-response guides.",
-
-        s2Title: "RAPID UNLEARNING & RE-LEARNING",
-        s2Desc: "Discard outdated knowledge quickly when new paradigms emerge.",
-        s2Points: [
-            "Develop accelerated learning frameworks (Feynman Technique, deliberate practice).",
-            "Identify shift signals in tech, academic, and economic landscapes.",
-            "Step comfortably into completely unfamiliar domains outside comfort zones."
-        ],
-        s2Kayra: "Cross-disciplinary micro-courses designed for rapid skill acquisition.",
-
-        s3Title: "THRIVING IN AMBIGUITY",
-        s3Desc: "Make high-quality decisions with incomplete or rapidly changing information.",
-        s3Points: [
-            "Formulate probabilistic thinking models under uncertain conditions.",
-            "Maintain progress even when clear instructions or roadmaps are absent.",
-            "Pivot project scope smoothly without losing momentum or morale."
-        ],
-        s3Kayra: "Dynamic, changing-parameter simulations that test tactical flexibility under pressure.",
-
-        s4Title: "AGILE TRANSFORMATION LEADERSHIP",
-        s4Desc: "Help teams and organizations navigate disruptive change effortlessly.",
-        s4Points: [
-            "Guide peers through organizational changes with clear, comforting communication.",
-            "Build resilient systems designed to absorb sudden external shocks.",
-            "Proactively drive innovation before legacy methods become obsolete."
-        ],
-        s4Kayra: "Crisis management simulations and advisory roles in dynamic student ventures."
-    },
-
-    "technical-literacy": {
-        num: "02 / SKILLS / 06",
-        title: "TECHNICAL LITERACY",
-        subtitle: "Harness modern computational tools, data systems, digital workflows, and emerging technologies.",
-
-        s1Title: "DIGITAL FOUNDATIONS & ALGORITHMIC THINKING",
-        s1Desc: "Grasp how digital systems operate, process data, and execute logic.",
-        s1Points: [
-            "Understand computational thinking (Decomposition, Pattern Recognition, Abstraction, Algorithms).",
-            "Master cloud file architecture, digital hygiene, and cybersecurity basics.",
-            "Analyze data structures and fundamental programming constructs."
-        ],
-        s1Kayra: "Curated tech fundamentals, interactive tool guides, and computer science logic maps.",
-
-        s2Title: "HANDS-ON TOOL MASTERY & DEVELOPMENT",
-        s2Desc: "Build functional prototypes using code, low-code engines, and modern workflows.",
-        s2Points: [
-            "Write modular code (Python, JavaScript, HTML/CSS) to solve real tasks.",
-            "Utilize developer tools, version control (Git/GitHub), and API integrations.",
-            "Leverage productivity suites, databases, and digital workspace tools effectively."
-        ],
-        s2Kayra: "Guided coding bootcamps, tech project sandboxes, and developer feedback sessions.",
-
-        s3Title: "AI INTEGRATION & AUTOMATION WORKFLOWS",
-        s3Desc: "Leverage AI models responsibly and automate tedious operational tasks.",
-        s3Points: [
-            "Master prompt engineering, contextual framing, and AI-assisted creation.",
-            "Build automated scripts or workflows connecting multiple digital platforms.",
-            "Evaluate technological solutions critically regarding data ethics, privacy, and bias."
-        ],
-        s3Kayra: "Advanced AI workflow labs, prompt engineering masterclasses, and tech stack builders.",
-
-        s4Title: "FULL-STACK PRODUCT CREATION",
-        s4Desc: "Architect, deploy, and maintain end-to-end digital solutions or platforms.",
-        s4Points: [
-            "Deploy functional web/mobile applications or data analytics dashboards.",
-            "Maintain technical documentation and open-source or commercial repositories.",
-            "Stay ahead of frontier technologies (Web3, spatial computing, AI agents)."
-        ],
-        s4Kayra: "Full-stack project incubators, tech hackathons, and direct product mentorship."
-    },
-
-    // PATHWAYS DATA
     "after-10th": {
-        num: "03 / PATHWAYS / 01",
-        title: "AFTER 10TH STREAM SELECTOR",
-        subtitle: "Align stream choices (MPC, BiPC, CEC, MEC, Humanities) with core long-term interests.",
-
-        s1Title: "STREAM DISCOVERY & ASSESSMENTS",
-        s1Desc: "Evaluate cognitive strengths, subject inclinations, and potential learning preferences.",
+        num: "PATHWAY 01",
+        title: "STREAM SELECTION (AFTER 10TH)",
+        subtitle: "Evaluate Science, Commerce, and Humanities based on aptitude and emerging careers.",
+        topColleges: [
+            {
+                name: "Delhi Public School (R.K. Puram)",
+                desc: "Leading CBSE institution known for academic rigor and competitive exam preparation.",
+                img: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "The Doon School",
+                desc: "Premier boarding school offering holistic leadership and broad secondary streams.",
+                img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Cathedral & John Connon School",
+                desc: "Top-tier ISC/IB school focusing on global exposure and academic excellence.",
+                img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+            }
+        ],
+        s1Title: "SELF-DISCOVERY",
+        s1Desc: "Aptitude Assessment & Interest Mapping.",
         s1Points: [
-            "Map core academic interests across Science, Commerce, and Arts.",
-            "Understand subject combinations (MPC, BiPC, CEC, MEC, IB/IGCSE variants).",
-            "Evaluate long-term career implications for each stream branch."
+            "Complete comprehensive psychometric and interest profiling.",
+            "Identify natural strengths in analytical vs creative domains.",
+            "Map subject interests to emerging future careers."
         ],
-        s1Kayra: "Diagnostic interest mapping and stream alignment sessions.",
+        s1Kayra: "Psychometric profiling tools and 1-on-1 career counselor sessions.",
 
-        s2Title: "COMPETITIVE & ACADEMIC PREPARATION",
-        s2Desc: "Build academic stamina and early exposure for board and entrance exams.",
+        s2Title: "STREAM EXPLORATION",
+        s2Desc: "Understanding Science, Commerce & Arts.",
         s2Points: [
-            "Understand national and international entrance exam structures (JEE, NEET, SAT, CLAT).",
-            "Develop rigorous study routines and time-management strategies.",
-            "Explore foundation courses for specialized domain building."
+            "Explore course structures across CBSE, ISC, and IB boards.",
+            "Understand subject combinations (e.g., PCM with Economics).",
+            "Evaluate higher education pathways linked to each stream."
         ],
-        s2Kayra: "Custom study roadmaps, foundation guides, and mentor interaction.",
+        s2Kayra: "Stream discovery webinars and domain deep-dive modules.",
 
-        s3Title: "EXTRACURRICULAR & SKILL INTEGRATION",
-        s3Desc: "Balance academic rigor with active portfolio and real-world project development.",
+        s3Title: "BOARD & CURRICULUM SELECTION",
+        s3Desc: "Matching Goals to Educational Boards.",
         s3Points: [
-            "Engage in science fairs, debate forums, hackathons, and creative writing.",
-            "Maintain consistent leadership positions in school clubs or local communities.",
-            "Document projects and skill achievements in a digital portfolio."
+            "Compare national (CBSE/ISC) vs international (IB/A-Levels) curricula.",
+            "Align board selection with entrance test vs study-abroad goals.",
+            "Finalize subject combinations and elective courses."
         ],
-        s3Kayra: "Portfolio builders, project idea repositories, and peer collaboration groups.",
+        s3Kayra: "Board comparative guides and personalized stream roadmapping.",
 
-        s4Title: "DECISION ARCHITECTURE & TRANSITION",
-        s4Desc: "Finalize high school selection and set clear 2-year goals for senior secondary school.",
+        s4Title: "PREPARATION & ROADMAPPING",
+        s4Desc: "Setting Up for High School Success.",
         s4Points: [
-            "Finalize school/junior college and board selection (CBSE, ISC, State, IB).",
-            "Set measurable 2-year milestones for personal and academic growth.",
-            "Prepare mentally and academically for the transition into 11th grade."
+            "Build study schedules tailored to Class 11 and 12 demands.",
+            "Identify early competitive exam requirements (JEE, NEET, CLAT, SAT).",
+            "Establish co-curricular portfolio development plans."
         ],
-        s4Kayra: "Transition toolkits and 1-on-1 counseling checkpoints."
+        s4Kayra: "Academic planning tools, mentorship, and profile-building toolkits."
     },
 
     "after-12th": {
-        num: "03 / PATHWAYS / 02",
-        title: "AFTER 12TH CAREER ARCHITECTURE",
-        subtitle: "Navigate university admissions, competitive exams, undergraduate degrees, and emerging career domains.",
-
-        s1Title: "DEGREE & DOMAIN EXPLORATION",
-        s1Desc: "Explore fields in Engineering, Medicine, Management, Design, Humanities, and Law.",
+        num: "PATHWAY 02",
+        title: "DEGREE & CAREER PATHS (AFTER 12TH)",
+        subtitle: "Explore entrance examinations, university choices, and future-proof domains.",
+        topColleges: [
+            {
+                name: "Indian Institute of Technology (IIT Bombay)",
+                desc: "India's landmark technical university leading in engineering and innovation.",
+                img: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Shri Ram College of Commerce (SRCC)",
+                desc: "Premier institution for economics, business, and commerce education.",
+                img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "National Law School of India University (NLSIU)",
+                desc: "Top ranking institution for legal education and public policy research.",
+                img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+            }
+        ],
+        s1Title: "PATHWAY TARGETING",
+        s1Desc: "Identifying Degrees & Industry Trends.",
         s1Points: [
-            "Research traditional and emerging undergraduate degree tracks.",
-            "Understand curriculum structures, specialization choices, and industry demand.",
-            "Map degree options against personal strengths and future career trends."
+            "Map interest areas to degree programs (B.Tech, BBA, Law, Design, Pure Sciences).",
+            "Research high-growth fields (AI, Sustainable Energy, FinTech, Public Policy).",
+            "Understand entrance exam requirements and cut-offs."
         ],
-        s1Kayra: "Domain breakdown guides and university course comparison tools.",
+        s1Kayra: "Career mapping engine and trend report masterclasses.",
 
-        s2Title: "ENTRANCE EXAM & ADMISSION STRATEGY",
-        s2Desc: "Prepare strategically for target university applications and entrance tests.",
+        s2Title: "ENTRANCE & ADMISSION PREP",
+        s2Desc: "Standardized Testing & Academic Excellence.",
         s2Points: [
-            "Prepare test-taking strategies for entrance exams (JEE, NEET, CUET, IPMAT, NIFT, CLAT).",
-            "Manage application deadlines, entrance criteria, and portfolio requirements.",
-            "Craft compelling Personal Statements, SOPs, and Essays."
+            "Create tailored exam prep timelines (CUET, JEE, CLAT, IPMAT).",
+            "Balance board exam preparation with competitive testing requirements.",
+            "Track college application deadlines and requirements."
         ],
-        s2Kayra: "SOP reviews, application trackers, and entrance prep guidance.",
+        s2Kayra: "Test prep planning strategies and time-management frameworks.",
 
-        s3Title: "COLLEGE SELECTION & NETWORKING",
-        s3Desc: "Compare institutions, campus culture, placement records, and faculty quality.",
+        s3Title: "COLLEGE SELECTION",
+        s3Desc: "Evaluating Universities & Programs.",
         s3Points: [
-            "Evaluate target universities based on faculty, alumni network, and infrastructure.",
-            "Connect with current university students and alumni for authentic insights.",
-            "Analyze financial options, tuition structures, and scholarship opportunities."
+            "Evaluate colleges based on placement, faculty, and research culture.",
+            "Understand private vs public university advantage points.",
+            "Prepare backup choices to manage admission risks effectively."
         ],
-        s3Kayra: "Alumni network connect, scholarship databases, and college evaluation matrix.",
+        s3Kayra: "University shortlisting matrix and insider college panels.",
 
-        s4Title: "CAREER READINESS & BEYOND",
-        s4Desc: "Step into undergraduate life prepared for career building, internships, and growth.",
+        s4Title: "COLLEGE TRANSITION",
+        s4Desc: "Skill Readiness for University Life.",
         s4Points: [
-            "Build an early professional resume and LinkedIn profile.",
-            "Identify early internship, research, and project opportunities in college.",
-            "Develop lifelong learning habits and career networking skills."
+            "Develop foundational skills (coding, financial literacy, communication).",
+            "Build an early LinkedIn profile and professional CV.",
+            "Connect with university alumni and student networks."
         ],
-        s4Kayra: "Career readiness bootcamps, resume builders, and internship search frameworks."
+        s4Kayra: "Pre-college bootcamps, networking modules, and skill bridging programs."
     },
 
     "global-options": {
-        num: "03 / PATHWAYS / 03",
-        title: "GLOBAL EDUCATION PATHWAYS",
-        subtitle: "Prepare for international universities, global scholarships, standardized tests, and global mobility.",
-
-        s1Title: "INTERNATIONAL HIGHER ED MAP",
-        s1Desc: "Explore global education destinations (US, UK, Canada, Europe, Australia, Asia).",
+        num: "PATHWAY 03",
+        title: "GLOBAL EDUCATION & OVERSEAS PATHWAYS",
+        subtitle: "Navigate international admissions, standardized tests, essays, and profile building.",
+        topColleges: [
+            {
+                name: "Harvard University",
+                desc: "Ivy League institution renowned worldwide for research, humanities, and science.",
+                img: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "University of Oxford",
+                desc: "Historic global university offering tutorial-based world-class education.",
+                img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                name: "Massachusetts Institute of Technology (MIT)",
+                desc: "Global leader in technology, engineering, computation, and scientific discovery.",
+                img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80"
+            }
+        ],
+        s1Title: "GEOGRAPHIC & DEGREE TARGETING",
+        s1Desc: "Selecting Destination Countries & Universities.",
         s1Points: [
-            "Understand different global educational models (Liberal Arts vs Specialized degrees).",
-            "Identify target countries based on budget, post-study work options, and safety.",
-            "Learn credit systems, admission rounds (Early Decision, Early Action, Regular)."
+            "Compare study destinations (US, UK, Canada, Europe, Singapore, Australia).",
+            "Understand post-study work visas, tuition budgets, and scholarship availability.",
+            "Shortlist universities across Reach, Target, and Safety tiers."
         ],
-        s1Kayra: "Global university finder, country guides, and timeline maps.",
+        s1Kayra: "Global education database and destination strategy sessions.",
 
-        s2Title: "STANDARDIZED TESTS & PROFILE",
-        s2Desc: "Prepare for international standardized exams and build a competitive global profile.",
+        s2Title: "PROFILE BUILDING",
+        s2Desc: "Extracurriculars, Research & Leadership.",
         s2Points: [
-            "Prepare for tests like SAT, ACT, IELTS, TOEFL, or Duolingo English Test.",
-            "Build a holistic profile: community impact, research papers, awards, and passion projects.",
-            "Request impactful Letters of Recommendation (LORs) from educators."
+            "Develop a compelling spike in extracurricular projects.",
+            "Engage in academic research, community leadership, or internships.",
+            "Maintain strong high school transcripts and GPA trajectories."
         ],
-        s2Kayra: "Standardized test practice resources and profile-building strategies.",
+        s2Kayra: "Profile enhancement planning and independent project guidance.",
 
-        s3Title: "FINANCIAL PLANNING & SCHOLARSHIPS",
-        s3Desc: "Identify institutional scholarships, financial aid, grants, and funding options.",
+        s3Title: "TESTS & ESSAYS",
+        s3Desc: "Standardized Testing & Personal Statements.",
         s3Points: [
-            "Navigate Need-Based and Merit-Based financial aid processes (CSS Profile, ISFAA).",
-            "Identify external global scholarship programs and government grants.",
-            "Budget accurately for tuition, living costs, healthcare, and travel."
+            "Prepare for standardized exams (SAT, ACT, IELTS, TOEFL).",
+            "Draft authentic Common App, UC, or UCAS personal statements.",
+            "Secure impactful Letters of Recommendation (LORs) from teachers."
         ],
-        s4Kayra: "Financial aid assistance guides and scholarship databases.",
+        s3Kayra: "Essay editing labs, story-architecting workshops, and test strategy guidance.",
 
-        s4Title: "VISA, IMMIGRATION & DESTINATION READINESS",
-        s4Desc: "Complete visa applications and prepare for cross-cultural academic living.",
+        s4Title: "APPLICATION & FINANCES",
+        s4Desc: "Submissions, Financial Aid & Visa Prep.",
         s4Points: [
-            "Complete student visa procedures (F-1, CAS/Student Visa, Study Permit).",
-            "Prepare for cross-cultural transition, accommodation, and independent living.",
-            "Join overseas student orientation programs and regional alumni chapters."
+            "Submit applications via Common App, UCAS, or direct portals.",
+            "Apply for merit-based and need-based financial aid/scholarships.",
+            "Complete visa documentation and pre-departure preparation."
         ],
-        s4Kayra: "Pre-departure checklist, visa prep guides, and global student community hubs."
+        s4Kayra: "Application review panels, visa interview practice, and pre-departure orientation."
     }
 };
 
 /* =========================================
-   TEXT ANIMATION PREPARATION
+   CAROUSEL SLIDER LOGIC
 ========================================= */
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide-card");
+const slideDotsContainer = document.getElementById("slideDots");
+const prevBtn = document.getElementById("prevSlide");
+const nextBtn = document.getElementById("nextSlide");
+const slideControls = document.getElementById("slideControls");
+const roadmapOverlay = document.getElementById("roadmapOverlay");
+const closeRoadmapBtn = document.getElementById("closeRoadmap");
 
-function prepareTextAnimation() {
-    const animatedElements = document.querySelectorAll(".animated-heading, .animate-text");
-    animatedElements.forEach(element => {
-        if (!element.dataset.originalHTML) {
-            element.dataset.originalHTML = element.innerHTML;
-        }
+let isRoadmapOpen = false;
+
+// Create navigation dots dynamically
+slides.forEach((_, idx) => {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    if (idx === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => goToSlide(idx));
+    slideDotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll(".dot");
+
+function updateSlider() {
+    slides.forEach((slide, idx) => {
+        slide.classList.toggle("active", idx === currentSlide);
+    });
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === currentSlide);
     });
 }
 
-function resetAnimatedText(slideElement) {
-    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
-    animatedElements.forEach(element => {
-        if (element.dataset.originalHTML) {
-            element.innerHTML = element.dataset.originalHTML;
-        }
-    });
+function goToSlide(index) {
+    currentSlide = index;
+    updateSlider();
 }
 
-function animateSlideText(slideElement) {
-    resetAnimatedText(slideElement);
-    const animatedElements = slideElement.querySelectorAll(".animated-heading, .animate-text");
-    
-    let globalCharIndex = 0;
-
-    animatedElements.forEach(element => {
-        const wrapTextNodes = (node) => {
-            if (node.nodeType === Node.TEXT_NODE) {
-                const text = node.nodeValue;
-                const fragment = document.createDocumentFragment();
-                const words = text.split(/(\s+)/);
-
-                words.forEach(word => {
-                    if (word.trim() === "") {
-                        fragment.appendChild(document.createTextNode(word));
-                    } else {
-                        const wordSpan = document.createElement("span");
-                        wordSpan.className = "word";
-
-                        for (let i = 0; i < word.length; i++) {
-                            const charSpan = document.createElement("span");
-                            charSpan.className = "char";
-                            charSpan.textContent = word[i];
-                            charSpan.style.animationDelay = `${globalCharIndex * 0.025}s`;
-                            globalCharIndex++;
-                            wordSpan.appendChild(charSpan);
-                        }
-                        fragment.appendChild(wordSpan);
-                    }
-                });
-
-                node.parentNode.replaceChild(fragment, node);
-            } else if (node.nodeType === Node.ELEMENT_NODE) {
-                Array.from(node.childNodes).forEach(wrapTextNodes);
-            }
-        };
-
-        wrapTextNodes(element);
-    });
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlider();
 }
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlider();
+}
+
+prevBtn.addEventListener("click", prevSlide);
+nextBtn.addEventListener("click", nextSlide);
+
+// Keyboard arrow navigation
+document.addEventListener("keydown", (e) => {
+    if (isRoadmapOpen) {
+        if (e.key === "Escape") closeRoadmap();
+        return;
+    }
+    if (e.key === "ArrowRight") nextSlide();
+    if (e.key === "ArrowLeft") prevSlide();
+});
 
 /* =========================================
-   SKILL CARDS ANIMATION
+   ROADMAP OVERLAY & RENDER LOGIC
 ========================================= */
-
-function triggerSkillCards(slideElement) {
-    const cards = slideElement.querySelectorAll(".skill-card");
-    cards.forEach((card, index) => {
-        card.classList.remove("skill-card-visible");
-        setTimeout(() => {
-            card.classList.add("skill-card-visible");
-        }, 120 * index + 200);
-    });
-}
-
-/* =========================================
-   ROADMAP / PATHWAY MODAL LOGIC
-========================================= */
-
 function populatePointsList(elementId, points) {
     const listElement = document.getElementById(elementId);
-    if (!listElement) return;
     listElement.innerHTML = "";
-    if (points && points.length > 0) {
-        points.forEach(pt => {
-            const li = document.createElement("li");
-            li.textContent = pt;
-            listElement.appendChild(li);
-        });
-    }
+    if (!points || !Array.isArray(points)) return;
+    
+    points.forEach(pt => {
+        const li = document.createElement("li");
+        li.textContent = pt;
+        listElement.appendChild(li);
+    });
 }
 
 function openRoadmap(itemKey) {
@@ -507,6 +343,29 @@ function openRoadmap(itemKey) {
     document.getElementById("roadmapNumber").textContent = data.num;
     document.getElementById("roadmapTitle").innerHTML = `${data.title} <span class="highlight">ROADMAP</span>`;
     document.getElementById("roadmapSubtitle").textContent = data.subtitle;
+
+    // Render Top Colleges/Schools if available
+    const topCollegesSection = document.getElementById("topCollegesSection");
+    const topCollegesGrid = document.getElementById("topCollegesGrid");
+
+    if (data.topColleges && data.topColleges.length > 0) {
+        topCollegesGrid.innerHTML = "";
+        data.topColleges.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "college-card";
+            card.innerHTML = `
+                <img src="${item.img}" alt="${item.name}">
+                <div class="college-info">
+                    <h5>${item.name}</h5>
+                    <p>${item.desc}</p>
+                </div>
+            `;
+            topCollegesGrid.appendChild(card);
+        });
+        topCollegesSection.style.display = "block";
+    } else {
+        topCollegesSection.style.display = "none";
+    }
 
     // STEP 1
     document.getElementById("step1Title").textContent = data.s1Title;
@@ -536,7 +395,6 @@ function openRoadmap(itemKey) {
     slideControls.classList.add("hidden");
     isRoadmapOpen = true;
 
-    // Scroll to top of overlay content
     roadmapOverlay.scrollTop = 0;
 }
 
@@ -546,124 +404,4 @@ function closeRoadmap() {
     isRoadmapOpen = false;
 }
 
-/* =========================================
-   SLIDE SWITCHING LOGIC
-========================================= */
-
-function goToSlide(index) {
-    if (index < 0 || index >= slides.length) return;
-
-    if (isRoadmapOpen) closeRoadmap();
-
-    slides[currentSlide].classList.remove("active");
-    currentSlide = index;
-    slides[currentSlide].classList.add("active");
-
-    // Update active navbar button
-    navButtons.forEach((btn, i) => {
-        btn.classList.toggle("active", i === currentSlide);
-    });
-
-    // Update slide counter text
-    if (slideCounter) {
-        const slideNum = String(currentSlide + 1).padStart(2, "0");
-        const totalSlides = String(slides.length).padStart(2, "0");
-        slideCounter.textContent = `${slideNum} / ${totalSlides}`;
-    }
-
-    // Trigger animations for the new active slide
-    animateSlideText(slides[currentSlide]);
-    triggerSkillCards(slides[currentSlide]);
-
-    // Close mobile menu if open
-    if (mobileMenu) mobileMenu.classList.remove("open");
-}
-
-/* =========================================
-   EVENT LISTENERS
-========================================= */
-
-// Skill Card Clicks
-document.querySelectorAll(".skill-card").forEach(card => {
-    card.addEventListener("click", () => {
-        const skillKey = card.getAttribute("data-skill");
-        openRoadmap(skillKey);
-    });
-});
-
-// Pathway Row Clicks
-document.querySelectorAll(".pathway-row").forEach(row => {
-    row.addEventListener("click", () => {
-        const pathwayKey = row.getAttribute("data-pathway");
-        if (pathwayKey) {
-            openRoadmap(pathwayKey);
-        }
-    });
-});
-
-if (closeRoadmapButton) {
-    closeRoadmapButton.addEventListener("click", closeRoadmap);
-}
-
-if (nextButton) {
-    nextButton.addEventListener("click", () => {
-        if (currentSlide < slides.length - 1) {
-            goToSlide(currentSlide + 1);
-        } else {
-            goToSlide(0);
-        }
-    });
-}
-
-if (previousButton) {
-    previousButton.addEventListener("click", () => {
-        if (currentSlide > 0) {
-            goToSlide(currentSlide - 1);
-        } else {
-            goToSlide(slides.length - 1);
-        }
-    });
-}
-
-navButtons.forEach((button, index) => {
-    button.addEventListener("click", () => goToSlide(index));
-});
-
-mobileNavButtons.forEach((button, index) => {
-    button.addEventListener("click", () => goToSlide(index));
-});
-
-document.querySelectorAll("[data-slide-target]").forEach(button => {
-    button.addEventListener("click", (e) => {
-        const target = parseInt(e.target.getAttribute("data-slide-target"), 10);
-        if (!isNaN(target)) goToSlide(target);
-    });
-});
-
-if (menuButton && mobileMenu) {
-    menuButton.addEventListener("click", () => {
-        mobileMenu.classList.toggle("open");
-    });
-}
-
-// Keyboard arrow navigation
-window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && isRoadmapOpen) {
-        closeRoadmap();
-        return;
-    }
-
-    if (!isRoadmapOpen) {
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-            if (currentSlide < slides.length - 1) goToSlide(currentSlide + 1);
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-            if (currentSlide > 0) goToSlide(currentSlide - 1);
-        }
-    }
-});
-
-/* Initialize */
-document.addEventListener("DOMContentLoaded", () => {
-    prepareTextAnimation();
-    goToSlide(0);
-});
+closeRoadmapBtn.addEventListener("click", closeRoadmap);

@@ -1,108 +1,188 @@
-<!-- =========================================
-     ROADMAP VIEW (DYNAMICALLY INJECTED OVERLAY)
-========================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAYRA — Skill Roadmaps & Pathways</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-<div class="roadmap-overlay" id="roadmapOverlay">
+    <!-- MAIN APP WRAPPER -->
+    <main class="app-container">
 
-    <button class="close-roadmap-button" id="closeRoadmap">
-        ← BACK
-    </button>
+        <!-- HEADER / BRANDING -->
+        <header class="top-nav">
+            <div class="logo">KAYRA<span>.</span></div>
+            <div class="nav-tag">FUTURE READINESS ENGINE</div>
+        </header>
 
-    <div class="roadmap-container">
+        <!-- CAROUSEL / SLIDE CONTAINER -->
+        <section class="slider-viewport">
 
-        <div class="roadmap-header">
-            <div class="section-label" id="roadmapNumber">
-                ROADMAP
+            <div class="slide-card active" data-key="communication">
+                <div class="card-content">
+                    <span class="card-badge">SKILL 01</span>
+                    <h3>Communication & Public Speaking</h3>
+                    <p>Master articulate expression, active listening, structured debate, and narrative power.</p>
+                    <button class="open-roadmap-btn" onclick="openRoadmap('communication')">VIEW ROADMAP →</button>
+                </div>
             </div>
-            <h2 class="animated-heading" id="roadmapTitle">
-                SKILL ROADMAP
-            </h2>
-            <p class="section-intro" id="roadmapSubtitle">
-                Discover how to build this skill and how KAYRA empowers your journey.
-            </p>
+
+            <div class="slide-card" data-key="critical-thinking">
+                <div class="card-content">
+                    <span class="card-badge">SKILL 02</span>
+                    <h3>Critical Thinking & Problem Solving</h3>
+                    <p>Deconstruct complex challenges using first-principles thinking and logical deduction.</p>
+                    <button class="open-roadmap-btn" onclick="openRoadmap('critical-thinking')">VIEW ROADMAP →</button>
+                </div>
+            </div>
+
+            <div class="slide-card" data-key="after-10th">
+                <div class="card-content">
+                    <span class="card-badge">PATHWAY 01</span>
+                    <h3>Stream Selection (After 10th)</h3>
+                    <p>Evaluate Science, Commerce, and Humanities based on aptitude and emerging careers.</p>
+                    <button class="open-roadmap-btn" onclick="openRoadmap('after-10th')">VIEW ROADMAP →</button>
+                </div>
+            </div>
+
+            <div class="slide-card" data-key="after-12th">
+                <div class="card-content">
+                    <span class="card-badge">PATHWAY 02</span>
+                    <h3>Degree & Career Paths (After 12th)</h3>
+                    <p>Explore entrance examinations, university choices, and future-proof domains.</p>
+                    <button class="open-roadmap-btn" onclick="openRoadmap('after-12th')">VIEW ROADMAP →</button>
+                </div>
+            </div>
+
+            <div class="slide-card" data-key="global-options">
+                <div class="card-content">
+                    <span class="card-badge">PATHWAY 03</span>
+                    <h3>Global Education & Overseas Pathways</h3>
+                    <p>Navigate international admissions, standardized tests, essays, and profile building.</p>
+                    <button class="open-roadmap-btn" onclick="openRoadmap('global-options')">VIEW ROADMAP →</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SLIDE CONTROLS -->
+        <div class="slide-controls" id="slideControls">
+            <button class="control-btn" id="prevSlide">← PREV</button>
+            <div class="slide-dots" id="slideDots"></div>
+            <button class="control-btn" id="nextSlide">NEXT →</button>
         </div>
 
-        <!-- TOP INSTITUTIONS / SCHOOLS SECTION (FOR PATHWAYS) -->
-        <div class="top-colleges-section" id="topCollegesSection" style="display: none;">
-            <div class="top-colleges-title">TOP 3 COLLEGES & INSTITUTIONS</div>
-            <div class="top-colleges-grid" id="topCollegesGrid"></div>
-        </div>
+    </main>
 
-        <div class="roadmap-vertical-timeline">
+    <!-- =========================================
+         ROADMAP VIEW (DYNAMICALLY INJECTED OVERLAY)
+    ========================================== -->
+    <div class="roadmap-overlay" id="roadmapOverlay">
 
-            <!-- STEP 1 -->
-            <div class="roadmap-step">
-                <div class="step-marker">
-                    <div class="step-num">01</div>
-                    <div class="timeline-line"></div>
-                </div>
-                <div class="step-content">
-                    <div class="step-header-tag">PHASE 01</div>
-                    <h4 id="step1Title">FOUNDATION</h4>
-                    <p class="step-desc" id="step1Desc">Active Listening & Structural Clarity.</p>
-                    <ul class="step-points" id="step1Points"></ul>
-                    <div class="kayra-impact">
-                        <span class="kayra-badge">KAYRA'S ROLE</span>
-                        <p id="step1Kayra">Interactive workshops and direct baseline feedback loops.</p>
-                    </div>
-                </div>
+        <button class="close-roadmap-button" id="closeRoadmap">
+            ← BACK
+        </button>
+
+        <div class="roadmap-container">
+
+            <div class="roadmap-header">
+                <div class="section-label" id="roadmapNumber">ROADMAP</div>
+                <h2 class="animated-heading" id="roadmapTitle">SKILL ROADMAP</h2>
+                <p class="section-intro" id="roadmapSubtitle">
+                    Discover how to build this skill and how KAYRA empowers your journey.
+                </p>
             </div>
 
-            <!-- STEP 2 -->
-            <div class="roadmap-step">
-                <div class="step-marker">
-                    <div class="step-num">02</div>
-                    <div class="timeline-line"></div>
-                </div>
-                <div class="step-content">
-                    <div class="step-header-tag">PHASE 02</div>
-                    <h4 id="step2Title">PRACTICE</h4>
-                    <p class="step-desc" id="step2Desc">Public Speaking & Structured Writing.</p>
-                    <ul class="step-points" id="step2Points"></ul>
-                    <div class="kayra-impact">
-                        <span class="kayra-badge">KAYRA'S ROLE</span>
-                        <p id="step2Kayra">Safe-space speaking labs & peer critique sessions.</p>
-                    </div>
-                </div>
+            <!-- TOP INSTITUTIONS / SCHOOLS SECTION (FOR PATHWAYS) -->
+            <div class="top-colleges-section" id="topCollegesSection" style="display: none;">
+                <div class="top-colleges-title">TOP 3 COLLEGES & INSTITUTIONS</div>
+                <div class="top-colleges-grid" id="topCollegesGrid"></div>
             </div>
 
-            <!-- STEP 3 -->
-            <div class="roadmap-step">
-                <div class="step-marker">
-                    <div class="step-num">03</div>
-                    <div class="timeline-line"></div>
-                </div>
-                <div class="step-content">
-                    <div class="step-header-tag">PHASE 03</div>
-                    <h4 id="step3Title">ADVANCED APPLICATION</h4>
-                    <p class="step-desc" id="step3Desc">Persuasion, Negotiation & Audience Dynamics.</p>
-                    <ul class="step-points" id="step3Points"></ul>
-                    <div class="kayra-impact">
-                        <span class="kayra-badge">KAYRA'S ROLE</span>
-                        <p id="step3Kayra">Live debate simulations and structured argument frameworks.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="roadmap-vertical-timeline">
 
-            <!-- STEP 4 -->
-            <div class="roadmap-step">
-                <div class="step-marker">
-                    <div class="step-num">04</div>
-                </div>
-                <div class="step-content">
-                    <div class="step-header-tag">PHASE 04</div>
-                    <h4 id="step4Title">MASTERY</h4>
-                    <p class="step-desc" id="step4Desc">Real-world Impact & Authentic Storytelling.</p>
-                    <ul class="step-points" id="step4Points"></ul>
-                    <div class="kayra-impact">
-                        <span class="kayra-badge">KAYRA'S ROLE</span>
-                        <p id="step4Kayra">Live project presentations & mentorship from industry guides.</p>
+                <!-- STEP 1 -->
+                <div class="roadmap-step">
+                    <div class="step-marker">
+                        <div class="step-num">01</div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header-tag">PHASE 01</div>
+                        <h4 id="step1Title">FOUNDATION</h4>
+                        <p class="step-desc" id="step1Desc">Active Listening & Structural Clarity.</p>
+                        <ul class="step-points" id="step1Points"></ul>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step1Kayra">Interactive workshops and direct baseline feedback loops.</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- STEP 2 -->
+                <div class="roadmap-step">
+                    <div class="step-marker">
+                        <div class="step-num">02</div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header-tag">PHASE 02</div>
+                        <h4 id="step2Title">PRACTICE</h4>
+                        <p class="step-desc" id="step2Desc">Public Speaking & Structured Writing.</p>
+                        <ul class="step-points" id="step2Points"></ul>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step2Kayra">Safe-space speaking labs & peer critique sessions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="roadmap-step">
+                    <div class="step-marker">
+                        <div class="step-num">03</div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header-tag">PHASE 03</div>
+                        <h4 id="step3Title">ADVANCED APPLICATION</h4>
+                        <p class="step-desc" id="step3Desc">Persuasion, Negotiation & Audience Dynamics.</p>
+                        <ul class="step-points" id="step3Points"></ul>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step3Kayra">Live debate simulations and structured argument frameworks.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 4 -->
+                <div class="roadmap-step">
+                    <div class="step-marker">
+                        <div class="step-num">04</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-header-tag">PHASE 04</div>
+                        <h4 id="step4Title">MASTERY</h4>
+                        <p class="step-desc" id="step4Desc">Real-world Impact & Authentic Storytelling.</p>
+                        <ul class="step-points" id="step4Points"></ul>
+                        <div class="kayra-impact">
+                            <span class="kayra-badge">KAYRA'S ROLE</span>
+                            <p id="step4Kayra">Live project presentations & mentorship from industry guides.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
     </div>
 
-</div>
+    <script src="script.js"></script>
+</body>
+</html>
